@@ -1,0 +1,7 @@
+[Unit]
+Description=Marlene Brits Attorneys Enhancement Check
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/z/my-project/scripts/enhance-check.sh
