@@ -1,0 +1,139 @@
+/* Mobile stability and performance overrides for the Marlene Brits site. */
+@layer base {
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    overscroll-behavior-y: none;
+  }
+
+  main,
+  section,
+  header,
+  footer {
+    max-width: 100%;
+  }
+
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --radius: 0.875rem;
+  }
+
+  [data-nav-menu] {
+    width: 100% !important;
+    background: rgba(26, 26, 46, 0.96) !important;
+    backdrop-filter: blur(14px) saturate(140%) !important;
+    -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16) !important;
+  }
+
+  [data-nav-menu] nav {
+    height: 74px !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  [data-nav-menu] a[href="#home"] span:first-of-type {
+    font-size: 1.05rem !important;
+    letter-spacing: 0.16em !important;
+    line-height: 1.05 !important;
+  }
+
+  [data-nav-menu] a[href="#home"] span:last-of-type {
+    font-size: 8px !important;
+    letter-spacing: 0.28em !important;
+  }
+
+  .tracking-luxury {
+    letter-spacing: 0.16em;
+  }
+
+  .tracking-ultra {
+    letter-spacing: 0.18em;
+  }
+
+  .text-body-lg {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  #home {
+    min-height: 100svh;
+  }
+
+  #home h1,
+  #home .text-display-xl {
+    max-width: 100%;
+    font-size: clamp(2.45rem, 12vw, 3.9rem) !important;
+    line-height: 1.04 !important;
+    overflow-wrap: normal;
+  }
+
+  #home .film-grain::before,
+  #home .pattern-grid-dots {
+    display: none !important;
+  }
+
+  #team .aspect-\[3\/4\] {
+    aspect-ratio: 4 / 3 !important;
+  }
+
+  .glass,
+  .glass-light,
+  .glass-card-3d,
+  .nav-glass-3d {
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+  }
+
+  .card-3d:hover,
+  .glass-card-3d:hover,
+  .gold-border-3d:hover,
+  .elevated-float:hover,
+  .hover-lift:hover,
+  .nav-link-3d:hover,
+  .logo-3d-hover:hover {
+    transform: none !important;
+  }
+
+  .luxury-shadow {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@media (min-width: 768px) {
+  #team .aspect-\[3\/4\] {
+    aspect-ratio: 3 / 4 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}
