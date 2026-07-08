@@ -1,14 +1,11 @@
 'use client';
 
-import { useState, useCallback } from 'react';
 import SmoothScroll from '@/components/premium/SmoothScroll';
 import Navigation from '@/components/premium/Navigation';
-import Preloader from '@/components/premium/Preloader';
 import ScrollProgress from '@/components/premium/ScrollProgress';
 import FloatingCTA from '@/components/premium/FloatingCTA';
 import BackToTop from '@/components/premium/BackToTop';
 import PremiumCursor from '@/components/premium/PremiumCursor';
-import OnboardingOverlay from '@/components/premium/OnboardingOverlay';
 import HeroSection from '@/components/sections/HeroSection';
 import AboutSection from '@/components/sections/AboutSection';
 import ProcessSection from '@/components/sections/ProcessSection';
@@ -23,16 +20,8 @@ import FooterSection from '@/components/sections/FooterSection';
 import { ParallaxQuoteSection, GoldWaveDivider } from '@/components/premium/SVGDividers';
 
 export default function Home() {
-  const [preloaderDone, setPreloaderDone] = useState(false);
-
-  const handlePreloaderComplete = useCallback(() => {
-    setPreloaderDone(true);
-  }, []);
-
   return (
     <>
-      {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
-
       <SmoothScroll>
         <Navigation />
         <ScrollProgress />
@@ -57,7 +46,6 @@ export default function Home() {
         <FloatingCTA />
         <BackToTop />
         <PremiumCursor />
-        <OnboardingOverlay />
       </SmoothScroll>
     </>
   );
