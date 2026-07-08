@@ -12,7 +12,6 @@ export default function BackToTop() {
       setVisible(window.scrollY > 500)
     }
 
-    // Check initial position
     handleScroll()
 
     window.addEventListener('scroll', handleScroll, { passive: true })
@@ -31,7 +30,7 @@ export default function BackToTop() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="group fixed bottom-6 left-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border glass-card-3d"
+          className="group fixed bottom-24 left-4 z-40 flex h-11 w-11 items-center justify-center rounded-full border glass-card-3d md:bottom-6 md:left-6"
           style={{
             borderColor: 'rgba(184,137,86,0.4)',
             backgroundColor: 'rgba(26,26,46,0.8)',
