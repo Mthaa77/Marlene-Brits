@@ -1,12 +1,22 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence, useInView, useAnimation } from 'framer-motion';
-import { Star, ChevronLeft, ChevronRight, Quote, Shield, Award, BookOpen, Heart } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion, useAnimation, useInView } from 'framer-motion';
+import {
+  ArrowRight,
+  Award,
+  BadgeCheck,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Quote,
+  Shield,
+  Sparkles,
+  Star,
+} from 'lucide-react';
 import { testimonials } from '@/data/testimonials';
-import { SectionPattern, GeometricMandala } from '@/components/premium/BackgroundPatterns';
 
-/* ─── Trust Indicators Data ────────────────────────────────────── */
 const trustIndicators = [
   { label: 'Legal Practice Council – Gauteng', icon: Shield },
   { label: 'Law Society of South Africa', icon: Award },
@@ -14,47 +24,54 @@ const trustIndicators = [
   { label: 'National Wills Week Participant', icon: Heart },
 ];
 
-/* ─── Animation Variants ───────────────────────────────────────── */
-const fadeUpVariants = {
-  hidden: { opacity: 0, y: 40 },
+const fadeUp = {
+  hidden: { opacity: 0, y: 36 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.72, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
-const carouselVariants = {
+const stagger = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+};
+
+const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 200 : -200,
+    x: direction > 0 ? 120 : -120,
     opacity: 0,
-    scale: 0.95,
+    scale: 0.97,
+    filter: 'blur(8px)',
   }),
   center: {
     x: 0,
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+    filter: 'blur(0px)',
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
   },
   exit: (direction: number) => ({
-    x: direction < 0 ? 200 : -200,
+    x: direction < 0 ? 120 : -120,
     opacity: 0,
-    scale: 0.95,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+    scale: 0.97,
+    filter: 'blur(8px)',
+    transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] },
   }),
 };
 
-/* ─── Star Rating Component ────────────────────────────────────── */
-function StarRating({ rating }: { rating: number }) {
+function StarRating({ rating, compact = false }: { rating: number; compact?: boolean }) {
   return (
     <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, i) => (
+      {Array.from({ length: 5 }).map((_, index) => (
         <Star
-          key={i}
-          className={`w-4 h-4 ${
-            i < rating
-              ? 'fill-gold text-gold'
-              : 'fill-transparent text-gold/30'
+          key={index}
+          className={`${compact ? 'h-3.5 w-3.5' : 'h-4 w-4 sm:h-5 sm:w-5'} ${
+            index < rating ? 'fill-gold text-gold drop-shadow-[0_0_10px_rgba(214,165,96,0.35)]' : 'text-gold/25'
           }`}
         />
       ))}
@@ -62,133 +79,129 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-/* ─── Testimonial Card ─────────────────────────────────────────── */
-function TestimonialSlide({
-  testimonial,
-}: {
-  testimonial: (typeof testimonials)[number];
-}) {
+function TestimonialSpotlight({ testimonial }: { testimonial: (typeof testimonials)[number] }) {
   return (
-    <div className="relative max-w-3xl mx-auto text-center px-4">
-      {/* Large gold quotation mark */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-        className="mb-6"
-      >
-        <Quote className="w-14 h-14 md:w-16 md:h-16 text-gold/25 mx-auto" fill="currentColor" />
-      </motion.div>
+    <div className="relative overflow-hidden rounded-[2.25rem] border border-gold/24 bg-[linear-gradient(145deg,rgba(255,255,255,0.13),rgba(255,255,255,0.045))] p-5 shadow-[0_42px_140px_rgba(0,0,0,0.38)] backdrop-blur-2xl sm:p-8 lg:p-10">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
+      <div className="absolute -left-24 top-4 h-72 w-72 rounded-full bg-gold/12 blur-3xl" />
+      <div className="absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-white/6 blur-3xl" />
+      <Quote className="absolute right-8 top-8 h-24 w-24 text-gold/[0.06] sm:h-32 sm:w-32" fill="currentColor" />
 
-      {/* Quote text in elegant serif italic */}
-      <motion.blockquote
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className="font-serif text-lg sm:text-xl md:text-2xl italic text-charcoal/80 leading-relaxed mb-8"
-      >
-        &ldquo;{testimonial.content}&rdquo;
-      </motion.blockquote>
+      <div className="relative grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
+        <div className="relative rounded-[1.75rem] border border-gold/18 bg-[#071020]/62 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+          <div className="absolute inset-3 rounded-[1.25rem] border border-gold/12" />
+          <div className="relative">
+            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gold text-[#071020] shadow-[0_20px_55px_rgba(214,165,96,0.28)]">
+              <BadgeCheck className="h-7 w-7" />
+            </div>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/80">Verified Client Experience</p>
+            <h3 className="mt-3 font-serif-optical text-3xl font-semibold leading-tight text-white sm:text-4xl">
+              Trusted legal care with a personal touch.
+            </h3>
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.055] p-4">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-serif-optical text-3xl font-semibold text-white">5.0</p>
+                  <p className="text-xs uppercase tracking-[0.18em] text-white/42">Client rating</p>
+                </div>
+                <StarRating rating={5} compact />
+              </div>
+            </div>
+          </div>
+        </div>
 
-      {/* Star rating */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="mb-4"
-      >
-        <StarRating rating={testimonial.rating} />
-      </motion.div>
+        <div className="relative">
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <StarRating rating={testimonial.rating} />
+            <span className="rounded-full border border-gold/18 bg-gold/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold/82">
+              {testimonial.service}
+            </span>
+          </div>
 
-      {/* Client name and role */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.35 }}
-      >
-        <p className="font-serif text-lg md:text-xl font-semibold text-charcoal">
-          {testimonial.name}
-        </p>
-        <p className="text-sm text-muted-foreground mt-1">
-          {testimonial.role}
-        </p>
-      </motion.div>
+          <blockquote className="font-serif-optical text-[clamp(1.55rem,4vw,3.2rem)] font-medium italic leading-[1.18] tracking-[-0.045em] text-white">
+            “{testimonial.content}”
+          </blockquote>
 
-      {/* Service badge */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="mt-4"
-      >
-        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-gold bg-gold/5 border border-gold/20 rounded-full px-4 py-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-gold" />
-          {testimonial.service}
-        </span>
-      </motion.div>
+          <div className="mt-8 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="font-serif-optical text-2xl font-semibold text-white">{testimonial.name}</p>
+              <p className="mt-1 text-sm text-white/50">{testimonial.role}</p>
+            </div>
+            <div className="inline-flex items-center gap-2 self-start rounded-full border border-gold/18 bg-gold/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-gold/82">
+              <Shield className="h-3.5 w-3.5" />
+              Confidential & Professional
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
 
-/* ─── Navigation Dots ──────────────────────────────────────────── */
-function NavigationDots({
-  total,
-  current,
+function MiniReviewCard({
+  testimonial,
+  index,
+  active,
   onSelect,
 }: {
-  total: number;
-  current: number;
-  onSelect: (index: number) => void;
+  testimonial: (typeof testimonials)[number];
+  index: number;
+  active: boolean;
+  onSelect: () => void;
 }) {
   return (
-    <div className="flex items-center justify-center gap-2 mt-8">
-      {Array.from({ length: total }).map((_, i) => (
-        <button
-          key={i}
-          onClick={() => onSelect(i)}
-          className={`transition-all duration-300 rounded-full ${
-            i === current
-              ? 'w-8 h-2.5 bg-gold'
-              : 'w-2.5 h-2.5 bg-gold/25 hover:bg-gold/50'
-          }`}
-          aria-label={`Go to testimonial ${i + 1}`}
-        />
-      ))}
+    <motion.button
+      type="button"
+      onClick={onSelect}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className={`group relative rounded-[1.5rem] border p-4 text-left transition-all duration-300 ${
+        active
+          ? 'border-gold/42 bg-gold/12 shadow-[0_20px_65px_rgba(214,165,96,0.14)]'
+          : 'border-white/10 bg-white/[0.045] hover:border-gold/28 hover:bg-white/[0.07]'
+      }`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-serif-optical text-lg font-semibold text-white">{testimonial.name}</p>
+          <p className="mt-1 text-xs text-white/44">{testimonial.service}</p>
+        </div>
+        <span className="text-[10px] font-semibold text-gold/58">{String(index + 1).padStart(2, '0')}</span>
+      </div>
+      <p className="mt-3 line-clamp-2 text-sm leading-6 text-white/54">{testimonial.content}</p>
+      <div className="mt-4 flex items-center justify-between">
+        <StarRating rating={testimonial.rating} compact />
+        <ArrowRight className="h-4 w-4 text-gold opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100" />
+      </div>
+    </motion.button>
+  );
+}
+
+function TrustIndicators() {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {trustIndicators.map((indicator, index) => {
+        const Icon = indicator.icon;
+        return (
+          <motion.div
+            key={indicator.label}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.55, delay: index * 0.08 }}
+            className="group rounded-[1.35rem] border border-white/10 bg-white/[0.055] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.18)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:bg-white/[0.075]"
+          >
+            <Icon className="mb-4 h-5 w-5 text-gold" />
+            <p className="text-sm font-medium leading-6 text-white/66 group-hover:text-white/82">{indicator.label}</p>
+          </motion.div>
+        );
+      })}
     </div>
   );
 }
 
-/* ─── Google Reviews Placeholder ────────────────────────────────── */
-function GoogleReviewsPlaceholder() {
-  return (
-    <motion.div
-      variants={fadeUpVariants}
-      className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10 p-6 bg-white rounded-xl border border-gold/10 luxury-shadow"
-    >
-      {/* Google "G" logo placeholder */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-charcoal/5 flex items-center justify-center">
-          <span className="text-xl font-bold text-charcoal/60">G</span>
-        </div>
-        <div>
-          <div className="flex items-center gap-1">
-            <StarRating rating={5} />
-          </div>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Based on verified Google reviews
-          </p>
-        </div>
-      </div>
-      <div className="hidden sm:block w-px h-10 bg-gold/15" />
-      <div className="text-center sm:text-left">
-        <p className="text-2xl font-serif font-bold text-charcoal">5.0</p>
-        <p className="text-xs text-muted-foreground">Average Rating</p>
-      </div>
-    </motion.div>
-  );
-}
-
-/* ─── Testimonials Section ─────────────────────────────────────── */
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -198,22 +211,19 @@ export default function TestimonialsSection() {
   const controls = useAnimation();
 
   useEffect(() => {
-    if (isInView) {
-      controls.start('visible');
-    }
-  }, [isInView, controls]);
+    if (isInView) controls.start('visible');
+  }, [controls, isInView]);
 
-  // Auto-rotate carousel
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || testimonials.length <= 1) return;
     const interval = setInterval(() => {
       setDirection(1);
-      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-    }, 6000);
+      setCurrentIndex((current) => (current + 1) % testimonials.length);
+    }, 7000);
     return () => clearInterval(interval);
   }, [isPaused]);
 
-  const goToSlide = useCallback(
+  const goTo = useCallback(
     (index: number) => {
       setDirection(index > currentIndex ? 1 : -1);
       setCurrentIndex(index);
@@ -223,160 +233,147 @@ export default function TestimonialsSection() {
 
   const goNext = useCallback(() => {
     setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    setCurrentIndex((current) => (current + 1) % testimonials.length);
   }, []);
 
   const goPrev = useCallback(() => {
     setDirection(-1);
-    setCurrentIndex(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
-    );
+    setCurrentIndex((current) => (current - 1 + testimonials.length) % testimonials.length);
   }, []);
 
   return (
     <section
       id="testimonials"
       ref={sectionRef}
-      className="relative py-20 md:py-28 bg-white overflow-hidden"
+      className="relative overflow-hidden bg-[#050814] py-20 text-white sm:py-28 md:py-32"
     >
-      <SectionPattern pattern="artdeco" className="opacity-30" />
-      <GeometricMandala className="-bottom-10 -left-10" size={180} opacity={0.02} />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_12%,rgba(214,165,96,0.2),transparent_26rem),radial-gradient(circle_at_84%_28%,rgba(255,255,255,0.08),transparent_24rem),linear-gradient(135deg,#050814,#0d1425_54%,#050814)]" />
+      <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:58px_58px]" />
+      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
+      <div className="absolute -left-28 top-1/4 h-80 w-80 rounded-full bg-gold/10 blur-3xl" />
+      <div className="absolute -right-28 bottom-1/4 h-80 w-80 rounded-full bg-white/6 blur-3xl" />
 
-      {/* Top edge gold line */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
-
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          variants={fadeUpVariants}
+          variants={stagger}
           initial="hidden"
           animate={controls}
-          className="text-center mb-16 md:mb-20"
+          className="mx-auto mb-14 max-w-3xl text-center sm:mb-18"
         >
-          <span className="inline-block text-gold text-xs font-semibold uppercase tracking-luxury mb-4 font-cormorant">
-            Testimonials
-          </span>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-charcoal tracking-tight">
-            What Our Clients Say
-          </h2>
-          {/* Gold accent line */}
-          <div className="flex justify-center mt-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-[1px] bg-gold/40" />
-              <div className="w-2 h-2 rounded-full bg-gold" />
-              <div className="w-12 h-[1px] bg-gold/40" />
-            </div>
-          </div>
-          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto leading-relaxed mt-6">
-            Trusted by families and businesses across Pretoria East
-          </p>
+          <motion.span
+            variants={fadeUp}
+            className="inline-flex items-center gap-2 rounded-full border border-gold/22 bg-gold/10 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/85 shadow-[0_14px_40px_rgba(214,165,96,0.10)] backdrop-blur-xl"
+          >
+            <Sparkles className="h-3.5 w-3.5" />
+            Client Testimonials
+          </motion.span>
+
+          <motion.h2
+            variants={fadeUp}
+            className="mt-6 font-serif-optical text-[clamp(2.75rem,8vw,5.65rem)] font-semibold leading-[0.9] tracking-[-0.055em] text-white"
+          >
+            Proof of Trust,
+            <span className="block bg-gradient-to-r from-[#f4d79b] via-[#c58a44] to-[#f8e5bd] bg-clip-text text-transparent">
+              Told by Clients.
+            </span>
+          </motion.h2>
+
+          <motion.p variants={fadeUp} className="mx-auto mt-6 max-w-2xl text-base leading-8 text-white/62 sm:text-lg">
+            A refined legal experience should feel professional, personal, and reassuring. These stories highlight the care behind the work.
+          </motion.p>
         </motion.div>
 
-        {/* Carousel Container */}
         <motion.div
-          variants={fadeUpVariants}
+          variants={fadeUp}
           initial="hidden"
           animate={controls}
-          className="relative"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
+          className="relative"
         >
-          {/* Navigation Arrows */}
-          <button
-            onClick={goPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full border border-gold/20 bg-white/80 backdrop-blur-sm flex items-center justify-center text-gold hover:bg-gold hover:text-white hover:border-gold transition-all duration-300 shadow-sm"
-            aria-label="Previous testimonial"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            onClick={goNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full border border-gold/20 bg-white/80 backdrop-blur-sm flex items-center justify-center text-gold hover:bg-gold hover:text-white hover:border-gold transition-all duration-300 shadow-sm"
-            aria-label="Next testimonial"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+          <div className="absolute -left-3 top-1/2 z-20 hidden -translate-y-1/2 md:block">
+            <button
+              onClick={goPrev}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/22 bg-[#071020]/78 text-gold shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 hover:bg-gold hover:text-[#071020]"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+          </div>
 
-          {/* Testimonial Carousel */}
-          <div className="overflow-hidden py-8 md:py-12">
+          <div className="absolute -right-3 top-1/2 z-20 hidden -translate-y-1/2 md:block">
+            <button
+              onClick={goNext}
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/22 bg-[#071020]/78 text-gold shadow-[0_18px_50px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 hover:bg-gold hover:text-[#071020]"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="overflow-hidden px-0 py-2 md:px-10">
             <AnimatePresence mode="wait" custom={direction}>
               <motion.div
                 key={currentIndex}
                 custom={direction}
-                variants={carouselVariants}
+                variants={slideVariants}
                 initial="enter"
                 animate="center"
                 exit="exit"
               >
-                <TestimonialSlide testimonial={testimonials[currentIndex]} />
+                <TestimonialSpotlight testimonial={testimonials[currentIndex]} />
               </motion.div>
             </AnimatePresence>
           </div>
 
-          {/* Navigation Dots */}
-          <NavigationDots
-            total={testimonials.length}
-            current={currentIndex}
-            onSelect={goToSlide}
-          />
-        </motion.div>
-
-        {/* Google Reviews Placeholder */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate={controls}
-          className="max-w-md mx-auto mt-12"
-        >
-          <GoogleReviewsPlaceholder />
-        </motion.div>
-
-        {/* Trust Indicators */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate={controls}
-          className="mt-16"
-        >
-          <div className="elegant-divider mb-10" />
-
-          <motion.p
-            variants={fadeUpVariants}
-            className="text-center text-xs uppercase tracking-luxury text-gold/70 mb-8 font-cormorant"
-          >
-            Affiliations & Accreditations
-          </motion.p>
-
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4">
-            {trustIndicators.map((indicator, i) => {
-              const Icon = indicator.icon;
-              return (
-                <motion.div
-                  key={indicator.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.5,
-                    delay: i * 0.1,
-                    ease: [0.25, 0.46, 0.45, 0.94],
-                  }}
-                >
-                  <div className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-full border border-gold/15 bg-gold/[0.03] hover:border-gold/35 hover:bg-gold/[0.07] transition-all duration-300 cursor-default">
-                    <Icon className="w-3.5 h-3.5 text-gold/60 group-hover:text-gold transition-colors duration-300" />
-                    <span className="text-xs font-medium text-charcoal/70 group-hover:text-charcoal transition-colors duration-300">
-                      {indicator.label}
-                    </span>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="mt-6 flex items-center justify-center gap-3 md:hidden">
+            <button
+              onClick={goPrev}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/22 bg-white/[0.055] text-gold"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              onClick={goNext}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/22 bg-white/[0.055] text-gold"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
           </div>
         </motion.div>
-      </div>
 
-      {/* Bottom edge gold line */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {testimonials.slice(0, 3).map((testimonial, index) => (
+            <MiniReviewCard
+              key={`${testimonial.name}-${testimonial.service}`}
+              testimonial={testimonial}
+              index={index}
+              active={currentIndex === index}
+              onSelect={() => goTo(index)}
+            />
+          ))}
+        </div>
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate={controls}
+          className="mt-14 rounded-[2rem] border border-gold/20 bg-[linear-gradient(145deg,rgba(255,255,255,0.1),rgba(255,255,255,0.035))] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.26)] backdrop-blur-2xl sm:p-7"
+        >
+          <div className="mb-7 flex flex-col gap-4 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/80">Affiliations & Accreditations</p>
+              <h3 className="mt-2 font-serif-optical text-3xl font-semibold text-white sm:text-4xl">Professional Trust Markers</h3>
+            </div>
+            <p className="max-w-xl text-sm leading-7 text-white/52">
+              Additional trust signals that support the firm’s positioning as a serious, professional Pretoria East legal practice.
+            </p>
+          </div>
+          <TrustIndicators />
+        </motion.div>
+      </div>
     </section>
   );
 }
