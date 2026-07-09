@@ -3,133 +3,91 @@
 import { useCallback } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
-  Calendar,
-  Phone,
-  ShieldCheck,
-  Scale,
-  FileCheck2,
-  Home,
-  ChevronDown,
-  Sparkles,
   ArrowRight,
+  Calendar,
+  FileCheck2,
   Landmark,
+  Phone,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+  Star,
 } from 'lucide-react';
 import { company } from '@/data/company';
 
-const trustBadges = [
-  'Attorneys',
-  'Notaries',
-  'Conveyancers',
-  'Deceased Estates',
-];
+const images = {
+  building: '/uploads/main-1612194838.jpg',
+  plaqueOne: '/uploads/ChatGPT%20Image%20Jul%208%2C%202026%2C%2009_28_52%20PM.png',
+  plaqueTwo: '/uploads/ChatGPT%20Image%20Jul%208%2C%202026%2C%2009_31_06%20PM.png',
+  plaqueThree: '/uploads/ChatGPT%20Image%20Jul%208%2C%202026%2C%2009_36_03%20PM.png',
+  office: '/uploads/OIP%20%281%29.webp',
+};
 
-const practiceHighlights = [
-  {
-    icon: Home,
-    label: 'Property Transfers',
-  },
-  {
-    icon: FileCheck2,
-    label: 'Estate Administration',
-  },
-  {
-    icon: Scale,
-    label: 'Family & Civil Law',
-  },
-];
+const trustBadges = ['Attorneys', 'Notaries', 'Conveyancers', 'Estate Administrators'];
 
-const quickStats = [
-  {
-    value: '2019',
-    label: 'Founded',
-  },
-  {
-    value: 'Pretoria East',
-    label: 'Based in Menlyn Maine',
-  },
-  {
-    value: 'Personalised',
-    label: 'Dedicated representation',
-  },
+const serviceHighlights = [
+  { icon: FileCheck2, label: 'Conveyancing' },
+  { icon: ShieldCheck, label: 'Deceased Estates' },
+  { icon: Scale, label: 'Notarial Services' },
 ];
 
 function scrollToSection(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
 
-  const top = el.getBoundingClientRect().top + window.scrollY - 88;
+  const top = el.getBoundingClientRect().top + window.scrollY - 92;
   window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
 }
 
-function PremiumHeroPlaque() {
+function ImageCard({ src, label, className = '' }: { src: string; label: string; className?: string }) {
+  return (
+    <div className={`relative overflow-hidden rounded-[1.6rem] border border-gold/22 bg-[#071020] shadow-[0_30px_100px_rgba(0,0,0,0.36)] ${className}`}>
+      <img src={src} alt={label} className="h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050814]/82 via-[#050814]/18 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/80 to-transparent" />
+      <p className="absolute bottom-4 left-4 right-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+function HeroVisualStack() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 28, scale: 0.98 }}
+      initial={{ opacity: 0, y: 38, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
-      className="relative mx-auto w-full max-w-[680px]"
+      transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
+      className="relative mx-auto w-full max-w-[720px] lg:mx-0"
     >
-      <div className="absolute -inset-6 rounded-[2rem] bg-gold/10 blur-3xl" />
-
-      <div className="relative overflow-hidden rounded-[1.65rem] border border-gold/35 bg-[#080c18] p-3 shadow-[0_28px_90px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,165,96,0.18),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_35%)]" />
-        <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:42px_42px]" />
-
-        <div className="relative rounded-[1.25rem] border border-gold/45 bg-[linear-gradient(180deg,rgba(11,18,35,0.98),rgba(5,8,17,0.98))] p-5 sm:p-7">
-          <div className="pointer-events-none absolute inset-3 rounded-[1rem] border border-gold/20" />
-          <div className="pointer-events-none absolute left-5 right-5 top-5 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
-          <div className="pointer-events-none absolute bottom-5 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
-
-          <div className="relative flex min-h-[360px] flex-col items-center justify-center text-center sm:min-h-[430px]">
-            <motion.div
-              initial={{ opacity: 0, y: -16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45 }}
-              className="mb-3 font-cormorant text-[clamp(3.7rem,15vw,7.4rem)] font-bold italic leading-none text-gold drop-shadow-[0_0_20px_rgba(214,165,96,0.32)]"
-            >
-              MB.
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.55 }}
-              className="space-y-4"
-            >
-              <div className="flex items-center justify-center gap-3">
-                <span className="h-px w-16 bg-gradient-to-r from-transparent to-gold/70" />
-                <Sparkles className="h-4 w-4 text-gold" />
-                <span className="h-px w-16 bg-gradient-to-l from-transparent to-gold/70" />
-              </div>
-
-              <h2 className="font-serif-optical text-[clamp(2.1rem,9vw,4.75rem)] font-semibold leading-[0.92] tracking-[0.16em] text-white drop-shadow-[0_12px_28px_rgba(0,0,0,0.48)] sm:tracking-[0.2em]">
-                MARLENE BRITS
-              </h2>
-
-              <div className="mx-auto flex max-w-[520px] items-center justify-center gap-4">
-                <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold/70 to-gold/40" />
-                <span className="h-3 w-3 rotate-45 border border-gold/80 bg-gold/30" />
-                <span className="h-px flex-1 bg-gradient-to-l from-transparent via-gold/70 to-gold/40" />
-              </div>
-
-              <p className="font-cormorant text-[clamp(1.25rem,5vw,2.2rem)] uppercase tracking-[0.42em] text-gold sm:tracking-[0.56em]">
-                Attorneys
-              </p>
-            </motion.div>
+      <div className="absolute -inset-8 rounded-[2.5rem] bg-gold/12 blur-3xl" />
+      <div className="relative overflow-hidden rounded-[2.1rem] border border-gold/30 bg-[#071020]/72 p-3 shadow-[0_44px_150px_rgba(0,0,0,0.52)] backdrop-blur-2xl">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,165,96,0.18),transparent_34%)]" />
+        <div className="relative grid gap-3 sm:grid-cols-[1.2fr_0.8fr]">
+          <ImageCard
+            src={images.building}
+            label="Menlyn Maine · Pretoria East"
+            className="min-h-[420px] sm:min-h-[560px]"
+          />
+          <div className="grid gap-3">
+            <ImageCard src={images.plaqueOne} label="Marlene Brits Attorneys" className="min-h-[185px] sm:min-h-[268px]" />
+            <ImageCard src={images.office} label="Professional Legal Environment" className="min-h-[185px] sm:min-h-[268px]" />
           </div>
+        </div>
 
-          <div className="relative -mx-5 -mb-5 border-t border-gold/40 bg-[linear-gradient(180deg,#d5a35f,#9a6a31)] px-5 py-5 text-center sm:-mx-7 sm:-mb-7 sm:px-7 sm:py-6">
-            <p className="font-serif-optical text-[clamp(0.88rem,3vw,1.55rem)] font-semibold uppercase leading-relaxed tracking-[0.18em] text-[#071020] drop-shadow-[0_1px_0_rgba(255,255,255,0.18)] sm:tracking-[0.22em]">
-              Attorneys, Notaries & Conveyancers
-            </p>
-            <div className="mx-auto my-2 flex max-w-sm items-center gap-3">
-              <span className="h-px flex-1 bg-[#071020]/45" />
-              <span className="font-serif-optical text-sm uppercase tracking-[0.3em] text-[#071020]">Ummeli</span>
-              <span className="h-px flex-1 bg-[#071020]/45" />
+        <div className="absolute bottom-6 left-6 right-6 rounded-[1.35rem] border border-white/10 bg-[#050814]/78 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.34)] backdrop-blur-xl sm:left-8 sm:right-8 sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/82">Office Identity</p>
+              <p className="mt-1 font-serif-optical text-2xl font-semibold leading-tight text-white sm:text-3xl">
+                Premium legal presence in Pretoria East.
+              </p>
             </div>
-            <p className="font-serif-optical text-[clamp(0.8rem,2.8vw,1.25rem)] font-semibold uppercase tracking-[0.18em] text-[#071020] sm:tracking-[0.22em]">
-              Administrators of Deceased Estates
-            </p>
+            <div className="flex items-center gap-1.5">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <Star key={index} className="h-4 w-4 fill-gold text-gold" />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -145,63 +103,65 @@ export default function HeroSection() {
     scrollToSection('contact');
   }, []);
 
-  const handleAboutClick = useCallback(() => {
-    scrollToSection('about');
-  }, []);
-
   return (
     <section
       id="home"
-      className="relative isolate flex min-h-[100svh] scroll-mt-24 flex-col justify-center overflow-hidden bg-[#050814] px-4 pb-16 pt-28 text-white sm:px-6 sm:pt-32 lg:px-8"
+      className="relative isolate flex min-h-[100svh] scroll-mt-24 flex-col justify-center overflow-hidden bg-[#050814] px-4 pb-16 pt-32 text-white sm:px-6 sm:pt-36 lg:px-8"
     >
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_12%,rgba(214,165,96,0.18),transparent_30%),radial-gradient(circle_at_84%_26%,rgba(214,165,96,0.11),transparent_26%),linear-gradient(135deg,#11172a_0%,#070a14_42%,#040611_100%)]" />
-      <div className="absolute inset-0 -z-10 opacity-[0.16] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:64px_64px]" />
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.62)_78%)]" />
-      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-70" />
+      <img
+        src={images.building}
+        alt="Marlene Brits Attorneys office building in Pretoria East"
+        className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+        loading="eager"
+      />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,8,20,0.94)_0%,rgba(5,8,20,0.83)_42%,rgba(5,8,20,0.58)_100%)]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_18%,rgba(214,165,96,0.28),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(214,165,96,0.14),transparent_24%),linear-gradient(180deg,rgba(5,8,20,0.18),rgba(5,8,20,0.9))]" />
+      <div className="absolute inset-0 -z-10 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] [background-size:64px_64px]" />
+      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-80" />
 
       {!prefersReducedMotion && (
         <>
           <motion.div
-            className="absolute left-[8%] top-[18%] -z-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl"
-            animate={{ y: [0, 18, 0], opacity: [0.35, 0.55, 0.35] }}
-            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute left-[7%] top-[16%] -z-10 h-48 w-48 rounded-full bg-gold/16 blur-3xl"
+            animate={{ y: [0, 20, 0], opacity: [0.35, 0.62, 0.35] }}
+            transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
           />
           <motion.div
-            className="absolute bottom-[14%] right-[10%] -z-10 h-56 w-56 rounded-full bg-gold/10 blur-3xl"
-            animate={{ y: [0, -22, 0], opacity: [0.25, 0.48, 0.25] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute bottom-[12%] right-[9%] -z-10 h-72 w-72 rounded-full bg-gold/12 blur-3xl"
+            animate={{ y: [0, -24, 0], opacity: [0.26, 0.48, 0.26] }}
+            transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut' }}
           />
         </>
       )}
 
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[0.86fr_1.14fr] lg:gap-14">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left"
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left"
         >
-          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-gold/25 bg-white/[0.04] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.24em] text-gold/85 shadow-[0_10px_34px_rgba(0,0,0,0.25)] backdrop-blur-md">
+          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-gold/28 bg-[#050814]/58 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/90 shadow-[0_14px_42px_rgba(0,0,0,0.28)] backdrop-blur-xl">
             <Landmark className="h-3.5 w-3.5" />
-            Pretoria East Legal Practice
+            Pretoria East · Menlyn Maine
           </div>
 
-          <h1 className="font-serif-optical text-[clamp(3rem,12vw,7.3rem)] font-semibold leading-[0.88] tracking-[-0.045em] text-white">
-            Legal care,
-            <span className="mt-2 block bg-gradient-to-r from-[#f4d392] via-[#c8924f] to-[#f6deb0] bg-clip-text text-transparent">
-              personally delivered.
+          <h1 className="font-serif-optical text-[clamp(3rem,11vw,7.45rem)] font-semibold leading-[0.86] tracking-[-0.065em] text-white drop-shadow-[0_28px_70px_rgba(0,0,0,0.55)]">
+            Legal excellence,
+            <span className="mt-3 block bg-gradient-to-r from-[#f9e5bb] via-[#c8924f] to-[#fff1d2] bg-clip-text text-transparent">
+              rooted in trust.
             </span>
           </h1>
 
-          <p className="mt-7 max-w-xl text-base leading-8 text-white/68 sm:text-lg lg:text-left">
-            A premium digital home for <span className="font-semibold text-white">Marlene Brits Attorneys</span> — built around trust, clarity, and dedicated legal representation in conveyancing, deceased estates, family law, and notarial services.
+          <p className="mt-7 max-w-2xl text-base leading-8 text-white/74 sm:text-lg lg:text-left">
+            A premium digital presence for <span className="font-semibold text-white">Marlene Brits Attorneys</span> — using the firm’s own visuals, office identity, and legal positioning to create a website that feels personal, established, and unmistakably theirs.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-2 lg:justify-start">
             {trustBadges.map((badge) => (
               <span
                 key={badge}
-                className="rounded-full border border-gold/20 bg-white/[0.035] px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-white/76 backdrop-blur"
+                className="rounded-full border border-gold/22 bg-[#050814]/52 px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-white/78 backdrop-blur-xl"
               >
                 {badge}
               </span>
@@ -214,7 +174,7 @@ export default function HeroSection() {
               onClick={handleConsultationClick}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="group inline-flex items-center justify-center gap-3 rounded-full bg-gold px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#071020] shadow-[0_18px_42px_rgba(214,165,96,0.28)]"
+              className="group inline-flex items-center justify-center gap-3 rounded-full bg-gold px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#071020] shadow-[0_24px_70px_rgba(214,165,96,0.34)]"
             >
               <Calendar className="h-4 w-4" />
               Book Consultation
@@ -225,7 +185,7 @@ export default function HeroSection() {
               href={`tel:${company.contact.phone.replace(/\s/g, '')}`}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/[0.045] px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md"
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-white/18 bg-[#050814]/52 px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white shadow-[0_18px_52px_rgba(0,0,0,0.24)] backdrop-blur-xl"
             >
               <Phone className="h-4 w-4 text-gold" />
               Call the Firm
@@ -233,46 +193,24 @@ export default function HeroSection() {
           </div>
 
           <div className="mt-10 grid gap-3 sm:grid-cols-3">
-            {quickStats.map((stat) => (
+            {serviceHighlights.map(({ icon: Icon, label }) => (
               <div
-                key={stat.label}
-                className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-center backdrop-blur-sm lg:text-left"
+                key={label}
+                className="rounded-2xl border border-white/12 bg-[#050814]/50 p-4 text-center shadow-[0_18px_55px_rgba(0,0,0,0.22)] backdrop-blur-xl lg:text-left"
               >
-                <div className="font-serif-optical text-xl font-semibold text-white">{stat.value}</div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-white/45">{stat.label}</div>
+                <Icon className="mx-auto mb-3 h-5 w-5 text-gold lg:mx-0" />
+                <div className="text-sm font-semibold text-white">{label}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/42">Specialised support</div>
               </div>
             ))}
           </div>
         </motion.div>
 
-        <PremiumHeroPlaque />
+        <HeroVisualStack />
       </div>
 
-      <div className="mx-auto mt-12 grid w-full max-w-5xl gap-3 sm:grid-cols-3">
-        {practiceHighlights.map(({ icon: Icon, label }) => (
-          <div
-            key={label}
-            className="flex items-center gap-3 rounded-2xl border border-gold/15 bg-white/[0.035] px-4 py-3 text-sm text-white/72 backdrop-blur-sm"
-          >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold/12 text-gold">
-              <Icon className="h-4 w-4" />
-            </span>
-            <span className="font-medium">{label}</span>
-          </div>
-        ))}
-      </div>
-
-      <button
-        onClick={handleAboutClick}
-        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-white/45 transition-colors hover:text-gold md:flex"
-        aria-label="Scroll to about section"
-      >
-        <span>Explore</span>
-        <ChevronDown className="h-5 w-5 animate-bounce" />
-      </button>
-
-      <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#050814] to-transparent" />
-      <ShieldCheck className="pointer-events-none absolute right-6 top-28 h-28 w-28 text-gold/[0.035] sm:right-12 sm:h-40 sm:w-40" />
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#050814] to-transparent" />
+      <Sparkles className="pointer-events-none absolute bottom-12 right-8 h-24 w-24 text-gold/[0.07]" />
     </section>
   );
 }
