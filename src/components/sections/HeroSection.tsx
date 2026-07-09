@@ -1,751 +1,278 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useCallback } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
-  motion,
-  useAnimation,
-  useInView,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-  useMotionValue,
-  useSpring,
-} from 'framer-motion';
-import {
-  ChevronDown,
-  Phone,
   Calendar,
-  Shield,
+  Phone,
+  ShieldCheck,
   Scale,
+  FileCheck2,
   Home,
-  FileCheck,
-  Star,
-  PhoneCall,
+  ChevronDown,
   Sparkles,
   ArrowRight,
+  Landmark,
 } from 'lucide-react';
 import { company } from '@/data/company';
-import { LaurelWreath, FloatingOrb, DamaskOrnament } from '@/components/premium/BackgroundPatterns';
 
-/* ─── Animated Counter ─────────────────────────────────────────── */
-function AnimatedCounter({
-  target,
-  suffix = '',
-  duration = 2,
-}: {
-  target: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '0px' });
-
-  useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const step = target / (duration * 60);
-    const timer = setInterval(() => {
-      start += step;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, 1000 / 60);
-    return () => clearInterval(timer);
-  }, [isInView, target, duration]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {count}
-      {suffix}
-    </span>
-  );
-}
-
-/* ─── Floating Gold Particles (Seeded) ────────────────────────── */
-function mulberry32(seed: number) {
-  return function () {
-    let t = (seed += 0x6d2b79f5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-function GoldParticles() {
-  const rand = mulberry32(42);
-  const particles = Array.from({ length: 60 }, (_, i) => ({
-    id: i,
-    x: rand() * 100,
-    y: rand() * 100,
-    size: rand() * 3 + 1,
-    duration: rand() * 20 + 15,
-    delay: rand() * 10,
-    opacity: rand() * 0.3 + 0.1,
-    depth: rand() * 0.5 + 0.5, // 0.5 to 1.0 — parallax depth
-  }));
-
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full"
-          style={{
-            width: p.size,
-            height: p.size,
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            background: `radial-gradient(circle, var(--gold) 0%, transparent 70%)`,
-            opacity: p.opacity,
-          }}
-          animate={{
-            y: [0, -30 * p.depth, 0],
-            x: [0, Math.sin(p.id) * 15 * p.depth, 0],
-            scale: [1, 1 + p.depth * 0.3, 1],
-          }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            delay: p.delay,
-            ease: 'easeInOut',
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
-/* ─── Cinematic Gradient Mesh ────────────────────────────────── */
-function CinematicGradientMesh() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none hero-mesh-animate">
-      {/* Primary warm glow — top right */}
-      <motion.div
-        className="absolute -top-1/4 -right-1/4 w-[1200px] h-[1200px] rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(184,137,86,0.12) 0%, rgba(184,137,86,0.04) 35%, transparent 65%)',
-        }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.6, 0.9, 0.6],
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      {/* Secondary cool glow — bottom left */}
-      <motion.div
-        className="absolute -bottom-1/4 -left-1/4 w-[900px] h-[900px] rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(184,137,86,0.08) 0%, transparent 65%)',
-        }}
-        animate={{
-          scale: [1.1, 1, 1.1],
-          opacity: [0.5, 0.7, 0.5],
-        }}
-        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      {/* Center ambient glow */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1500px] h-[1500px] rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(184,137,86,0.05) 0%, transparent 45%)',
-        }}
-        animate={{ scale: [1, 1.08, 1] }}
-        transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-      />
-      {/* Top-left cool highlight */}
-      <motion.div
-        className="absolute top-0 left-0 w-[700px] h-[700px] rounded-full"
-        style={{
-          background:
-            'radial-gradient(circle, rgba(255,255,255,0.015) 0%, transparent 55%)',
-        }}
-        animate={{ opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-      />
-    </div>
-  );
-}
-
-/* ─── 3D Tilt Card Component ───────────────────────────────────── */
-function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const springRotateX = useSpring(rotateX, { stiffness: 200, damping: 25 });
-  const springRotateY = useSpring(rotateY, { stiffness: 200, damping: 25 });
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    rotateX.set(((e.clientY - centerY) / (rect.height / 2)) * -8);
-    rotateY.set(((e.clientX - centerX) / (rect.width / 2)) * 8);
-  }, [rotateX, rotateY]);
-
-  const handleMouseLeave = useCallback(() => {
-    rotateX.set(0);
-    rotateY.set(0);
-  }, [rotateX, rotateY]);
-
-  return (
-    <motion.div
-      ref={cardRef}
-      className={`preserve-3d ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX: springRotateX, rotateY: springRotateY }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/* ─── Animated Gold Line Border ────────────────────────────────── */
-function GoldLineBorder({ side }: { side: 'left' | 'right' }) {
-  return (
-    <motion.div
-      className={`absolute top-0 bottom-0 ${
-        side === 'left' ? 'left-0' : 'right-0'
-      } w-[1px] bg-gradient-to-b from-transparent via-gold/30 to-transparent gold-accent-pulse`}
-      initial={{ scaleY: 0 }}
-      animate={{ scaleY: 1 }}
-      transition={{ duration: 2.5, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.5 }}
-      style={{ transformOrigin: 'top' }}
-    />
-  );
-}
-
-/* ─── Mouse-Responsive Light ───────────────────────────────────── */
-function MouseLight({ mouseX, mouseY }: { mouseX: ReturnType<typeof useMotionValue<number>>; mouseY: ReturnType<typeof useMotionValue<number>> }) {
-  const springX = useSpring(mouseX, { stiffness: 40, damping: 25 });
-  const springY = useSpring(mouseY, { stiffness: 40, damping: 25 });
-
-  return (
-    <motion.div
-      className="absolute inset-0 pointer-events-none z-[1]"
-      style={{
-        background: useTransform(
-          [springX, springY],
-          ([x, y]) =>
-            `radial-gradient(900px circle at ${x}px ${y}px, rgba(184,137,86,0.08) 0%, transparent 45%)`
-        ),
-      }}
-    />
-  );
-}
-
-/* ─── Shimmer CTA Button ───────────────────────────────────── */
-function ShimmerButton({
-  children,
-  href,
-  icon: Icon,
-}: {
-  children: React.ReactNode;
-  href: string;
-  icon: React.ComponentType<{ className?: string }>;
-}) {
-  return (
-    <motion.a
-      href={href}
-      className="group relative inline-flex items-center gap-3 bg-gold text-charcoal-dark font-semibold px-8 py-4 rounded-sm transition-all duration-300 text-sm sm:text-base overflow-hidden"
-      whileHover={{
-        scale: 1.04,
-        boxShadow: '0 0 40px rgba(184,137,86,0.4), 0 0 80px rgba(184,137,86,0.15)',
-      }}
-      whileTap={{ scale: 0.98 }}
-    >
-      {/* Shimmer sweep */}
-      <span className="absolute inset-0 overflow-hidden">
-        <span className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_0.8s_ease-in-out] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-      </span>
-      {/* Breathing glow */}
-      <span className="absolute inset-0 breathing-glow rounded-sm" />
-      <Icon className="w-4 h-4 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 relative z-10" />
-      <span className="relative z-10 font-cormorant text-base tracking-wide">{children}</span>
-      <ArrowRight className="w-4 h-4 relative z-10 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
-    </motion.a>
-  );
-}
-
-/* ─── 3D Stat Card ─────────────────────────────────────────────── */
-function StatCard({
-  stat,
-  icon: Icon,
-  index,
-}: {
-  stat: { value: number; suffix: string; label: string };
-  icon: React.ComponentType<{ className?: string }>;
-  index: number;
-}) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const springRotateX = useSpring(rotateX, { stiffness: 300, damping: 30 });
-  const springRotateY = useSpring(rotateY, { stiffness: 300, damping: 30 });
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    rotateX.set(((e.clientY - centerY) / (rect.height / 2)) * -6);
-    rotateY.set(((e.clientX - centerX) / (rect.width / 2)) * 6);
-  }, [rotateX, rotateY]);
-
-  const handleMouseLeave = useCallback(() => {
-    rotateX.set(0);
-    rotateY.set(0);
-  }, [rotateX, rotateY]);
-
-  return (
-    <motion.div
-      variants={itemVariants}
-      className="text-center group"
-    >
-      <motion.div
-        ref={cardRef}
-        className="glass-card-3d rounded-sm p-6 sm:p-8"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{ rotateX: springRotateX, rotateY: springRotateY, transformStyle: 'preserve-3d' }}
-        whileHover={{
-          boxShadow: '0 0 25px rgba(184,137,86,0.08), 0 20px 60px rgba(0,0,0,0.2)',
-        }}
-      >
-        {/* Icon with glow */}
-        <div className="flex justify-center mb-4">
-          <motion.div
-            className="w-14 h-14 rounded-full border border-gold/30 flex items-center justify-center group-hover:border-gold/60 transition-colors duration-300"
-            whileHover={{
-              scale: 1.15,
-              boxShadow: '0 0 25px rgba(184,137,86,0.2)',
-            }}
-            transition={{ duration: 0.3 }}
-          >
-            <Icon className="w-6 h-6 text-gold/70 group-hover:text-gold transition-colors duration-300" />
-          </motion.div>
-        </div>
-        {/* Number */}
-        <div className="font-serif-optical text-4xl sm:text-5xl font-bold text-white oldstyle-nums">
-          <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-        </div>
-        {/* Label */}
-        <div className="mt-2 text-xs sm:text-sm text-white/40 tracking-luxury uppercase font-cormorant">
-          {stat.label}
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/* ─── Stats Icons Map ──────────────────────────────────────────── */
-const statsIcons = [Scale, Home, FileCheck, Star];
-
-/* ─── Trust Strip Data ─────────────────────────────────────────── */
 const trustBadges = [
-  'Property24 Partner',
-  'Pretoria Deeds Registry',
-  'LPC Gauteng',
-  'LSSA Member',
+  'Attorneys',
+  'Notaries',
+  'Conveyancers',
+  'Deceased Estates',
 ];
 
-/* ─── Stagger Container Variants ───────────────────────────────── */
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.4,
-    },
+const practiceHighlights = [
+  {
+    icon: Home,
+    label: 'Property Transfers',
   },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] },
+  {
+    icon: FileCheck2,
+    label: 'Estate Administration',
   },
-};
+  {
+    icon: Scale,
+    label: 'Family & Civil Law',
+  },
+];
 
-/* ─── Letter-by-letter reveal variants ─────────────────────────── */
-const letterVariants = {
-  hidden: { opacity: 0, y: 50, rotateX: -30 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    rotateX: 0,
-    transition: {
-      duration: 0.6,
-      delay: 0.8 + i * 0.035,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  }),
-};
+const quickStats = [
+  {
+    value: '2019',
+    label: 'Founded',
+  },
+  {
+    value: 'Pretoria East',
+    label: 'Based in Menlyn Maine',
+  },
+  {
+    value: 'Personalised',
+    label: 'Dedicated representation',
+  },
+];
 
-/* ─── Word-by-word reveal for supporting text ──────────────────── */
-const wordVariants = {
-  hidden: { opacity: 0, y: 20, filter: 'blur(8px)' },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: {
-      duration: 0.5,
-      delay: 1.8 + i * 0.08,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  }),
-};
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return;
 
-/* ─── Hero Section ─────────────────────────────────────────────── */
-export default function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
-  const controls = useAnimation();
-  const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const top = el.getBoundingClientRect().top + window.scrollY - 88;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
 
-  /* ── Parallax on scroll ── */
-  const { scrollY } = useScroll();
-  const meshY = useTransform(scrollY, [0, 800], [0, 180]);
-  const particlesY = useTransform(scrollY, [0, 800], [0, 60]);
-  const headlineY = useTransform(scrollY, [0, 600], [0, -50]);
-  const overlayOpacity = useTransform(scrollY, [0, 400], [0, 0.4]);
-  const scaleOnScroll = useTransform(scrollY, [0, 600], [1, 0.95]);
+function PremiumHeroPlaque() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+      className="relative mx-auto w-full max-w-[680px]"
+    >
+      <div className="absolute -inset-6 rounded-[2rem] bg-gold/10 blur-3xl" />
 
-  /* ── Mouse-responsive light ── */
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+      <div className="relative overflow-hidden rounded-[1.65rem] border border-gold/35 bg-[#080c18] p-3 shadow-[0_28px_90px_rgba(0,0,0,0.45)] ring-1 ring-white/10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,165,96,0.18),transparent_38%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent_35%)]" />
+        <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:42px_42px]" />
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      mouseX.set(e.clientX - rect.left);
-      mouseY.set(e.clientY - rect.top);
-    },
-    [mouseX, mouseY]
+        <div className="relative rounded-[1.25rem] border border-gold/45 bg-[linear-gradient(180deg,rgba(11,18,35,0.98),rgba(5,8,17,0.98))] p-5 sm:p-7">
+          <div className="pointer-events-none absolute inset-3 rounded-[1rem] border border-gold/20" />
+          <div className="pointer-events-none absolute left-5 right-5 top-5 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
+          <div className="pointer-events-none absolute bottom-5 left-5 right-5 h-px bg-gradient-to-r from-transparent via-gold/60 to-transparent" />
+
+          <div className="relative flex min-h-[360px] flex-col items-center justify-center text-center sm:min-h-[430px]">
+            <motion.div
+              initial={{ opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.45 }}
+              className="mb-3 font-cormorant text-[clamp(3.7rem,15vw,7.4rem)] font-bold italic leading-none text-gold drop-shadow-[0_0_20px_rgba(214,165,96,0.32)]"
+            >
+              MB.
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.55 }}
+              className="space-y-4"
+            >
+              <div className="flex items-center justify-center gap-3">
+                <span className="h-px w-16 bg-gradient-to-r from-transparent to-gold/70" />
+                <Sparkles className="h-4 w-4 text-gold" />
+                <span className="h-px w-16 bg-gradient-to-l from-transparent to-gold/70" />
+              </div>
+
+              <h2 className="font-serif-optical text-[clamp(2.1rem,9vw,4.75rem)] font-semibold leading-[0.92] tracking-[0.16em] text-white drop-shadow-[0_12px_28px_rgba(0,0,0,0.48)] sm:tracking-[0.2em]">
+                MARLENE BRITS
+              </h2>
+
+              <div className="mx-auto flex max-w-[520px] items-center justify-center gap-4">
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent via-gold/70 to-gold/40" />
+                <span className="h-3 w-3 rotate-45 border border-gold/80 bg-gold/30" />
+                <span className="h-px flex-1 bg-gradient-to-l from-transparent via-gold/70 to-gold/40" />
+              </div>
+
+              <p className="font-cormorant text-[clamp(1.25rem,5vw,2.2rem)] uppercase tracking-[0.42em] text-gold sm:tracking-[0.56em]">
+                Attorneys
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="relative -mx-5 -mb-5 border-t border-gold/40 bg-[linear-gradient(180deg,#d5a35f,#9a6a31)] px-5 py-5 text-center sm:-mx-7 sm:-mb-7 sm:px-7 sm:py-6">
+            <p className="font-serif-optical text-[clamp(0.88rem,3vw,1.55rem)] font-semibold uppercase leading-relaxed tracking-[0.18em] text-[#071020] drop-shadow-[0_1px_0_rgba(255,255,255,0.18)] sm:tracking-[0.22em]">
+              Attorneys, Notaries & Conveyancers
+            </p>
+            <div className="mx-auto my-2 flex max-w-sm items-center gap-3">
+              <span className="h-px flex-1 bg-[#071020]/45" />
+              <span className="font-serif-optical text-sm uppercase tracking-[0.3em] text-[#071020]">Ummeli</span>
+              <span className="h-px flex-1 bg-[#071020]/45" />
+            </div>
+            <p className="font-serif-optical text-[clamp(0.8rem,2.8vw,1.25rem)] font-semibold uppercase tracking-[0.18em] text-[#071020] sm:tracking-[0.22em]">
+              Administrators of Deceased Estates
+            </p>
+          </div>
+        </div>
+      </div>
+    </motion.div>
   );
+}
 
-  useEffect(() => {
-    if (isInView) {
-      controls.start('visible');
-    }
-  }, [isInView, controls]);
+export default function HeroSection() {
+  const prefersReducedMotion = useReducedMotion();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollIndicator(window.scrollY < 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+  const handleConsultationClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    scrollToSection('contact');
   }, []);
 
-  const scrollToAbout = useCallback(() => {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+  const handleAboutClick = useCallback(() => {
+    scrollToSection('about');
   }, []);
-
-  /* ── Split text into letters for cinematic reveal ── */
-  const line1 = 'Legal Excellence';
-  const line2 = 'Personalised Service';
-  const supportWords = 'A distinguished Pretoria East legal practice providing expert services in conveyancing, estate administration, family law, and notarial services.'.split(' ');
 
   return (
     <section
       id="home"
-      ref={sectionRef}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden hero-perspective"
-      style={{ backgroundColor: '#0a0a16' }}
-      onMouseMove={handleMouseMove}
+      className="relative isolate flex min-h-[100svh] scroll-mt-24 flex-col justify-center overflow-hidden bg-[#050814] px-4 pb-16 pt-28 text-white sm:px-6 sm:pt-32 lg:px-8"
     >
-      {/* ═══ Background layers with parallax ═══ */}
-      <motion.div style={{ y: meshY }} className="absolute inset-0">
-        <CinematicGradientMesh />
-      </motion.div>
-      <motion.div style={{ y: particlesY }} className="absolute inset-0">
-        <GoldParticles />
-      </motion.div>
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_12%,rgba(214,165,96,0.18),transparent_30%),radial-gradient(circle_at_84%_26%,rgba(214,165,96,0.11),transparent_26%),linear-gradient(135deg,#11172a_0%,#070a14_42%,#040611_100%)]" />
+      <div className="absolute inset-0 -z-10 opacity-[0.16] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:64px_64px]" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.62)_78%)]" />
+      <div className="absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-70" />
 
-      {/* Floating ambient orbs with more depth */}
-      <FloatingOrb x="-15%" y="15%" size={500} opacity={0.05} delay={0} />
-      <FloatingOrb x="75%" y="55%" size={450} opacity={0.04} delay={4} />
-      <FloatingOrb x="25%" y="75%" size={300} opacity={0.03} delay={8} />
-      <FloatingOrb x="60%" y="10%" size={350} opacity={0.025} delay={6} />
+      {!prefersReducedMotion && (
+        <>
+          <motion.div
+            className="absolute left-[8%] top-[18%] -z-10 h-40 w-40 rounded-full bg-gold/10 blur-3xl"
+            animate={{ y: [0, 18, 0], opacity: [0.35, 0.55, 0.35] }}
+            transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.div
+            className="absolute bottom-[14%] right-[10%] -z-10 h-56 w-56 rounded-full bg-gold/10 blur-3xl"
+            animate={{ y: [0, -22, 0], opacity: [0.25, 0.48, 0.25] }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </>
+      )}
 
-      {/* Mouse-responsive radial light */}
-      <MouseLight mouseX={mouseX} mouseY={mouseY} />
-
-      {/* Film grain texture overlay */}
-      <div className="film-grain absolute inset-0 z-[2] pointer-events-none" />
-
-      {/* Cinematic vignette — enhanced */}
-      <div className="absolute inset-0 z-[3] pointer-events-none" style={{ boxShadow: 'inset 0 0 200px rgba(0,0,0,0.8), inset 0 -100px 100px rgba(0,0,0,0.4)' }} />
-
-      {/* Subtle grid overlay with dot intersections */}
-      <div
-        className="absolute inset-0 pointer-events-none z-[1] pattern-grid-dots"
-      />
-
-      {/* Scroll-based darkening overlay */}
-      <motion.div
-        className="absolute inset-0 bg-[#0a0a16] pointer-events-none z-[3]"
-        style={{ opacity: overlayOpacity }}
-      />
-
-      {/* Top gold accent line with pulse */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[var(--gold)] to-transparent opacity-60 z-10 gold-accent-pulse" />
-
-      {/* Animated gold line borders framing content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="relative">
-          <GoldLineBorder side="left" />
-          <GoldLineBorder side="right" />
-        </div>
-      </div>
-
-      {/* ═══ Main content with headline parallax + 3D ═══ */}
-      <motion.div
-        style={{ y: headlineY, scale: scaleOnScroll }}
-        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-16"
-      >
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-16">
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-          className="text-center max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mx-auto max-w-2xl text-center lg:mx-0 lg:text-left"
         >
-          {/* Laurel wreath decorative element */}
-          <motion.div
-            variants={itemVariants}
-            className="mb-6"
-          >
-            <TiltCard className="inline-block">
-              <LaurelWreath size={100} animate className="mx-auto opacity-50" />
-            </TiltCard>
-          </motion.div>
+          <div className="mb-6 inline-flex items-center gap-3 rounded-full border border-gold/25 bg-white/[0.04] px-4 py-2 text-[10px] font-medium uppercase tracking-[0.24em] text-gold/85 shadow-[0_10px_34px_rgba(0,0,0,0.25)] backdrop-blur-md">
+            <Landmark className="h-3.5 w-3.5" />
+            Pretoria East Legal Practice
+          </div>
 
-          {/* Small firm name intro with refined typography */}
-          <motion.div variants={itemVariants} className="mb-5">
-            <span className="inline-flex items-center gap-4 text-gold/60 text-xs sm:text-sm tracking-ultra uppercase font-extralight font-cormorant">
-              <span className="w-10 h-[1px] bg-gradient-to-r from-transparent to-gold/40" />
-              {company.name}
-              <span className="w-10 h-[1px] bg-gradient-to-l from-transparent to-gold/40" />
+          <h1 className="font-serif-optical text-[clamp(3rem,12vw,7.3rem)] font-semibold leading-[0.88] tracking-[-0.045em] text-white">
+            Legal care,
+            <span className="mt-2 block bg-gradient-to-r from-[#f4d392] via-[#c8924f] to-[#f6deb0] bg-clip-text text-transparent">
+              personally delivered.
             </span>
-          </motion.div>
+          </h1>
 
-          {/* Gold line divider */}
-          <motion.div
-            variants={itemVariants}
-            className="flex justify-center mb-8"
-          >
-            <div className="w-32 h-[1px] bg-gradient-to-r from-transparent via-gold to-transparent gold-accent-pulse" />
-          </motion.div>
+          <p className="mt-7 max-w-xl text-base leading-8 text-white/68 sm:text-lg lg:text-left">
+            A premium digital home for <span className="font-semibold text-white">Marlene Brits Attorneys</span> — built around trust, clarity, and dedicated legal representation in conveyancing, deceased estates, family law, and notarial services.
+          </p>
 
-          {/* ═══ Main headline — Cinematic 3D split text reveal ═══ */}
-          <div className="overflow-hidden mb-3 hero-text-mask" style={{ perspective: '600px' }}>
-            <h1 className="font-serif-optical text-display-xl font-bold text-white" style={{ fontFamily: 'var(--font-playfair)' }}>
-              <span className="inline-block hero-text-layer">
-                {line1.split('').map((char, i) => (
-                  <motion.span
-                    key={`l1-${i}`}
-                    custom={i}
-                    variants={letterVariants}
-                    initial="hidden"
-                    animate={controls}
-                    className="inline-block preserve-3d"
-                    style={{ whiteSpace: char === ' ' ? 'pre' : undefined }}
-                  >
-                    {char === ' ' ? '\u00A0' : char}
-                  </motion.span>
-                ))}
-              </span>
-            </h1>
-          </div>
-
-          <div className="overflow-hidden hero-text-mask" style={{ perspective: '600px' }}>
-            <h1 className="font-serif-optical text-display-xl font-bold hero-text-layer" style={{ fontFamily: 'var(--font-playfair)' }}>
-              <span className="animated-text-gradient inline-block">
-                {line2.split('').map((char, i) => (
-                  <motion.span
-                    key={`l2-${i}`}
-                    custom={i + line1.length}
-                    variants={letterVariants}
-                    initial="hidden"
-                    animate={controls}
-                    className="inline-block preserve-3d"
-                    style={{ whiteSpace: char === ' ' ? 'pre' : undefined }}
-                  >
-                    {char === ' ' ? '\u00A0' : char}
-                  </motion.span>
-                ))}
-              </span>
-            </h1>
-          </div>
-
-          {/* Tagline with Cormorant Garamond italic — refined */}
-          <motion.p
-            variants={itemVariants}
-            className="mt-8 sm:mt-10 font-cormorant text-subheadline italic text-gold tracking-wide"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
-          >
-            &ldquo;{company.tagline}&rdquo;
-          </motion.p>
-
-          {/* Gold divider with shield */}
-          <motion.div
-            variants={itemVariants}
-            className="flex justify-center mt-10 mb-8"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-20 h-[1px] bg-gradient-to-r from-transparent to-gold/40" />
-              <Shield className="w-4 h-4 text-gold/60" />
-              <Sparkles className="w-3 h-3 text-gold/40" />
-              <Shield className="w-4 h-4 text-gold/60" />
-              <div className="w-20 h-[1px] bg-gradient-to-l from-transparent to-gold/40" />
-            </div>
-          </motion.div>
-
-          {/* Supporting copy — word-by-word reveal with blur */}
-          <motion.p
-            variants={containerVariants}
-            initial="hidden"
-            animate={controls}
-            className="font-cormorant text-body-lg text-white/50 max-w-2xl mx-auto leading-relaxed tracking-wide"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
-          >
-            {supportWords.map((word, i) => (
-              <motion.span
-                key={`word-${i}`}
-                custom={i}
-                variants={wordVariants}
-                initial="hidden"
-                animate={controls}
-                className="inline-block mr-[0.3em]"
+          <div className="mt-8 flex flex-wrap justify-center gap-2 lg:justify-start">
+            {trustBadges.map((badge) => (
+              <span
+                key={badge}
+                className="rounded-full border border-gold/20 bg-white/[0.035] px-3.5 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-white/76 backdrop-blur"
               >
-                {word}
-              </motion.span>
+                {badge}
+              </span>
             ))}
-          </motion.p>
+          </div>
 
-          {/* Enhanced CTAs with 3D effects */}
-          <motion.div
-            variants={itemVariants}
-            className="mt-12 flex flex-col sm:flex-row gap-5 justify-center items-center"
-          >
-            <ShimmerButton href="#contact" icon={Calendar}>
-              Book a Consultation
-            </ShimmerButton>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
+            <motion.a
+              href="#contact"
+              onClick={handleConsultationClick}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="group inline-flex items-center justify-center gap-3 rounded-full bg-gold px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#071020] shadow-[0_18px_42px_rgba(214,165,96,0.28)]"
+            >
+              <Calendar className="h-4 w-4" />
+              Book Consultation
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </motion.a>
+
             <motion.a
               href={`tel:${company.contact.phone.replace(/\s/g, '')}`}
-              className="group relative inline-flex items-center gap-2 border border-gold/40 hover:border-gold text-gold hover:text-gold-light px-8 py-4 rounded-sm transition-all duration-300 hover:bg-gold/5 text-sm sm:text-base"
-              whileHover={{
-                scale: 1.03,
-                boxShadow: '0 0 20px rgba(184,137,86,0.1)',
-              }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-white/15 bg-white/[0.045] px-6 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-md"
             >
-              <span className="relative">
-                <Phone className="w-4 h-4 transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" />
-                <PhoneCall className="w-4 h-4 absolute inset-0 opacity-0 group-hover:opacity-100 animate-ping transition-opacity duration-300" />
-              </span>
-              <span className="font-cormorant tracking-wide text-base">Call {company.contact.phone}</span>
+              <Phone className="h-4 w-4 text-gold" />
+              Call the Firm
             </motion.a>
-          </motion.div>
-        </motion.div>
-
-        {/* ═══ Stats Bar with 3D cards ═══ */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={controls}
-          className="mt-24 sm:mt-28 max-w-4xl mx-auto"
-        >
-          {/* Damask ornament divider */}
-          <motion.div variants={itemVariants}>
-            <DamaskOrnament className="mx-auto mb-10" width={300} />
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 perspective-1000">
-            {company.stats.map((stat, i) => {
-              const Icon = statsIcons[i] || Star;
-              return (
-                <StatCard key={stat.label} stat={stat} icon={Icon} index={i} />
-              );
-            })}
           </div>
 
-          {/* Divider below stats */}
-          <motion.div variants={itemVariants}>
-            <DamaskOrnament className="mx-auto mt-10" width={300} />
-          </motion.div>
-        </motion.div>
-
-        {/* ═══ Trust Strip ═══ */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 2.5, ease: 'easeOut' }}
-          className="mt-12 max-w-3xl mx-auto overflow-hidden"
-        >
-          <p className="text-center text-white/25 text-[10px] sm:text-xs tracking-ultra uppercase mb-5 font-cormorant">
-            Trusted by
-          </p>
-          <div className="relative">
-            <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-5">
-              {trustBadges.map((badge) => (
-                <span
-                  key={badge}
-                  className="px-5 py-2.5 rounded-sm border border-white/[0.06] bg-white/[0.02] text-white/30 text-[10px] sm:text-xs tracking-luxury uppercase font-cormorant hover:border-gold/20 hover:text-gold/50 hover:bg-gold/[0.03] transition-all duration-500 glass-card-3d"
-                >
-                  {badge}
-                </span>
-              ))}
-            </div>
+          <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            {quickStats.map((stat) => (
+              <div
+                key={stat.label}
+                className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 text-center backdrop-blur-sm lg:text-left"
+              >
+                <div className="font-serif-optical text-xl font-semibold text-white">{stat.value}</div>
+                <div className="mt-1 text-[11px] uppercase tracking-[0.18em] text-white/45">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </motion.div>
-      </motion.div>
 
-      {/* ═══ Scroll indicator with enhanced animation ═══ */}
-      <AnimatePresence>
-        {showScrollIndicator && (
-          <motion.button
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.5 }}
-            onClick={scrollToAbout}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-gold/50 hover:text-gold transition-colors cursor-pointer z-10 group"
-            aria-label="Scroll to about section"
+        <PremiumHeroPlaque />
+      </div>
+
+      <div className="mx-auto mt-12 grid w-full max-w-5xl gap-3 sm:grid-cols-3">
+        {practiceHighlights.map(({ icon: Icon, label }) => (
+          <div
+            key={label}
+            className="flex items-center gap-3 rounded-2xl border border-gold/15 bg-white/[0.035] px-4 py-3 text-sm text-white/72 backdrop-blur-sm"
           >
-            <span className="text-[10px] tracking-ultra uppercase font-cormorant group-hover:tracking-[0.5em] transition-all duration-500">
-              Discover
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gold/12 text-gold">
+              <Icon className="h-4 w-4" />
             </span>
-            <motion.div
-              className="w-6 h-10 rounded-full border border-gold/30 group-hover:border-gold/50 transition-colors duration-300 flex items-start justify-center pt-2"
-              animate={{ borderColor: ['rgba(184,137,86,0.2)', 'rgba(184,137,86,0.4)', 'rgba(184,137,86,0.2)'] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <motion.div
-                className="w-1 h-2 rounded-full bg-gold/60"
-                animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </motion.div>
-          </motion.button>
-        )}
-      </AnimatePresence>
+            <span className="font-medium">{label}</span>
+          </div>
+        ))}
+      </div>
 
-      {/* Bottom vignette */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0a0a16] to-transparent pointer-events-none z-[4]" />
+      <button
+        onClick={handleAboutClick}
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-white/45 transition-colors hover:text-gold md:flex"
+        aria-label="Scroll to about section"
+      >
+        <span>Explore</span>
+        <ChevronDown className="h-5 w-5 animate-bounce" />
+      </button>
+
+      <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-[#050814] to-transparent" />
+      <ShieldCheck className="pointer-events-none absolute right-6 top-28 h-28 w-28 text-gold/[0.035] sm:right-12 sm:h-40 sm:w-40" />
     </section>
   );
 }
