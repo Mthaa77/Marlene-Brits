@@ -1,0 +1,133 @@
+/* Premium typography and FAQ relocation refinements. */
+:root {
+  --type-display: var(--font-playfair), Georgia, serif;
+  --type-editorial: var(--font-cormorant), Georgia, serif;
+  --type-body: var(--font-geist-sans), Inter, system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--type-body);
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-rendering: geometricPrecision;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-serif,
+.font-serif-optical {
+  font-family: var(--type-display) !important;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1;
+  letter-spacing: -0.045em;
+}
+
+h1 {
+  letter-spacing: -0.065em;
+}
+
+h2 {
+  letter-spacing: -0.055em;
+}
+
+h3 {
+  letter-spacing: -0.035em;
+}
+
+p,
+li,
+button,
+a,
+input,
+textarea,
+select {
+  font-family: var(--type-body);
+}
+
+.font-cormorant,
+.font-serif-body,
+blockquote,
+section span.tracking-luxury,
+section span.tracking-ultra {
+  font-family: var(--type-editorial) !important;
+}
+
+section p {
+  line-height: 1.78;
+}
+
+main > section:not(#home) h2 {
+  text-wrap: balance;
+}
+
+main > section:not(#home) h3,
+main > section:not(#home) h4 {
+  text-wrap: balance;
+}
+
+main > section:not(#home) p {
+  text-wrap: pretty;
+}
+
+/* Hide original About FAQ because the FAQ has been moved to the bottom section. */
+#about .relative.z-10.max-w-7xl > .mt-20.sm\:mt-28:nth-of-type(4) {
+  display: none !important;
+}
+
+/* More premium legal editorial rhythm. */
+#about p,
+#services p,
+#why-choose-us p,
+#insights p,
+#contact p,
+#faq p {
+  letter-spacing: -0.012em;
+}
+
+#process h2,
+#faq h2 {
+  text-shadow:
+    0 28px 60px rgba(0,0,0,0.46),
+    0 0 40px rgba(214,165,96,0.08);
+}
+
+#process button,
+#faq button,
+#contact button,
+#home a,
+.fixed a {
+  letter-spacing: 0.14em;
+}
+
+#process .font-serif-optical,
+#faq .font-serif-optical {
+  letter-spacing: -0.052em;
+}
+
+#process [class*='tracking-'],
+#faq [class*='tracking-'] {
+  letter-spacing: 0.22em;
+}
+
+@media (max-width: 767px) {
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-serif,
+  .font-serif-optical {
+    letter-spacing: -0.04em;
+  }
+
+  #process button,
+  #faq button,
+  #contact button,
+  #home a,
+  .fixed a {
+    letter-spacing: 0.11em;
+  }
+
+  section p {
+    line-height: 1.72;
+  }
+}
