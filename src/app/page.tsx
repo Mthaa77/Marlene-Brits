@@ -30,7 +30,6 @@ export default function Home() {
 
         <main className="min-h-screen flex flex-col">
           <HeroSection />
-          <CompanyVisualsSection />
           <GoldWaveDivider />
           <AboutSection />
           <ProcessSection />
@@ -40,6 +39,7 @@ export default function Home() {
           <GoldWaveDivider />
           <CaseResultsSection />
           <WhyChooseUsSection />
+          <CompanyVisualsSection />
           <TestimonialsSection />
           <InsightsSection />
           <ContactSection />
