@@ -55,7 +55,7 @@ export default function FloatingCTA() {
                 href={`https://wa.me/${internationalPhone}?text=${whatsappMessage}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-2xl border border-emerald-300/24 bg-[linear-gradient(145deg,rgba(16,185,129,0.95),rgba(6,95,70,0.92))] text-white shadow-[0_18px_50px_rgba(16,185,129,0.24)] sm:h-14 sm:w-14"
+                className="group relative flex h-[3.25rem] w-[3.25rem] items-center justify-center overflow-hidden rounded-2xl border border-emerald-300/24 bg-[linear-gradient(145deg,rgba(16,185,129,0.95),rgba(6,95,70,0.92))] text-white shadow-[0_18px_50px_rgba(16,185,129,0.24)] sm:h-14 sm:w-14"
                 whileHover={{ y: -3, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="WhatsApp Marlene Brits Attorneys"
@@ -65,8 +65,8 @@ export default function FloatingCTA() {
               </motion.a>
 
               <motion.a
-                href={`tel:${cleanPhone}`}
-                className="group relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-2xl border border-gold/28 bg-[linear-gradient(145deg,rgba(214,165,96,0.98),rgba(143,94,45,0.96))] text-[#071020] shadow-[0_18px_50px_rgba(214,165,96,0.25)] sm:h-14 sm:w-14"
+                href={`tel:+${internationalPhone}`}
+                className="group relative flex h-[3.25rem] w-[3.25rem] items-center justify-center overflow-hidden rounded-2xl border border-gold/28 bg-[linear-gradient(145deg,rgba(214,165,96,0.98),rgba(143,94,45,0.96))] text-[#071020] shadow-[0_18px_50px_rgba(214,165,96,0.25)] sm:h-14 sm:w-14"
                 whileHover={{ y: -3, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Call Marlene Brits Attorneys"
