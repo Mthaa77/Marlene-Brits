@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Dialog,
   DialogContent,
@@ -15,18 +15,21 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from '@/components/ui/accordion';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
+  ArrowRight,
+  Banknote,
   Building2,
-  Shield,
+  CalendarCheck,
+  CheckCircle2,
+  FileSignature,
   FileText,
   Heart,
-  FileSignature,
-  Stamp,
+  MessageCircle,
   Scale,
-  Banknote,
-  ArrowRight,
-  CheckCircle2,
+  Shield,
+  Sparkles,
+  Stamp,
+  X,
   type LucideIcon,
 } from 'lucide-react';
 import { practiceAreas, type PracticeArea } from '@/data/services';
@@ -42,38 +45,49 @@ const iconMap: Record<string, LucideIcon> = {
   Banknote,
 };
 
-/* ─────────────── animated wrapper ─────────────── */
-function FadeIn({
-  children,
-  delay = 0,
-}: {
-  children: React.ReactNode;
-  delay?: number;
-}) {
+const tabItems = [
+  { value: 'overview', label: 'Overview' },
+  { value: 'help', label: 'How We Help' },
+  { value: 'process', label: 'Process' },
+  { value: 'faqs', label: 'FAQs' },
+];
+
+function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      initial={{ opacity: 0, y: 18, filter: 'blur(8px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.48, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
   );
 }
 
-/* ─────────────── main modal ─────────────── */
+function GoldBadge({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-gold/24 bg-gold/10 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/86">
+      <Sparkles className="h-3.5 w-3.5" />
+      {children}
+    </span>
+  );
+}
+
+function FeatureCard({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.055] p-4 shadow-[0_18px_55px_rgba(0,0,0,0.16)]">
+      {children}
+    </div>
+  );
+}
+
 interface ServiceDetailModalProps {
   area: PracticeArea | null;
   open: boolean;
   onClose: () => void;
 }
 
-export default function ServiceDetailModal({
-  area,
-  open,
-  onClose,
-}: ServiceDetailModalProps) {
-  /* Derive related practice areas */
+export default function ServiceDetailModal({ area, open, onClose }: ServiceDetailModalProps) {
   const relatedAreas = useMemo(() => {
     if (!area) return [];
     return area.relatedServices
@@ -86,305 +100,263 @@ export default function ServiceDetailModal({
   const IconComponent = iconMap[area.icon] || FileText;
 
   return (
-    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+    <Dialog open={open} onOpenChange={(value) => !value && onClose()}>
       <DialogContent
-        className="
-          z-[100]
-          w-full max-w-3xl
-          rounded-2xl
-          border border-white/[0.08]
-          bg-[#1a1a2e]/90
-          backdrop-blur-2xl
-          p-0 overflow-hidden
-          text-white
-          shadow-2xl
-          max-h-[90vh]
-          flex flex-col
-        "
         showCloseButton={false}
+        className="z-[110] max-h-[92svh] w-full max-w-5xl overflow-hidden rounded-[2rem] border border-gold/24 bg-[#050814]/95 p-0 text-white shadow-[0_48px_160px_rgba(0,0,0,0.55)] backdrop-blur-2xl sm:max-w-5xl"
       >
-        {/* ─── Close button ─── */}
         <button
+          type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/60 hover:text-white hover:border-[var(--gold)]/40 transition-colors duration-300"
-          aria-label="Close"
+          className="absolute right-4 top-4 z-30 flex h-11 w-11 items-center justify-center rounded-2xl border border-gold/24 bg-[#050814]/76 text-white/70 shadow-[0_18px_45px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-all duration-300 hover:border-gold/50 hover:bg-gold hover:text-[#071020]"
+          aria-label="Close service details"
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-            <path d="M1 1L13 13M13 1L1 13" />
-          </svg>
+          <X className="h-5 w-5" />
         </button>
 
-        {/* ─── Header ─── */}
-        <div className="relative px-6 md:px-8 pt-7 pb-5 border-b border-white/[0.06]">
-          {/* Gold accent line */}
-          <div className="absolute top-0 left-0 right-0 h-1 gold-gradient" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_14%_10%,rgba(214,165,96,0.18),transparent_24rem),radial-gradient(circle_at_86%_18%,rgba(255,255,255,0.08),transparent_22rem),linear-gradient(135deg,rgba(5,8,20,0.98),rgba(13,20,37,0.96))]" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.13] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:54px_54px]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent" />
 
-          {/* Decorative corner ornaments */}
-          <svg className="absolute top-2 left-4 opacity-20" width="24" height="24" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-            <path d="M0 60 L0 8 Q0 0 8 0 L60 0" stroke="var(--gold)" strokeWidth="1" fill="none" />
-          </svg>
-          <svg className="absolute top-2 right-4 opacity-20 rotate-90" width="24" height="24" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-            <path d="M0 60 L0 8 Q0 0 8 0 L60 0" stroke="var(--gold)" strokeWidth="1" fill="none" />
-          </svg>
+        <div className="service-modal-scroll relative z-10 flex max-h-[92svh] flex-col overflow-y-auto lg:grid lg:grid-cols-[0.88fr_1.12fr] lg:overflow-hidden">
+          <div className="relative min-h-[320px] border-b border-gold/18 p-6 sm:p-8 lg:min-h-full lg:border-b-0 lg:border-r lg:p-9">
+            <div className="absolute -left-20 top-16 h-64 w-64 rounded-full bg-gold/14 blur-3xl" />
+            <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-white/6 blur-3xl" />
 
-          <AnimatePresence>
-            {open && (
-              <>
-                <FadeIn delay={0.05}>
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 mb-4">
-                    <IconComponent className="w-6 h-6 text-gold" />
+            <div className="relative flex h-full flex-col justify-between gap-8">
+              <div>
+                <FadeIn delay={0.04}>
+                  <GoldBadge>Practice Area</GoldBadge>
+                </FadeIn>
+
+                <FadeIn delay={0.08}>
+                  <div className="mt-7 flex h-20 w-20 items-center justify-center rounded-[1.5rem] border border-gold/34 bg-[linear-gradient(135deg,#f4d79b,#c58a44)] text-[#071020] shadow-[0_24px_70px_rgba(214,165,96,0.28)]">
+                    <IconComponent className="h-9 w-9" />
                   </div>
                 </FadeIn>
-                <FadeIn delay={0.1}>
-                  <DialogTitle className="font-serif text-2xl md:text-3xl text-white tracking-tight pr-8">
-                    {area.title}
+
+                <FadeIn delay={0.12}>
+                  <DialogTitle className="mt-7 max-w-lg font-serif-optical text-[clamp(2.35rem,6vw,4.55rem)] font-semibold leading-[0.92] tracking-[-0.058em] text-white">
+                    {area.shortTitle}
                   </DialogTitle>
                 </FadeIn>
-                <FadeIn delay={0.15}>
+
+                <FadeIn delay={0.16}>
                   <DialogDescription asChild>
-                    <p className="text-gold italic text-sm md:text-base mt-1.5">
+                    <p className="mt-4 max-w-md font-cormorant text-2xl italic leading-snug text-gold/92">
                       {area.tagline}
                     </p>
                   </DialogDescription>
                 </FadeIn>
-              </>
-            )}
-          </AnimatePresence>
-        </div>
+              </div>
 
-        {/* ─── Tabbed Content ─── */}
-        <ScrollArea className="flex-1 overflow-y-auto">
-          <div className="px-6 md:px-8 py-5">
-            <Tabs defaultValue="overview" className="w-full">
-              {/* Tab list – dark premium style */}
-              <TabsList className="mb-6 h-10 w-full bg-white/[0.04] rounded-lg border border-white/[0.06] p-1">
-                {['Overview', 'How We Help', 'Process', 'FAQs'].map((tab) => (
-                  <TabsTrigger
-                    key={tab}
-                    value={tab.toLowerCase().replace(/\s+/g, '-')}
-                    className="text-xs md:text-sm font-medium text-white/50 data-[state=active]:text-gold data-[state=active]:bg-[var(--gold)]/10 data-[state=active]:border-[var(--gold)]/20 data-[state=active]:shadow-none rounded-md border border-transparent transition-all duration-300"
-                  >
-                    {tab}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-
-              {/* ── Overview ── */}
-              <TabsContent value="overview">
-                <AnimatePresence>
-                  {open && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.2 }}
-                      className="space-y-5"
-                    >
-                      <p className="text-white/70 text-sm md:text-base leading-relaxed">
-                        {area.description}
-                      </p>
-
-                      {/* Common situations */}
+              <FadeIn delay={0.2}>
+                <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+                  <FeatureCard>
+                    <div className="flex items-center gap-3">
+                      <CalendarCheck className="h-5 w-5 text-gold" />
                       <div>
-                        <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-3">
-                          Common Situations
-                        </h4>
-                        <ul className="space-y-2.5">
-                          {area.commonSituations.map((s, i) => (
-                            <li
-                              key={i}
-                              className="flex items-start gap-3 text-sm text-white/60"
-                            >
-                              <CheckCircle2 className="w-4 h-4 text-gold/60 mt-0.5 shrink-0" />
-                              <span>{s}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Approach</p>
+                        <p className="text-sm font-medium text-white/78">Clear next steps</p>
                       </div>
-
-                      {/* Features as tags */}
+                    </div>
+                  </FeatureCard>
+                  <FeatureCard>
+                    <div className="flex items-center gap-3">
+                      <Shield className="h-5 w-5 text-gold" />
                       <div>
-                        <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-3">
-                          Key Services
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                          {area.features.map((f, i) => (
-                            <span
-                              key={i}
-                              className="inline-flex items-center text-xs px-3 py-1.5 rounded-full bg-white/[0.04] text-white/60 border border-white/[0.06]"
-                            >
-                              {f}
-                            </span>
-                          ))}
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Support</p>
+                        <p className="text-sm font-medium text-white/78">Risk-aware guidance</p>
+                      </div>
+                    </div>
+                  </FeatureCard>
+                  <FeatureCard>
+                    <div className="flex items-center gap-3">
+                      <MessageCircle className="h-5 w-5 text-gold" />
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40">Updates</p>
+                        <p className="text-sm font-medium text-white/78">Transparent communication</p>
+                      </div>
+                    </div>
+                  </FeatureCard>
+                </div>
+              </FadeIn>
+            </div>
+          </div>
+
+          <div className="relative flex min-h-0 flex-col lg:max-h-[92svh]">
+            <div className="border-b border-white/10 px-5 py-4 sm:px-7">
+              <Tabs defaultValue="overview" className="w-full">
+                <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-[1.3rem] border border-white/10 bg-white/[0.055] p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] sm:grid-cols-4">
+                  {tabItems.map((tab) => (
+                    <TabsTrigger
+                      key={tab.value}
+                      value={tab.value}
+                      className="rounded-[1rem] px-3 py-3 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/52 transition-all duration-300 data-[state=active]:bg-gold data-[state=active]:text-[#071020] data-[state=active]:shadow-[0_14px_38px_rgba(214,165,96,0.22)]"
+                    >
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <div className="service-modal-scroll max-h-[calc(92svh-11rem)] overflow-y-auto px-1 py-5 sm:max-h-[calc(92svh-10rem)] sm:px-0 lg:max-h-[calc(92svh-7rem)]">
+                  <TabsContent value="overview" className="mt-0 px-4 sm:px-7">
+                    <FadeIn>
+                      <div className="space-y-7">
+                        <p className="max-w-3xl text-base leading-8 text-white/70">
+                          {area.description}
+                        </p>
+
+                        <div className="grid gap-4 md:grid-cols-2">
+                          <div className="rounded-[1.5rem] border border-gold/18 bg-gold/10 p-5">
+                            <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/86">
+                              Common Situations
+                            </h4>
+                            <ul className="space-y-3">
+                              {area.commonSituations.slice(0, 5).map((situation) => (
+                                <li key={situation} className="flex items-start gap-3 text-sm leading-6 text-white/68">
+                                  <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-gold" />
+                                  <span>{situation}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.055] p-5">
+                            <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/86">
+                              Key Services
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {area.features.map((feature) => (
+                                <span key={feature} className="rounded-full border border-gold/16 bg-gold/10 px-3 py-2 text-xs text-white/70">
+                                  {feature}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </TabsContent>
+                    </FadeIn>
+                  </TabsContent>
 
-              {/* ── How We Help ── */}
-              <TabsContent value="how-we-help">
-                <AnimatePresence>
-                  {open && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.2 }}
-                      className="space-y-4"
-                    >
-                      <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-2">
-                        How We Help
-                      </h4>
-                      <ol className="space-y-4">
-                        {area.howWeHelp.map((help, i) => (
-                          <motion.li
-                            key={i}
-                            initial={{ opacity: 0, x: -16 }}
+                  <TabsContent value="help" className="mt-0 px-4 sm:px-7">
+                    <FadeIn>
+                      <div className="space-y-4">
+                        {area.howWeHelp.map((help, index) => (
+                          <motion.div
+                            key={help}
+                            initial={{ opacity: 0, x: 18 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.35, delay: 0.15 + i * 0.08 }}
-                            className="flex items-start gap-4"
+                            transition={{ duration: 0.34, delay: index * 0.055, ease: [0.22, 1, 0.36, 1] }}
+                            className="flex gap-4 rounded-[1.35rem] border border-white/10 bg-white/[0.055] p-4"
                           >
-                            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-gold text-sm font-semibold">
-                              {i + 1}
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gold text-sm font-bold text-[#071020] shadow-[0_14px_36px_rgba(214,165,96,0.22)]">
+                              {index + 1}
                             </span>
-                            <p className="text-white/70 text-sm md:text-base leading-relaxed pt-1">
-                              {help}
-                            </p>
-                          </motion.li>
+                            <p className="pt-1 text-sm leading-7 text-white/70 sm:text-base">{help}</p>
+                          </motion.div>
                         ))}
-                      </ol>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </TabsContent>
+                      </div>
+                    </FadeIn>
+                  </TabsContent>
 
-              {/* ── Process ── */}
-              <TabsContent value="process">
-                <AnimatePresence>
-                  {open && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.2 }}
-                    >
-                      <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-5">
-                        Our Process
-                      </h4>
-                      <div className="relative">
-                        {/* Vertical timeline line */}
-                        <div className="absolute left-[15px] top-2 bottom-2 w-px bg-gradient-to-b from-[var(--gold)]/40 via-[var(--gold)]/20 to-transparent" />
-
+                  <TabsContent value="process" className="mt-0 px-4 sm:px-7">
+                    <FadeIn>
+                      <div className="relative rounded-[1.75rem] border border-gold/18 bg-white/[0.045] p-5">
+                        <div className="absolute bottom-8 left-[2.45rem] top-8 w-px bg-gradient-to-b from-gold/70 via-gold/28 to-transparent" />
                         <div className="space-y-6">
-                          {area.process.map((step, i) => (
+                          {area.process.map((step, index) => (
                             <motion.div
-                              key={i}
-                              initial={{ opacity: 0, y: 12 }}
+                              key={step.step}
+                              initial={{ opacity: 0, y: 16 }}
                               animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.35, delay: 0.15 + i * 0.1 }}
-                              className="flex items-start gap-5 relative"
+                              transition={{ duration: 0.36, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+                              className="relative flex gap-5"
                             >
-                              {/* Timeline node */}
-                              <div className="relative flex-shrink-0">
-                                <div className="w-[32px] h-[32px] rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/30 flex items-center justify-center z-10 relative">
-                                  <span className="text-gold text-xs font-bold">
-                                    {i + 1}
-                                  </span>
-                                </div>
-                              </div>
-                              {/* Content */}
-                              <div className="pt-0.5 pb-2">
-                                <h5 className="text-white font-medium text-sm md:text-base">
+                              <span className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-gold/28 bg-[#050814] text-sm font-bold text-gold shadow-[0_16px_40px_rgba(0,0,0,0.24)]">
+                                {String(index + 1).padStart(2, '0')}
+                              </span>
+                              <div className="pb-2 pt-0.5">
+                                <h4 className="font-serif-optical text-2xl font-semibold leading-tight text-white">
                                   {step.step}
-                                </h5>
-                                <p className="text-white/50 text-xs md:text-sm mt-1 leading-relaxed">
-                                  {step.description}
-                                </p>
+                                </h4>
+                                <p className="mt-2 text-sm leading-7 text-white/58">{step.description}</p>
                               </div>
                             </motion.div>
                           ))}
                         </div>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </TabsContent>
+                    </FadeIn>
+                  </TabsContent>
 
-              {/* ── FAQs ── */}
-              <TabsContent value="faqs">
-                <AnimatePresence>
-                  {open && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.4, delay: 0.2 }}
-                    >
-                      <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-4">
-                        Frequently Asked Questions
-                      </h4>
-                      <Accordion type="single" collapsible className="space-y-2">
-                        {area.faqs.map((faq, i) => (
+                  <TabsContent value="faqs" className="mt-0 px-4 sm:px-7">
+                    <FadeIn>
+                      <Accordion type="single" collapsible className="space-y-3">
+                        {area.faqs.map((faq, index) => (
                           <AccordionItem
-                            key={i}
-                            value={`faq-${i}`}
-                            className="border border-white/[0.06] rounded-lg px-4 data-[state=open]:border-[var(--gold)]/20 transition-colors duration-300 bg-white/[0.02]"
+                            key={faq.question}
+                            value={`service-faq-${index}`}
+                            className="overflow-hidden rounded-[1.25rem] border border-white/10 bg-white/[0.055] px-5 transition-all duration-300 data-[state=open]:border-gold/34 data-[state=open]:bg-gold/10"
                           >
-                            <AccordionTrigger className="text-sm md:text-base text-white/80 hover:text-gold transition-colors duration-200 py-4 text-left">
+                            <AccordionTrigger className="py-5 text-left font-serif-optical text-lg font-semibold leading-snug text-white hover:text-gold hover:no-underline [&>svg]:text-gold/70">
                               {faq.question}
                             </AccordionTrigger>
-                            <AccordionContent className="text-white/50 text-sm leading-relaxed pb-4">
+                            <AccordionContent className="pb-5 text-sm leading-7 text-white/62">
                               {faq.answer}
                             </AccordionContent>
                           </AccordionItem>
                         ))}
                       </Accordion>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </TabsContent>
-            </Tabs>
+                    </FadeIn>
+                  </TabsContent>
 
-            {/* ─── Related Services ─── */}
-            {relatedAreas.length > 0 && (
-              <div className="mt-8 pt-6 border-t border-white/[0.06]">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-gold mb-4">
-                  Related Services
-                </h4>
-                <div className="flex flex-wrap gap-3">
-                  {relatedAreas.map((related) => {
-                    const RelIcon = iconMap[related.icon] || FileText;
-                    return (
-                      <div
-                        key={related.id}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/[0.06] bg-white/[0.02] text-white/60 hover:text-gold hover:border-[var(--gold)]/20 transition-colors duration-300 cursor-pointer text-sm"
-                        onClick={() => {
-                          /* Parent will handle navigation via callback – for now just visual */
-                        }}
-                      >
-                        <RelIcon className="w-4 h-4" />
-                        <span>{related.shortTitle}</span>
+                  {relatedAreas.length > 0 && (
+                    <div className="mx-4 mt-8 border-t border-white/10 pt-6 sm:mx-7">
+                      <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/86">
+                        Related Services
+                      </h4>
+                      <div className="flex flex-wrap gap-2.5">
+                        {relatedAreas.map((related) => {
+                          const RelatedIcon = iconMap[related.icon] || FileText;
+                          return (
+                            <span
+                              key={related.id}
+                              className="inline-flex items-center gap-2 rounded-full border border-gold/18 bg-gold/10 px-4 py-2.5 text-xs font-medium text-white/68"
+                            >
+                              <RelatedIcon className="h-4 w-4 text-gold" />
+                              {related.shortTitle}
+                            </span>
+                          );
+                        })}
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+                    </div>
+                  )}
 
-            {/* ─── CTA ─── */}
-            <div className="mt-8 pb-2">
-              <a
-                href="#contact"
-                onClick={() => onClose()}
-                className="inline-flex items-center gap-3 px-7 py-3.5 rounded-xl gold-gradient text-white font-semibold text-sm tracking-wide shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
-              >
-                <span>Book Consultation</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-              </a>
-              <p className="text-white/30 text-xs mt-3">
-                No obligation — let us understand your needs first
-              </p>
+                  <div className="mx-4 mt-8 rounded-[1.5rem] border border-gold/20 bg-[linear-gradient(135deg,rgba(214,165,96,0.16),rgba(255,255,255,0.045))] p-5 sm:mx-7">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/86">
+                          Ready to move forward?
+                        </p>
+                        <p className="mt-1 text-sm leading-6 text-white/62">
+                          Let the firm understand your matter and guide the best next step.
+                        </p>
+                      </div>
+                      <a
+                        href="#contact"
+                        onClick={onClose}
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-gold px-5 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#071020] shadow-[0_18px_48px_rgba(214,165,96,0.24)] transition-transform duration-300 hover:-translate-y-0.5"
+                      >
+                        Book Consultation
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </Tabs>
             </div>
           </div>
-        </ScrollArea>
+        </div>
       </DialogContent>
     </Dialog>
   );
