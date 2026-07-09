@@ -131,16 +131,18 @@ export default function Navigation() {
     <>
       <motion.header
         data-nav-menu
-        className="fixed left-0 right-0 top-0 z-50 px-3 pt-3 sm:px-4"
+        className={`fixed left-0 right-0 top-0 px-3 pt-3 sm:px-4 ${mobileOpen ? 'z-[90]' : 'z-50'}`}
         initial={{ y: -96, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
           className={`mx-auto max-w-7xl overflow-hidden rounded-[1.35rem] border transition-all duration-500 ${
-            isScrolled
-              ? 'border-gold/24 bg-[#060a15]/88 shadow-[0_22px_80px_rgba(0,0,0,0.35)] backdrop-blur-2xl'
-              : 'border-white/10 bg-[#060a15]/55 shadow-[0_14px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl'
+            mobileOpen
+              ? 'border-gold/34 bg-[linear-gradient(135deg,rgba(5,8,20,0.96),rgba(13,20,37,0.92))] shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl'
+              : isScrolled
+                ? 'border-gold/24 bg-[linear-gradient(135deg,rgba(5,8,20,0.90),rgba(13,20,37,0.78))] shadow-[0_22px_80px_rgba(0,0,0,0.35)] backdrop-blur-2xl'
+                : 'border-white/12 bg-[linear-gradient(135deg,rgba(5,8,20,0.72),rgba(13,20,37,0.56))] shadow-[0_14px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl'
           }`}
         >
           <div className="relative flex h-[72px] items-center justify-between gap-4 px-4 sm:px-5 lg:px-6">
@@ -198,9 +200,11 @@ export default function Navigation() {
             </div>
 
             <button
+              type="button"
               onClick={() => setMobileOpen((open) => !open)}
-              className="relative z-[70] flex h-11 w-11 items-center justify-center rounded-2xl border border-gold/20 bg-white/[0.055] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:border-gold/40 hover:text-gold lg:hidden"
+              className="relative z-[100] flex h-11 w-11 items-center justify-center rounded-2xl border border-gold/26 bg-[#071020]/82 text-white shadow-[0_14px_35px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all duration-300 hover:border-gold/50 hover:text-gold lg:hidden"
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
             >
               <AnimatePresence mode="wait">
                 {mobileOpen ? (
@@ -237,12 +241,21 @@ export default function Navigation() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 z-[60] overflow-hidden bg-[#050814] px-5 pb-8 pt-28 text-white"
+            className="fixed inset-0 z-[70] overflow-y-auto bg-[#050814] px-5 pb-8 pt-28 text-white"
           >
+            <button
+              type="button"
+              onClick={() => setMobileOpen(false)}
+              className="fixed right-5 top-5 z-[95] flex h-12 w-12 items-center justify-center rounded-2xl border border-gold/34 bg-[#071020]/90 text-gold shadow-[0_18px_50px_rgba(0,0,0,0.35)] backdrop-blur-2xl lg:hidden"
+              aria-label="Close menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(214,165,96,0.2),transparent_24rem),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.08),transparent_22rem),linear-gradient(135deg,#050814,#0d1425_55%,#050814)]" />
             <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:52px_52px]" />
 
-            <div className="relative z-10 mx-auto flex h-full max-w-lg flex-col">
+            <div className="relative z-10 mx-auto flex min-h-full max-w-lg flex-col">
               <div className="rounded-[1.75rem] border border-gold/20 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-2xl">
                 <BrandMark compact />
                 <div className="mt-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.045] p-4">
