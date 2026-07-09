@@ -1,0 +1,363 @@
+/* Full-site premium visual upgrade for Marlene Brits Attorneys. */
+:root {
+  --premium-navy: #050814;
+  --premium-navy-2: #0b1022;
+  --premium-ink: #111827;
+  --premium-gold: #d6a560;
+  --premium-gold-soft: rgba(214, 165, 96, 0.16);
+  --premium-gold-line: rgba(214, 165, 96, 0.34);
+  --premium-shadow: 0 28px 90px rgba(9, 13, 25, 0.12);
+  --premium-shadow-strong: 0 32px 110px rgba(9, 13, 25, 0.2);
+}
+
+html {
+  background: #050814;
+}
+
+body {
+  background:
+    radial-gradient(circle at 14% 8%, rgba(214, 165, 96, 0.08), transparent 24rem),
+    radial-gradient(circle at 90% 22%, rgba(214, 165, 96, 0.06), transparent 24rem),
+    linear-gradient(180deg, #050814 0%, #f8f5ef 30%, #fbfaf7 100%);
+}
+
+::selection {
+  background: rgba(214, 165, 96, 0.34);
+  color: #071020;
+}
+
+/* Ultra premium hero finish */
+#home {
+  box-shadow: inset 0 -120px 140px rgba(0, 0, 0, 0.3);
+}
+
+#home::before {
+  content: '';
+  position: absolute;
+  inset: 1rem;
+  pointer-events: none;
+  z-index: 1;
+  border: 1px solid rgba(214, 165, 96, 0.22);
+  border-radius: 2rem;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.03),
+    inset 0 0 70px rgba(214,165,96,0.05),
+    0 0 70px rgba(214,165,96,0.06);
+}
+
+#home h1 {
+  text-shadow: 0 22px 44px rgba(0,0,0,0.45), 0 0 42px rgba(214,165,96,0.08);
+}
+
+#home a[href="#contact"] {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.14);
+  background:
+    linear-gradient(135deg, #f4d79b 0%, #c58a44 42%, #f7dfad 100%) !important;
+  box-shadow:
+    0 20px 60px rgba(214,165,96,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -12px 24px rgba(102,63,23,0.16) !important;
+}
+
+#home a[href="#contact"]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.42), transparent);
+  transition: transform 0.8s cubic-bezier(.22,1,.36,1);
+}
+
+#home a[href="#contact"]:hover::after {
+  transform: translateX(120%);
+}
+
+#home .rounded-\[1\.65rem\] {
+  box-shadow:
+    0 42px 120px rgba(0,0,0,0.52),
+    0 0 0 1px rgba(255,255,255,0.08),
+    0 0 80px rgba(214,165,96,0.12) !important;
+}
+
+#home .rounded-\[1\.25rem\] {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.09), transparent 32%),
+    linear-gradient(180deg, rgba(13,20,39,0.98), rgba(4,7,17,0.99)) !important;
+}
+
+/* Premium section canvas */
+main > section:not(#home) {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+main > section:not(#home)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(214,165,96,0.12), transparent 22rem),
+    radial-gradient(circle at 88% 18%, rgba(7,16,32,0.055), transparent 24rem),
+    linear-gradient(180deg, rgba(255,255,255,0.84), rgba(249,246,239,0.92));
+}
+
+main > section:not(#home)::after {
+  content: '';
+  position: absolute;
+  inset: 1.1rem;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px solid rgba(214,165,96,0.1);
+  border-radius: 2rem;
+  opacity: 0.95;
+}
+
+#services,
+#case-results,
+#testimonials,
+#contact {
+  background:
+    radial-gradient(circle at 16% 8%, rgba(214,165,96,0.16), transparent 24rem),
+    radial-gradient(circle at 88% 28%, rgba(255,255,255,0.05), transparent 22rem),
+    linear-gradient(135deg, #071020 0%, #0f1729 52%, #050814 100%) !important;
+}
+
+#services::before,
+#case-results::before,
+#testimonials::before,
+#contact::before {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(214,165,96,0.18), transparent 24rem),
+    radial-gradient(circle at 88% 26%, rgba(214,165,96,0.08), transparent 22rem),
+    linear-gradient(135deg, rgba(7,16,32,0.92), rgba(5,8,20,0.98)) !important;
+}
+
+#services h2,
+#services h3,
+#case-results h2,
+#case-results h3,
+#testimonials h2,
+#testimonials h3,
+#contact h2,
+#contact h3 {
+  color: #fff !important;
+  text-shadow: 0 18px 40px rgba(0,0,0,0.42);
+}
+
+#services p,
+#case-results p,
+#testimonials p,
+#contact p {
+  color: rgba(255,255,255,0.68);
+}
+
+/* Premium headings */
+main > section:not(#home) h2 {
+  letter-spacing: -0.035em;
+}
+
+main > section:not(#home) h2 strong,
+main > section:not(#home) h2 span.text-gold,
+main > section:not(#home) h3 span.text-gold {
+  background: linear-gradient(135deg, #f4d79b, #b77a35, #f8e5bd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+/* Universal elevated card treatment */
+main > section:not(#home) .rounded-lg,
+main > section:not(#home) .rounded-xl,
+main > section:not(#home) .rounded-2xl,
+main > section:not(#home) .glass-card-3d,
+main > section:not(#home) [class*='rounded-\['] {
+  box-shadow: var(--premium-shadow);
+}
+
+main > section:not(#home) .bg-white,
+main > section:not(#home) .bg-card {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.96), rgba(250,247,240,0.92)) !important;
+  border-color: rgba(214,165,96,0.18) !important;
+  box-shadow:
+    0 28px 90px rgba(9,13,25,0.11),
+    inset 0 1px 0 rgba(255,255,255,0.88) !important;
+}
+
+#services .bg-white,
+#case-results .bg-white,
+#testimonials .bg-white,
+#contact .bg-white,
+#services .glass-card-3d,
+#case-results .glass-card-3d,
+#testimonials .glass-card-3d,
+#contact .glass-card-3d {
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.035)) !important;
+  border-color: rgba(214,165,96,0.22) !important;
+  box-shadow:
+    0 26px 90px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+#services .text-charcoal,
+#case-results .text-charcoal,
+#testimonials .text-charcoal,
+#contact .text-charcoal {
+  color: #fff !important;
+}
+
+#services .text-muted-foreground,
+#case-results .text-muted-foreground,
+#testimonials .text-muted-foreground,
+#contact .text-muted-foreground {
+  color: rgba(255,255,255,0.62) !important;
+}
+
+/* Icon circles and gold accents */
+main > section:not(#home) [class*='bg-gold\/10'],
+main > section:not(#home) [class*='bg-gold\/12'],
+main > section:not(#home) [class*='bg-gold\/20'] {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,0.28), transparent 30%),
+    linear-gradient(145deg, rgba(214,165,96,0.2), rgba(214,165,96,0.07)) !important;
+  box-shadow:
+    0 12px 34px rgba(214,165,96,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.24);
+}
+
+main > section:not(#home) [class*='border-gold'] {
+  border-color: rgba(214,165,96,0.24) !important;
+}
+
+main > section:not(#home) [class*='via-gold'],
+main > section:not(#home) [class*='bg-gold'] {
+  filter: drop-shadow(0 6px 18px rgba(214,165,96,0.16));
+}
+
+/* Section-specific polish */
+#about .aspect-\[16\/10\] {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(214,165,96,0.18), transparent 38%),
+    linear-gradient(135deg, #111827, #050814) !important;
+  box-shadow: var(--premium-shadow-strong);
+}
+
+#team .aspect-\[3\/4\],
+#team .aspect-\[4\/3\] {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(214,165,96,0.22), transparent 36%),
+    linear-gradient(145deg, #101827, #050814) !important;
+  border-bottom: 5px solid rgba(214,165,96,0.72);
+}
+
+#team .rounded-2xl,
+#team .rounded-lg,
+#team .rounded-xl {
+  overflow: hidden;
+  border: 1px solid rgba(214,165,96,0.18);
+  box-shadow: 0 34px 100px rgba(9,13,25,0.16) !important;
+}
+
+#process .rounded-lg,
+#process .rounded-xl,
+#why-choose-us .rounded-lg,
+#why-choose-us .rounded-xl,
+#insights .rounded-lg,
+#insights .rounded-xl {
+  transition: transform 0.45s cubic-bezier(.22,1,.36,1), box-shadow 0.45s cubic-bezier(.22,1,.36,1), border-color 0.45s;
+}
+
+#process .rounded-lg:hover,
+#process .rounded-xl:hover,
+#why-choose-us .rounded-lg:hover,
+#why-choose-us .rounded-xl:hover,
+#insights .rounded-lg:hover,
+#insights .rounded-xl:hover,
+#team .rounded-lg:hover,
+#team .rounded-xl:hover,
+#services .rounded-lg:hover,
+#services .rounded-xl:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 36px 110px rgba(9,13,25,0.2),
+    0 0 0 1px rgba(214,165,96,0.18),
+    0 0 54px rgba(214,165,96,0.08) !important;
+  border-color: rgba(214,165,96,0.34) !important;
+}
+
+#contact input,
+#contact textarea,
+#contact select {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(214,165,96,0.22) !important;
+  color: #fff !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+#contact input::placeholder,
+#contact textarea::placeholder {
+  color: rgba(255,255,255,0.42) !important;
+}
+
+#contact button,
+#contact a[href^='mailto'],
+#contact a[href^='tel'] {
+  box-shadow: 0 18px 55px rgba(214,165,96,0.16);
+}
+
+/* Better floating CTA finish */
+.fixed a[href='#contact'] {
+  box-shadow:
+    0 18px 60px rgba(214,165,96,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.3) !important;
+}
+
+/* Premium dividers */
+svg,
+main > section:not(#home) .gold-accent-pulse {
+  filter: drop-shadow(0 12px 24px rgba(214,165,96,0.14));
+}
+
+@media (max-width: 767px) {
+  #home::before {
+    inset: 0.55rem;
+    border-radius: 1.25rem;
+  }
+
+  main > section:not(#home)::after {
+    inset: 0.55rem;
+    border-radius: 1.35rem;
+  }
+
+  main > section:not(#home) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  main > section:not(#home) .rounded-lg,
+  main > section:not(#home) .rounded-xl,
+  main > section:not(#home) .rounded-2xl {
+    box-shadow: 0 18px 50px rgba(9,13,25,0.1) !important;
+  }
+
+  #process .rounded-lg:hover,
+  #process .rounded-xl:hover,
+  #why-choose-us .rounded-lg:hover,
+  #why-choose-us .rounded-xl:hover,
+  #insights .rounded-lg:hover,
+  #insights .rounded-xl:hover,
+  #team .rounded-lg:hover,
+  #team .rounded-xl:hover,
+  #services .rounded-lg:hover,
+  #services .rounded-xl:hover {
+    transform: none;
+  }
+}
