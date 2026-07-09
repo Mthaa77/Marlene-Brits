@@ -5,6 +5,7 @@ import "./mobile-fixes.css";
 import "./premium-upgrades.css";
 import "./typography-upgrades.css";
 import "./image-placement-upgrades.css";
+import "./performance-upgrades.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
