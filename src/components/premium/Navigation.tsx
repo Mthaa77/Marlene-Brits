@@ -1,495 +1,304 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useMotionValueEvent,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'framer-motion'
-import { Menu, X, Phone, Scale, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+  ArrowRight,
+  Calendar,
+  ChevronRight,
+  Menu,
+  Phone,
+  Scale,
+  ShieldCheck,
+  Sparkles,
+  X,
+} from 'lucide-react'
+import { company } from '@/data/company'
 
 const NAV_LINKS = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
+  { label: 'Process', href: '#process' },
   { label: 'Team', href: '#team' },
   { label: 'Services', href: '#services' },
-  { label: 'Results', href: '#results' },
-  { label: 'Insights', href: '#insights' },
+  { label: 'Reviews', href: '#testimonials' },
+  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ] as const
 
-// ── Stagger animation variants ──────────────────────────────────────────────
+const NAV_OFFSET = 92
+
 const overlayVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: {
-    opacity: 0,
-    transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1], delay: 0.15 },
-  },
+  visible: { opacity: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
+  exit: { opacity: 0, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } },
 }
 
 const mobileLinkVariants = {
-  hidden: { opacity: 0, y: 40, rotateX: -15 },
-  visible: (i: number) => ({
+  hidden: { opacity: 0, y: 26, filter: 'blur(8px)' },
+  visible: (index: number) => ({
     opacity: 1,
     y: 0,
-    rotateX: 0,
-    transition: {
-      delay: 0.06 * i + 0.2,
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1],
-    },
+    filter: 'blur(0px)',
+    transition: { delay: 0.05 * index + 0.12, duration: 0.48, ease: [0.22, 1, 0.36, 1] },
   }),
-  exit: {
-    opacity: 0,
-    y: -15,
-    rotateX: 10,
-    transition: { duration: 0.25, ease: 'easeIn' },
-  },
+  exit: { opacity: 0, y: -12, filter: 'blur(6px)', transition: { duration: 0.2 } },
 }
 
-const mobileCtaVariants = {
-  hidden: { opacity: 0, y: 25, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { delay: 0.65, duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: { opacity: 0, scale: 0.95, transition: { duration: 0.2 } },
+function scrollToHash(href: string) {
+  const target = document.getElementById(href.replace('#', ''))
+  if (!target) return
+
+  const top = target.getBoundingClientRect().top + window.scrollY - NAV_OFFSET
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
 }
 
-// ── Nav link hover indicator variants ───────────────────────────────────────
-const indicatorVariants = {
-  hidden: { scaleX: 0, opacity: 0 },
-  visible: { scaleX: 1, opacity: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
-  exit: { scaleX: 0, opacity: 0, transition: { duration: 0.2 } },
+function BrandMark({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className="group flex min-w-0 items-center gap-3">
+      <div className="relative hidden h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gold/28 bg-[linear-gradient(145deg,rgba(214,165,96,0.2),rgba(255,255,255,0.045))] shadow-[0_16px_48px_rgba(214,165,96,0.14)] sm:flex">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_20%,rgba(255,255,255,0.2),transparent_35%)]" />
+        <Scale className="relative h-5 w-5 text-gold" />
+      </div>
+
+      <div className="flex min-w-0 flex-col">
+        <span
+          className={`font-serif-optical font-semibold leading-none text-white transition-colors duration-300 group-hover:text-gold-light ${
+            compact ? 'text-[1rem] tracking-[0.14em]' : 'text-[1.08rem] tracking-[0.16em] sm:text-[1.22rem] sm:tracking-[0.2em]'
+          }`}
+        >
+          MARLENE BRITS
+        </span>
+        <span className="mt-1.5 flex items-center gap-2 text-[7px] font-semibold uppercase tracking-[0.3em] text-gold/78 sm:text-[8px] sm:tracking-[0.38em]">
+          <span className="h-px w-7 bg-gradient-to-r from-gold to-transparent" />
+          Attorneys
+        </span>
+      </div>
+    </div>
+  )
 }
 
-// ── Component ───────────────────────────────────────────────────────────────
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [mobileOpen, setMobileOpen] = useState(false)
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null)
-  const navRef = useRef<HTMLElement>(null)
-  const { scrollY } = useScroll()
 
-  // ── Mouse position for 3D tilt effect on logo ────────────────────────────
-  const logoMouseX = useMotionValue(0)
-  const logoMouseY = useMotionValue(0)
-  const logoRotateY = useSpring(useTransform(logoMouseX, [-50, 50], [5, -5]), { stiffness: 200, damping: 25 })
-  const logoRotateX = useSpring(useTransform(logoMouseY, [-50, 50], [-5, 5]), { stiffness: 200, damping: 25 })
-
-  // ── Track scroll position ─────────────────────────────────────────────────
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    setIsScrolled(latest > 30)
-  })
-
-  // ── Intersection Observer for active section ──────────────────────────────
   useEffect(() => {
-    const sections = NAV_LINKS.map((l) => l.href.slice(1))
+    const onScroll = () => setIsScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
+  useEffect(() => {
+    const sectionIds = NAV_LINKS.map((link) => link.href.slice(1))
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id)
-          }
+          if (entry.isIntersecting) setActiveSection(entry.target.id)
         })
       },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+      { rootMargin: '-38% 0px -58% 0px', threshold: 0 }
     )
 
-    sections.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
+    sectionIds.forEach((id) => {
+      const element = document.getElementById(id)
+      if (element) observer.observe(element)
     })
 
     return () => observer.disconnect()
   }, [])
 
-  // ── Lock body scroll when mobile menu is open ─────────────────────────────
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [mobileOpen])
 
-  // ── Smooth scroll handler ─────────────────────────────────────────────────
   const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      e.preventDefault()
-      const id = href.slice(1)
-      const el = document.getElementById(id)
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
+    (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      event.preventDefault()
+      scrollToHash(href)
       if (mobileOpen) setMobileOpen(false)
     },
     [mobileOpen]
   )
 
-  // ── Logo mouse handler for 3D tilt ────────────────────────────────────────
-  const handleLogoMouseMove = useCallback((e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    logoMouseX.set(e.clientX - centerX)
-    logoMouseY.set(e.clientY - centerY)
-  }, [logoMouseX, logoMouseY])
-
-  const handleLogoMouseLeave = useCallback(() => {
-    logoMouseX.set(0)
-    logoMouseY.set(0)
-  }, [logoMouseX, logoMouseY])
+  const cleanPhone = company.contact.phone.replace(/\s/g, '')
 
   return (
     <>
-      {/* ── Desktop & Mobile Header ──────────────────────────────────────── */}
       <motion.header
         data-nav-menu
-        ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-          isScrolled
-            ? 'nav-glass-3d py-0'
-            : 'bg-transparent py-1'
-        }`}
-        initial={{ y: -100, opacity: 0 }}
+        className="fixed left-0 right-0 top-0 z-50 px-3 pt-3 sm:px-4"
+        initial={{ y: -96, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Top gold accent line */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-[2px] origin-left"
-          style={{
-            background: 'linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%)',
-          }}
-          initial={{ scaleX: 0, opacity: 0.6 }}
-          animate={{ scaleX: isScrolled ? 1 : 0, opacity: isScrolled ? 0.6 : 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        />
+        <div
+          className={`mx-auto max-w-7xl overflow-hidden rounded-[1.35rem] border transition-all duration-500 ${
+            isScrolled
+              ? 'border-gold/24 bg-[#060a15]/88 shadow-[0_22px_80px_rgba(0,0,0,0.35)] backdrop-blur-2xl'
+              : 'border-white/10 bg-[#060a15]/55 shadow-[0_14px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl'
+          }`}
+        >
+          <div className="relative flex h-[72px] items-center justify-between gap-4 px-4 sm:px-5 lg:px-6">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
+            <div className="absolute -left-16 top-0 h-28 w-28 rounded-full bg-gold/10 blur-3xl" />
 
-        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
-          {/* ── Logo with 3D tilt ──────────────────────────────────────────── */}
-          <motion.a
-            href="#home"
-            onClick={(e) => handleNavClick(e, '#home')}
-            className="logo-3d-hover group relative flex flex-col items-start gap-1.5"
-            onMouseMove={handleLogoMouseMove}
-            onMouseLeave={handleLogoMouseLeave}
-            style={{ rotateY: logoRotateY, rotateX: logoRotateX }}
-          >
-            {/* Logo text with refined typography */}
-            <span
-              className="font-serif-optical text-[1.3rem] tracking-[0.22em] font-medium text-white transition-colors duration-500"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              MARLENE BRITS
-            </span>
-            {/* Gold separator line with animation */}
-            <motion.div
-              className="h-[1.5px] w-10 bg-gradient-to-r from-gold to-gold-light"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.9, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{ transformOrigin: 'left' }}
-            />
-            {/* Subtitle with refined tracking */}
-            <span className="text-[9px] tracking-[0.4em] font-extralight uppercase text-gold transition-colors duration-500">
-              ATTORNEYS
-            </span>
+            <a href="#home" onClick={(event) => handleNavClick(event, '#home')} className="relative z-10 min-w-0">
+              <BrandMark />
+            </a>
 
-            {/* Logo hover glow */}
-            <div className="absolute inset-0 -z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-              <div
-                className="absolute inset-0 rounded-lg"
-                style={{
-                  background: 'radial-gradient(ellipse at center, rgba(184,137,86,0.06) 0%, transparent 70%)',
-                }}
-              />
-            </div>
-          </motion.a>
-
-          {/* ── Desktop Navigation Links ─────────────────────────────────── */}
-          <div className="hidden lg:flex lg:items-center lg:gap-1">
-            {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.href.slice(1)
-              const isHovered = hoveredLink === link.href
-              return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  onMouseEnter={() => setHoveredLink(link.href)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                  className={`nav-link-3d group relative px-4 py-2 text-[12px] tracking-[0.18em] uppercase font-extralight transition-all duration-400 ${
-                    isActive ? 'text-gold' : 'text-white/80 hover:text-gold'
-                  }`}
-                >
-                  {/* Link text */}
-                  <span className="relative z-10">{link.label}</span>
-
-                  {/* Active indicator with glow */}
-                  <AnimatePresence>
-                    {(isActive || isHovered) && (
-                      <motion.span
-                        className="absolute bottom-0 left-3 right-3 h-[2px]"
-                        variants={indicatorVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        style={{
-                          background: isActive
-                            ? 'linear-gradient(90deg, transparent, var(--gold), transparent)'
-                            : 'linear-gradient(90deg, transparent, rgba(184,137,86,0.5), transparent)',
-                          boxShadow: isActive
-                            ? '0 0 8px rgba(184,137,86,0.4), 0 0 20px rgba(184,137,86,0.15)'
-                            : '0 0 6px rgba(184,137,86,0.2)',
-                        }}
-                      />
-                    )}
-                  </AnimatePresence>
-
-                  {/* Subtle background on hover */}
-                  <motion.div
-                    className="absolute inset-0 rounded-sm -z-[1]"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{
-                      background: 'radial-gradient(ellipse at center, rgba(184,137,86,0.05) 0%, transparent 70%)',
-                    }}
-                  />
-                </a>
-              )
-            })}
-          </div>
-
-          {/* ── Desktop CTA with 3D hover ───────────────────────────────── */}
-          <div className="hidden lg:block">
-            <Button
-              asChild
-              className="group relative overflow-hidden rounded-sm bg-gold px-7 py-[11px] text-[11px] tracking-[0.18em] uppercase font-medium text-charcoal-dark hover:bg-gold-light transition-all duration-400 hover:shadow-[0_0_30px_rgba(184,137,86,0.3)] hover:scale-[1.04]"
-            >
-              <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>
-                <span className="relative z-10 flex items-center gap-2.5">
-                  <Phone className="h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-12" />
-                  <span className="font-serif-body">Book Consultation</span>
-                </span>
-                {/* Shimmer effect */}
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                {/* Bottom glow line */}
-                <span className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-              </a>
-            </Button>
-          </div>
-
-          {/* ── Mobile Menu Toggle ───────────────────────────────────────── */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className={`lg:hidden relative z-[60] p-2 transition-colors duration-300 ${mobileOpen ? 'text-gold' : 'text-white'}`}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          >
-            <AnimatePresence mode="wait">
-              {mobileOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <X className="h-6 w-6" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <Menu className="h-6 w-6" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </button>
-        </nav>
-
-        {/* Nav bottom border - animated gold line */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[1px]"
-          style={{
-            background: 'linear-gradient(90deg, transparent 5%, rgba(184,137,86,0.12) 30%, rgba(184,137,86,0.12) 70%, transparent 95%)',
-          }}
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{
-            scaleX: isScrolled ? 1 : 0,
-            opacity: isScrolled ? 1 : 0,
-          }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        />
-      </motion.header>
-
-      {/* ── Mobile Full-Screen Overlay ──────────────────────────────────────── */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-[55] flex flex-col items-center justify-center overflow-hidden"
-            style={{ backgroundColor: 'rgba(10, 10, 22, 0.97)' }}
-            variants={overlayVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-          >
-            {/* Background decorative elements */}
-            <div className="absolute inset-0 pointer-events-none">
-              {/* Radial gradient */}
-              <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
-                style={{
-                  background: 'radial-gradient(circle, rgba(184,137,86,0.04) 0%, transparent 60%)',
-                }}
-              />
-              {/* Grid pattern */}
-              <div
-                className="absolute inset-0 opacity-[0.02]"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(rgba(184,137,86,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(184,137,86,0.5) 1px, transparent 1px)',
-                  backgroundSize: '60px 60px',
-                }}
-              />
-            </div>
-
-            {/* Decorative gold line - top */}
-            <motion.div
-              className="absolute top-28 left-1/2 h-16 w-[1px]"
-              style={{ background: 'linear-gradient(to bottom, transparent, rgba(184,137,86,0.3), transparent)' }}
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ delay: 0.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            />
-
-            {/* Scale icon at top of line */}
-            <motion.div
-              className="absolute top-24 left-1/2 -translate-x-1/2"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 0.3, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              <Scale className="w-5 h-5 text-gold" />
-            </motion.div>
-
-            {/* Mobile Nav Links with 3D perspective */}
-            <nav
-              className="flex flex-col items-center gap-5"
-              style={{ perspective: '800px' }}
-            >
-              {NAV_LINKS.map((link, i) => {
-                const isActive = activeSection === link.href.slice(1)
+            <nav className="hidden items-center rounded-full border border-white/10 bg-white/[0.045] p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl lg:flex">
+              {NAV_LINKS.map((link) => {
+                const id = link.href.slice(1)
+                const isActive = activeSection === id
                 return (
-                  <motion.a
+                  <a
                     key={link.href}
                     href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    custom={i}
-                    variants={mobileLinkVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className={`group relative text-3xl tracking-[0.2em] uppercase font-extralight transition-all duration-300 ${
-                      isActive
-                        ? 'text-gold'
-                        : 'text-white/60 hover:text-gold'
+                    onClick={(event) => handleNavClick(event, link.href)}
+                    className={`relative rounded-full px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 xl:px-4 ${
+                      isActive ? 'text-[#071020]' : 'text-white/66 hover:text-gold'
                     }`}
-                    style={{
-                      fontFamily: isActive ? 'var(--font-playfair)' : 'var(--font-cormorant)',
-                      transformStyle: 'preserve-3d',
-                    }}
                   >
-                    {/* Link number */}
-                    <span className="absolute -left-10 top-1/2 -translate-y-1/2 text-[10px] tracking-[0.3em] text-gold/20 font-sans">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-
-                    {link.label}
-
-                    {/* Active indicator */}
                     {isActive && (
                       <motion.span
-                        className="mt-1 block h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent"
-                        layoutId="mobile-active-indicator"
-                        transition={{ duration: 0.3 }}
-                        style={{ boxShadow: '0 0 10px rgba(184,137,86,0.3)' }}
+                        layoutId="desktop-nav-pill"
+                        className="absolute inset-0 rounded-full bg-[linear-gradient(135deg,#f4d79b,#c58a44)] shadow-[0_12px_35px_rgba(214,165,96,0.24)]"
+                        transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
                       />
                     )}
-
-                    {/* Hover arrow */}
-                    <ChevronRight className="absolute -right-8 top-1/2 -translate-y-1/2 w-4 h-4 text-gold/0 group-hover:text-gold/50 transition-all duration-300 group-hover:translate-x-1" />
-                  </motion.a>
+                    <span className="relative z-10">{link.label}</span>
+                  </a>
                 )
               })}
             </nav>
 
-            {/* Decorative gold line - bottom */}
-            <motion.div
-              className="my-6 h-12 w-[1px]"
-              style={{ background: 'linear-gradient(to bottom, rgba(184,137,86,0.3), transparent)' }}
-              initial={{ scaleY: 0 }}
-              animate={{ scaleY: 1 }}
-              transition={{ delay: 0.5, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            />
-
-            {/* Mobile CTA */}
-            <motion.div variants={mobileCtaVariants} initial="hidden" animate="visible" exit="exit">
-              <Button
-                asChild
-                className="group relative overflow-hidden rounded-sm bg-gold px-12 py-4 text-[12px] tracking-[0.2em] uppercase font-medium text-charcoal-dark hover:bg-gold-light transition-all duration-300 hover:shadow-[0_0_30px_rgba(184,137,86,0.3)]"
+            <div className="hidden items-center gap-2 lg:flex">
+              <a
+                href={`tel:${cleanPhone}`}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/22 bg-gold/10 text-gold transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold hover:text-[#071020] hover:shadow-[0_18px_48px_rgba(214,165,96,0.26)]"
+                aria-label="Call Marlene Brits Attorneys"
               >
-                <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>
-                  <span className="relative z-10 flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    <span className="font-serif-body">Book Consultation</span>
-                  </span>
-                  <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-                </a>
-              </Button>
-            </motion.div>
+                <Phone className="h-4 w-4" />
+              </a>
+              <a
+                href="#contact"
+                onClick={(event) => handleNavClick(event, '#contact')}
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-gold px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#071020] shadow-[0_18px_48px_rgba(214,165,96,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_70px_rgba(214,165,96,0.34)] xl:px-6"
+              >
+                <Calendar className="h-3.5 w-3.5" />
+                <span>Consultation</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              </a>
+            </div>
 
-            {/* Contact info in mobile menu */}
-            <motion.div
-              className="mt-8 flex flex-col items-center gap-2"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
+            <button
+              onClick={() => setMobileOpen((open) => !open)}
+              className="relative z-[70] flex h-11 w-11 items-center justify-center rounded-2xl border border-gold/20 bg-white/[0.055] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] transition-all duration-300 hover:border-gold/40 hover:text-gold lg:hidden"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             >
-              <p className="text-[10px] tracking-[0.3em] uppercase text-white/25 font-cormorant">
-                +27 76 611 6965
-              </p>
-              <p className="text-[9px] tracking-[0.2em] uppercase text-white/15 font-cormorant">
-                info@mbritslaw.co.za
-              </p>
-            </motion.div>
+              <AnimatePresence mode="wait">
+                {mobileOpen ? (
+                  <motion.span
+                    key="close"
+                    initial={{ rotate: -45, opacity: 0, scale: 0.8 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: 45, opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.22 }}
+                  >
+                    <X className="h-5 w-5" />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="menu"
+                    initial={{ rotate: 45, opacity: 0, scale: 0.8 }}
+                    animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                    exit={{ rotate: -45, opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.22 }}
+                  >
+                    <Menu className="h-5 w-5" />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+          </div>
+        </div>
+      </motion.header>
 
-            {/* Bottom decorative line */}
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 h-[2px]"
-              style={{
-                background: 'linear-gradient(90deg, transparent, rgba(184,137,86,0.1) 30%, rgba(184,137,86,0.1) 70%, transparent)',
-              }}
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            />
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            variants={overlayVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="fixed inset-0 z-[60] overflow-hidden bg-[#050814] px-5 pb-8 pt-28 text-white"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(214,165,96,0.2),transparent_24rem),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.08),transparent_22rem),linear-gradient(135deg,#050814,#0d1425_55%,#050814)]" />
+            <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:52px_52px]" />
+
+            <div className="relative z-10 mx-auto flex h-full max-w-lg flex-col">
+              <div className="rounded-[1.75rem] border border-gold/20 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-2xl">
+                <BrandMark compact />
+                <div className="mt-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.045] p-4">
+                  <ShieldCheck className="h-5 w-5 shrink-0 text-gold" />
+                  <p className="text-sm leading-6 text-white/66">Personalised legal representation in Pretoria East.</p>
+                </div>
+              </div>
+
+              <nav className="mt-6 grid gap-3">
+                {NAV_LINKS.map((link, index) => {
+                  const isActive = activeSection === link.href.slice(1)
+                  return (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      custom={index}
+                      variants={mobileLinkVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      onClick={(event) => handleNavClick(event, link.href)}
+                      className={`group flex items-center justify-between rounded-[1.25rem] border px-5 py-4 transition-all duration-300 ${
+                        isActive
+                          ? 'border-gold/38 bg-gold text-[#071020] shadow-[0_18px_50px_rgba(214,165,96,0.22)]'
+                          : 'border-white/10 bg-white/[0.055] text-white/72 hover:border-gold/25 hover:text-gold'
+                      }`}
+                    >
+                      <span className="flex items-center gap-4">
+                        <span className={`text-[10px] font-semibold tracking-[0.2em] ${isActive ? 'text-[#071020]/55' : 'text-gold/50'}`}>
+                          {String(index + 1).padStart(2, '0')}
+                        </span>
+                        <span className="font-serif-optical text-2xl font-semibold tracking-[-0.04em]">{link.label}</span>
+                      </span>
+                      <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </motion.a>
+                  )
+                })}
+              </nav>
+
+              <div className="mt-auto pt-6">
+                <a
+                  href="#contact"
+                  onClick={(event) => handleNavClick(event, '#contact')}
+                  className="flex w-full items-center justify-center gap-3 rounded-full bg-gold px-6 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#071020] shadow-[0_20px_60px_rgba(214,165,96,0.28)]"
+                >
+                  <Calendar className="h-4 w-4" />
+                  Book Consultation
+                </a>
+                <a href={`tel:${cleanPhone}`} className="mt-4 flex items-center justify-center gap-2 text-sm text-white/52">
+                  <Phone className="h-4 w-4 text-gold" />
+                  {company.contact.phone}
+                </a>
+              </div>
+            </div>
+
+            <Sparkles className="pointer-events-none absolute bottom-8 right-8 h-20 w-20 text-gold/[0.06]" />
           </motion.div>
         )}
       </AnimatePresence>
