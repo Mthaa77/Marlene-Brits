@@ -16,6 +16,7 @@ import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import InsightsSection from '@/components/sections/InsightsSection';
 import ContactSection from '@/components/sections/ContactSection';
+import FAQSection from '@/components/sections/FAQSection';
 import FooterSection from '@/components/sections/FooterSection';
 import { ParallaxQuoteSection, GoldWaveDivider } from '@/components/premium/SVGDividers';
 
@@ -40,6 +41,7 @@ export default function Home() {
           <TestimonialsSection />
           <InsightsSection />
           <ContactSection />
+          <FAQSection />
           <FooterSection />
         </main>
 
