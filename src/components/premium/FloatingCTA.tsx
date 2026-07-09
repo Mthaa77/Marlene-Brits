@@ -1,20 +1,38 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Phone, Calendar } from 'lucide-react'
+import { Calendar, MessageCircle, Phone, Sparkles } from 'lucide-react'
+import { company } from '@/data/company'
+
+function scrollToContact() {
+  const el = document.getElementById('contact')
+  if (!el) return
+
+  const top = el.getBoundingClientRect().top + window.scrollY - 92
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+}
 
 export default function FloatingCTA() {
   const [visible, setVisible] = useState(false)
 
+  const cleanPhone = useMemo(() => company.contact.phone.replace(/\s/g, ''), [])
+  const internationalPhone = useMemo(() => {
+    const digits = cleanPhone.replace(/\D/g, '')
+    return digits.startsWith('0') ? `27${digits.slice(1)}` : digits
+  }, [cleanPhone])
+
+  const whatsappMessage = encodeURIComponent(
+    'Hello Marlene Brits Attorneys, I would like to enquire about a legal consultation.'
+  )
+
   useEffect(() => {
     const handleScroll = () => {
-      const threshold = window.innerHeight * 0.8
+      const threshold = window.innerHeight * 0.55
       setVisible(window.scrollY > threshold)
     }
 
     handleScroll()
-
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -23,68 +41,54 @@ export default function FloatingCTA() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.8, rotateX: -10 }}
-          animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
-          exit={{ opacity: 0, y: 30, scale: 0.8, rotateX: 10 }}
+          initial={{ opacity: 0, y: 30, scale: 0.9, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: 24, scale: 0.9, filter: 'blur(8px)' }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 flex-col items-center gap-3 md:bottom-6 md:left-auto md:right-6 md:translate-x-0 md:flex-col"
-          style={{ perspective: '600px' }}
+          className="fixed bottom-5 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6"
+          style={{ perspective: '700px' }}
         >
-          <motion.a
-            href="tel:+27766116965"
-            className="hidden md:flex h-12 w-12 items-center justify-center rounded-full border glass-card-3d"
-            style={{
-              borderColor: 'rgba(184,137,86,0.4)',
-              backgroundColor: 'rgba(26,26,46,0.8)',
-            }}
-            whileHover={{
-              scale: 1.15,
-              boxShadow: '0 0 30px rgba(184,137,86,0.3)',
-              rotateY: -5,
-            }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="Call us"
-          >
-            <Phone className="h-5 w-5" style={{ color: 'var(--gold)' }} />
-          </motion.a>
+          <div className="relative rounded-[1.75rem] border border-gold/24 bg-[#050814]/82 p-2 shadow-[0_24px_80px_rgba(0,0,0,0.34)] ring-1 ring-white/10 backdrop-blur-2xl">
+            <div className="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gold/10 blur-2xl" />
+            <div className="relative flex flex-col gap-2">
+              <motion.a
+                href={`https://wa.me/${internationalPhone}?text=${whatsappMessage}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-2xl border border-emerald-300/24 bg-[linear-gradient(145deg,rgba(16,185,129,0.95),rgba(6,95,70,0.92))] text-white shadow-[0_18px_50px_rgba(16,185,129,0.24)] sm:h-14 sm:w-14"
+                whileHover={{ y: -3, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="WhatsApp Marlene Brits Attorneys"
+              >
+                <MessageCircle className="relative z-10 h-5 w-5 sm:h-6 sm:w-6" />
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/28 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              </motion.a>
 
-          <motion.a
-            href="#contact"
-            className="group relative flex w-[calc(100vw-2rem)] max-w-[340px] items-center justify-center gap-2.5 overflow-hidden rounded-full px-4 py-3 text-[10px] font-medium uppercase tracking-[0.12em] breathing-glow sm:w-auto sm:px-6 sm:py-3.5 sm:text-[11px] sm:tracking-[0.15em]"
-            style={{
-              backgroundColor: 'var(--gold)',
-              color: '#0a0a16',
-            }}
-            whileHover={{
-              scale: 1.06,
-              boxShadow: '0 0 40px rgba(184,137,86,0.4), 0 8px 24px rgba(0,0,0,0.2)',
-            }}
+              <motion.a
+                href={`tel:${cleanPhone}`}
+                className="group relative flex h-13 w-13 items-center justify-center overflow-hidden rounded-2xl border border-gold/28 bg-[linear-gradient(145deg,rgba(214,165,96,0.98),rgba(143,94,45,0.96))] text-[#071020] shadow-[0_18px_50px_rgba(214,165,96,0.25)] sm:h-14 sm:w-14"
+                whileHover={{ y: -3, scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                aria-label="Call Marlene Brits Attorneys"
+              >
+                <Phone className="relative z-10 h-5 w-5 sm:h-6 sm:w-6" />
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/32 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              </motion.a>
+            </div>
+          </div>
+
+          <motion.button
+            type="button"
+            onClick={scrollToContact}
+            className="group relative hidden items-center gap-2 overflow-hidden rounded-full border border-gold/26 bg-[#050814]/82 px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold shadow-[0_20px_65px_rgba(0,0,0,0.28)] ring-1 ring-white/10 backdrop-blur-2xl transition-colors hover:bg-gold hover:text-[#071020] sm:inline-flex"
+            whileHover={{ y: -2 }}
             whileTap={{ scale: 0.97 }}
-            onClick={(e) => {
-              e.preventDefault()
-              const el = document.getElementById('contact')
-              if (el) {
-                const top = el.getBoundingClientRect().top + window.scrollY - 88
-                window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
-              }
-            }}
-            animate={{
-              y: [0, -3, 0],
-            }}
-            transition={{
-              y: {
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              },
-            }}
           >
             <Calendar className="h-3.5 w-3.5" />
-            <span className="font-serif-body">Book Consultation</span>
-            <span
-              className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"
-            />
-          </motion.a>
+            Consultation
+            <Sparkles className="h-3.5 w-3.5 opacity-70" />
+            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/22 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+          </motion.button>
         </motion.div>
       )}
     </AnimatePresence>
