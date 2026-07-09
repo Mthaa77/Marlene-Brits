@@ -69,6 +69,47 @@ main > section:not(#home) p {
   text-wrap: pretty;
 }
 
+/* Luxury heading polish across every major section. */
+main > section :where(h1, h2) {
+  text-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.28),
+    0 0 34px rgba(214, 165, 96, 0.10);
+  filter: drop-shadow(0 8px 22px rgba(214, 165, 96, 0.06));
+}
+
+main > section :where(h3) {
+  text-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.18),
+    0 0 24px rgba(214, 165, 96, 0.075);
+}
+
+main > section :where(h2, h3) .text-transparent,
+main > section :where(h2, h3) [class*='bg-clip-text'] {
+  filter: drop-shadow(0 10px 24px rgba(214, 165, 96, 0.12));
+}
+
+main > section:not(#home) :where(h2) {
+  position: relative;
+}
+
+main > section:not(#home) :where(h2)::after {
+  content: '';
+  display: block;
+  width: min(9rem, 38vw);
+  height: 1px;
+  margin: 1.05rem auto 0;
+  background: linear-gradient(90deg, transparent, rgba(214, 165, 96, 0.7), transparent);
+  opacity: 0.75;
+}
+
+@media (min-width: 1024px) {
+  main > section:not(#home) .text-left :where(h2)::after,
+  main > section:not(#home) .lg\:text-left :where(h2)::after {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
 /* Hide original About FAQ because the FAQ has been moved to the bottom section. */
 #about .relative.z-10.max-w-7xl > .mt-20.sm\:mt-28:nth-of-type(4) {
   display: none !important;
@@ -85,10 +126,14 @@ main > section:not(#home) p {
 }
 
 #process h2,
-#faq h2 {
+#faq h2,
+#services h2,
+#team h2,
+#testimonials h2,
+#contact h2 {
   text-shadow:
-    0 28px 60px rgba(0,0,0,0.46),
-    0 0 40px rgba(214,165,96,0.08);
+    0 28px 60px rgba(0,0,0,0.34),
+    0 0 42px rgba(214,165,96,0.10);
 }
 
 #process button,
@@ -129,5 +174,9 @@ main > section:not(#home) p {
 
   section p {
     line-height: 1.72;
+  }
+
+  main > section:not(#home) :where(h2)::after {
+    margin-top: 0.85rem;
   }
 }
