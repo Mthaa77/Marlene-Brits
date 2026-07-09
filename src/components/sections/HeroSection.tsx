@@ -42,7 +42,7 @@ function scrollToSection(id: string) {
 function ImageCard({ src, label, className = '' }: { src: string; label: string; className?: string }) {
   return (
     <div className={`relative overflow-hidden rounded-[1.6rem] border border-gold/22 bg-[#071020] shadow-[0_30px_100px_rgba(0,0,0,0.36)] ${className}`}>
-      <img src={src} alt={label} className="h-full w-full object-cover" />
+      <img src={src} alt={label} className="h-full w-full object-cover" loading="lazy" decoding="async" />
       <div className="absolute inset-0 bg-gradient-to-t from-[#050814]/84 via-[#050814]/16 to-transparent" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/80 to-transparent" />
       <p className="absolute bottom-4 left-4 right-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90">
@@ -111,6 +111,8 @@ export default function HeroSection() {
         alt="Marlene Brits Attorneys office building in Pretoria East"
         className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
         loading="eager"
+        decoding="async"
+        fetchPriority="high"
       />
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,8,20,0.94)_0%,rgba(5,8,20,0.83)_42%,rgba(5,8,20,0.58)_100%)]" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_18%,rgba(214,165,96,0.28),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(214,165,96,0.14),transparent_24%),linear-gradient(180deg,rgba(5,8,20,0.18),rgba(5,8,20,0.9))]" />
