@@ -42,10 +42,16 @@ function VisualPanel({ asset, index }: { asset: (typeof visualAssets)[number]; i
       initial={{ opacity: 0, y: 36, scale: 0.985 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.72, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.62, delay: index * 0.055, ease: [0.22, 1, 0.36, 1] }}
       className={`group relative min-h-[330px] overflow-hidden rounded-[2rem] border border-gold/20 bg-[#071020] shadow-[0_34px_120px_rgba(9,13,25,0.18)] ${asset.span}`}
     >
-      <img src={asset.src} alt={asset.title} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.045]" />
+      <img
+        src={asset.src}
+        alt={asset.title}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
+        loading="lazy"
+        decoding="async"
+      />
       <div className="absolute inset-0 bg-gradient-to-t from-[#050814]/92 via-[#050814]/30 to-transparent" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,165,96,0.18),transparent_38%)] opacity-80" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/80 to-transparent" />
@@ -77,7 +83,7 @@ export default function CompanyVisualsSection() {
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
           className="mb-12 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end"
         >
           <div>
