@@ -3,6 +3,7 @@ import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import "./mobile-fixes.css";
 import "./premium-upgrades.css";
+import "./typography-upgrades.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
@@ -47,9 +48,7 @@ export const metadata: Metadata = {
     "Pretoria East lawyer",
   ],
   authors: [{ name: "Marlene Brits Attorneys" }],
-  icons: {
-    icon: "/favicon.ico",
-  },
+  icons: { icon: "/favicon.ico" },
   openGraph: {
     title: "Marlene Brits Attorneys | Attorney, Conveyancer & Notary",
     description:
@@ -62,8 +61,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Marlene Brits Attorneys | Attorney, Conveyancer & Notary",
-    description:
-      "A distinguished Pretoria East legal practice. You are never just another client.",
+    description: "A distinguished Pretoria East legal practice. You are never just another client.",
   },
   robots: {
     index: true,
@@ -76,9 +74,42 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  alternates: {
-    canonical: "https://mbritslaw.co.za",
+  alternates: { canonical: "https://mbritslaw.co.za" },
+};
+
+const legalServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "LegalService",
+  name: "Marlene Brits Attorneys",
+  description:
+    "A distinguished Pretoria East legal practice providing personalised services in conveyancing, deceased estate administration, antenuptial contracts, wills & estate planning, family law, and notarial services.",
+  url: "https://mbritslaw.co.za",
+  telephone: "+27766116965",
+  email: "info@mbritslaw.co.za",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Spaces Menlyn Maine, Pegasus Building 1, 210 Amarand Avenue, Waterkloof Glen Ext. 2",
+    addressLocality: "Pretoria",
+    addressRegion: "Gauteng",
+    postalCode: "0181",
+    addressCountry: "ZA",
   },
+  foundingDate: "2019",
+  founder: {
+    "@type": "Person",
+    name: "Marlene Brits",
+    jobTitle: "Attorney, Conveyancer & Notary",
+  },
+  serviceType: [
+    "Conveyancing",
+    "Deceased Estate Administration",
+    "Estate Planning",
+    "Family Law",
+    "Antenuptial Contracts",
+    "Notarial Services",
+    "Civil Litigation",
+    "Debt Collection",
+  ],
 };
 
 export default function RootLayout({
@@ -91,80 +122,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LegalService",
-              name: "Marlene Brits Attorneys",
-              description:
-                "A distinguished Pretoria East legal practice providing personalised services in conveyancing, deceased estate administration, antenuptial contracts, wills & estate planning, family law, and notarial services.",
-              url: "https://mbritslaw.co.za",
-              telephone: "+27766116965",
-              email: "info@mbritslaw.co.za",
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "Spaces Menlyn Maine, Pegasus Building 1, 210 Amarand Avenue, Waterkloof Glen Ext. 2",
-                addressLocality: "Pretoria",
-                addressRegion: "Gauteng",
-                postalCode: "0181",
-                addressCountry: "ZA",
-              },
-              geo: {
-                "@type": "GeoCoordinates",
-                latitude: -25.7845,
-                longitude: 28.2739,
-              },
-              foundingDate: "2019",
-              founder: {
-                "@type": "Person",
-                name: "Marlene Brits",
-                jobTitle: "Attorney, Conveyancer & Notary",
-              },
-              areaServed: {
-                "@type": "City",
-                name: "Pretoria",
-              },
-              serviceType: [
-                "Conveyancing",
-                "Deceased Estate Administration",
-                "Estate Planning",
-                "Family Law",
-                "Antenuptial Contracts",
-                "Notarial Services",
-                "Civil Litigation",
-                "Debt Collection",
-              ],
-              priceRange: "$$",
-              sameAs: [
-                "https://facebook.com/MarleneBritsAttorneys",
-                "https://instagram.com/marlenebritsattorneys",
-                "https://linkedin.com/in/marlenebrits",
-              ],
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Attorney",
-              name: "Marlene Brits",
-              jobTitle: "Attorney, Conveyancer & Notary",
-              worksFor: {
-                "@type": "Organization",
-                name: "Marlene Brits Attorneys",
-              },
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "Spaces Menlyn Maine, Pegasus Building 1, 210 Amarand Avenue, Waterkloof Glen Ext. 2",
-                addressLocality: "Pretoria",
-                addressRegion: "Gauteng",
-                postalCode: "0181",
-                addressCountry: "ZA",
-              },
-            }),
-          }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(legalServiceSchema) }}
         />
       </head>
       <body
