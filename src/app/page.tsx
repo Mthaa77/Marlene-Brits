@@ -7,6 +7,7 @@ import FloatingCTA from '@/components/premium/FloatingCTA';
 import BackToTop from '@/components/premium/BackToTop';
 import PremiumCursor from '@/components/premium/PremiumCursor';
 import HeroSection from '@/components/sections/HeroSection';
+import CompanyVisualsSection from '@/components/sections/CompanyVisualsSection';
 import AboutSection from '@/components/sections/AboutSection';
 import ProcessSection from '@/components/sections/ProcessSection';
 import TeamSection from '@/components/sections/TeamSection';
@@ -29,6 +30,7 @@ export default function Home() {
 
         <main className="min-h-screen flex flex-col">
           <HeroSection />
+          <CompanyVisualsSection />
           <GoldWaveDivider />
           <AboutSection />
           <ProcessSection />
