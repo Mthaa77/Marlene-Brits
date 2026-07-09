@@ -43,7 +43,7 @@ function ImageCard({ src, label, className = '' }: { src: string; label: string;
   return (
     <div className={`relative overflow-hidden rounded-[1.6rem] border border-gold/22 bg-[#071020] shadow-[0_30px_100px_rgba(0,0,0,0.36)] ${className}`}>
       <img src={src} alt={label} className="h-full w-full object-cover" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#050814]/82 via-[#050814]/18 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-[#050814]/84 via-[#050814]/16 to-transparent" />
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/80 to-transparent" />
       <p className="absolute bottom-4 left-4 right-4 text-[10px] font-semibold uppercase tracking-[0.2em] text-gold/90">
         {label}
@@ -58,29 +58,27 @@ function HeroVisualStack() {
       initial={{ opacity: 0, y: 38, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: 0.16 }}
-      className="relative mx-auto w-full max-w-[720px] lg:mx-0"
+      className="relative mx-auto w-full max-w-[660px] lg:mx-0"
     >
       <div className="absolute -inset-8 rounded-[2.5rem] bg-gold/12 blur-3xl" />
       <div className="relative overflow-hidden rounded-[2.1rem] border border-gold/30 bg-[#071020]/72 p-3 shadow-[0_44px_150px_rgba(0,0,0,0.52)] backdrop-blur-2xl">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(214,165,96,0.18),transparent_34%)]" />
-        <div className="relative grid gap-3 sm:grid-cols-[1.2fr_0.8fr]">
+        <div className="relative grid gap-3 sm:grid-cols-2">
           <ImageCard
-            src={images.building}
-            label="Menlyn Maine · Pretoria East"
-            className="min-h-[420px] sm:min-h-[560px]"
+            src={images.plaqueOne}
+            label="Marlene Brits Attorneys"
+            className="min-h-[300px] sm:col-span-2 sm:min-h-[360px]"
           />
-          <div className="grid gap-3">
-            <ImageCard src={images.plaqueOne} label="Marlene Brits Attorneys" className="min-h-[185px] sm:min-h-[268px]" />
-            <ImageCard src={images.office} label="Professional Legal Environment" className="min-h-[185px] sm:min-h-[268px]" />
-          </div>
+          <ImageCard src={images.office} label="Professional Legal Environment" className="min-h-[190px] sm:min-h-[230px]" />
+          <ImageCard src={images.plaqueTwo} label="Premium Legal Identity" className="min-h-[190px] sm:min-h-[230px]" />
         </div>
 
         <div className="absolute bottom-6 left-6 right-6 rounded-[1.35rem] border border-white/10 bg-[#050814]/78 p-4 shadow-[0_20px_70px_rgba(0,0,0,0.34)] backdrop-blur-xl sm:left-8 sm:right-8 sm:p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/82">Office Identity</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-gold/82">Firm Identity</p>
               <p className="mt-1 font-serif-optical text-2xl font-semibold leading-tight text-white sm:text-3xl">
-                Premium legal presence in Pretoria East.
+                Distinctive, polished, and unmistakably legal.
               </p>
             </div>
             <div className="flex items-center gap-1.5">
@@ -134,7 +132,7 @@ export default function HeroSection() {
         </>
       )}
 
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[0.86fr_1.14fr] lg:gap-14">
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
         <motion.div
           initial={{ opacity: 0, y: 26 }}
           animate={{ opacity: 1, y: 0 }}
@@ -154,7 +152,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="mt-7 max-w-2xl text-base leading-8 text-white/74 sm:text-lg lg:text-left">
-            A premium digital presence for <span className="font-semibold text-white">Marlene Brits Attorneys</span> — using the firm’s own visuals, office identity, and legal positioning to create a website that feels personal, established, and unmistakably theirs.
+            A premium digital presence for <span className="font-semibold text-white">Marlene Brits Attorneys</span> — using the firm’s own building, brand identity, and legal positioning to create a website that feels personal, established, and unmistakably theirs.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-2 lg:justify-start">
