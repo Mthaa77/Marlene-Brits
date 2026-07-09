@@ -1,0 +1,154 @@
+/* Performance and smoothness pass for desktop and mobile. */
+:root {
+  --motion-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+main > section {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Render below-the-fold sections more efficiently while preserving layout. */
+main > section:not(#home) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 980px;
+}
+
+#home,
+#contact,
+#faq,
+#testimonials {
+  content-visibility: visible;
+}
+
+img {
+  decoding: async;
+  image-rendering: auto;
+}
+
+/* Smooth card transitions without overusing will-change. */
+main a,
+main button,
+main article,
+main .rounded-lg,
+main .rounded-xl,
+main .rounded-2xl,
+main [class*='rounded-['] {
+  transition-timing-function: var(--motion-premium);
+}
+
+main article:hover,
+main button:hover,
+main a:hover {
+  will-change: transform;
+}
+
+main article:not(:hover),
+main button:not(:hover),
+main a:not(:hover) {
+  will-change: auto;
+}
+
+/* Premium but efficient scrollbars for popups and custom scroll areas. */
+[data-radix-scroll-area-viewport],
+[data-slot='dialog-content'],
+.service-modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(214, 165, 96, 0.52) rgba(255, 255, 255, 0.05);
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar,
+[data-slot='dialog-content']::-webkit-scrollbar,
+.service-modal-scroll::-webkit-scrollbar {
+  width: 9px;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-thumb,
+[data-slot='dialog-content']::-webkit-scrollbar-thumb,
+.service-modal-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f4d79b, #b77a35);
+  border: 2px solid rgba(5, 8, 20, 0.8);
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar-track,
+[data-slot='dialog-content']::-webkit-scrollbar-track,
+.service-modal-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Dialog/popup premium foundation. */
+[data-slot='dialog-overlay'] {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(214, 165, 96, 0.18), transparent 26rem),
+    radial-gradient(circle at 82% 72%, rgba(255, 255, 255, 0.08), transparent 22rem),
+    rgba(2, 5, 14, 0.76) !important;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+[data-slot='dialog-content'] {
+  transform-origin: center center;
+  backface-visibility: hidden;
+  box-shadow:
+    0 42px 140px rgba(0, 0, 0, 0.46),
+    0 0 0 1px rgba(214, 165, 96, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.10) !important;
+}
+
+/* Smooth section reveal hint without heavy scroll JS. */
+main > section:not(#home)::before,
+main > section:not(#home)::after {
+  transition: opacity 0.6s var(--motion-premium), transform 0.6s var(--motion-premium);
+}
+
+@media (max-width: 767px) {
+  main > section:not(#home) {
+    contain-intrinsic-size: auto 760px;
+  }
+
+  /* Mobile GPUs struggle with too many heavy blur layers. Keep the premium look, lower the cost. */
+  [class*='blur-3xl'] {
+    filter: blur(28px) !important;
+  }
+
+  [class*='backdrop-blur-2xl'] {
+    backdrop-filter: blur(10px) saturate(130%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(130%) !important;
+  }
+
+  [class*='backdrop-blur-xl'] {
+    backdrop-filter: blur(8px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(125%) !important;
+  }
+
+  [data-slot='dialog-overlay'] {
+    backdrop-filter: blur(9px) saturate(125%);
+    -webkit-backdrop-filter: blur(9px) saturate(125%);
+  }
+
+  main article:hover,
+  main button:hover,
+  main a:hover {
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  main > section:not(#home) {
+    content-visibility: visible;
+  }
+}
