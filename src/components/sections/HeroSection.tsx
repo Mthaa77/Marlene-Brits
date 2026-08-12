@@ -31,7 +31,10 @@ export default function HeroSection() {
           transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 mx-auto max-w-2xl text-center lg:mx-0 lg:text-left"
         >
-          <h1 className="font-serif-optical text-[clamp(3.35rem,6.5vw,5.25rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#fffaf0]">
+          <h1
+            className="text-[clamp(3.35rem,6.5vw,5.25rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#fffaf0]"
+            style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+          >
             Legal guidance,
             <span className="mt-2 block text-[#d6a75e]">personally delivered.</span>
           </h1>
@@ -93,7 +96,8 @@ export default function HeroSection() {
         {credentials.map((credential, index) => (
           <div
             key={credential}
-            className={`flex min-h-20 items-center justify-center px-3 text-center font-serif-optical text-base tracking-[0.04em] text-white/80 sm:min-h-24 sm:text-xl ${index > 0 ? 'border-l border-[#d6a75e]/28' : ''}`}
+            className={`flex min-h-20 items-center justify-center px-3 text-center text-base tracking-[0.04em] text-white/80 sm:min-h-24 sm:text-xl ${index > 0 ? 'border-l border-[#d6a75e]/28' : ''}`}
+            style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
           >
             {credential}
           </div>

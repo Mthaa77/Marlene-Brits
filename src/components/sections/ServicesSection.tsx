@@ -44,7 +44,10 @@ export default function ServicesSection() {
           transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-4xl text-center"
         >
-          <h2 className="font-serif-optical text-[clamp(3rem,7vw,5.7rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#07101d]">
+          <h2
+            className="text-[clamp(3rem,7vw,5.7rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#07101d]"
+            style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+          >
             Legal services for life’s
             <span className="block">important moments.</span>
           </h2>
@@ -72,10 +75,15 @@ export default function ServicesSection() {
                   <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#07101d] text-[#d6a75e] shadow-[0_12px_30px_rgba(7,16,29,0.16)]">
                     <Icon className="h-5 w-5" strokeWidth={1.7} />
                   </span>
-                  <span className="font-serif-optical text-sm text-[#c99a52]">0{index + 1}</span>
+                  <span className="text-sm text-[#c99a52]" style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}>
+                    0{index + 1}
+                  </span>
                 </div>
 
-                <h3 className="mt-7 font-serif-optical text-[1.8rem] font-medium leading-tight tracking-[-0.035em] text-[#07101d]">
+                <h3
+                  className="mt-7 text-[1.8rem] font-medium leading-tight tracking-[-0.035em] text-[#07101d]"
+                  style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+                >
                   {area.shortTitle}
                 </h3>
                 <p className="mt-3 line-clamp-3 text-sm leading-7 text-[#596273]">{area.description}</p>

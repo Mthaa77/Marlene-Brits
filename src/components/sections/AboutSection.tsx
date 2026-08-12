@@ -44,7 +44,10 @@ export default function AboutSection() {
           transition={{ duration: 0.72, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
         >
           <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#d6a75e]">About the firm</p>
-          <h2 className="mt-5 font-serif-optical text-[clamp(3rem,7vw,5.5rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#fffaf0]">
+          <h2
+            className="mt-5 text-[clamp(3rem,7vw,5.5rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#fffaf0]"
+            style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+          >
             Built on trust.
             <span className="block text-[#d6a75e]">Defined by care.</span>
           </h2>

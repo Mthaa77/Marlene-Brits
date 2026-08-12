@@ -22,7 +22,10 @@ function scrollToHash(href: string) {
 function Wordmark() {
   return (
     <span className="flex min-w-0 flex-col">
-      <span className="truncate font-serif-optical text-[1.02rem] font-semibold leading-none tracking-[0.16em] text-[#fffaf0] sm:text-[1.18rem] sm:tracking-[0.21em]">
+      <span
+        className="truncate text-[1.02rem] font-semibold leading-none tracking-[0.16em] text-[#fffaf0] sm:text-[1.18rem] sm:tracking-[0.21em]"
+        style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
+      >
         MARLENE BRITS
       </span>
       <span className="mt-1.5 text-[7px] font-semibold uppercase tracking-[0.45em] text-[#d6a75e] sm:text-[8px]">
@@ -139,7 +142,8 @@ export default function Navigation() {
                   key={link.href}
                   href={link.href}
                   onClick={(event) => handleClick(event, link.href)}
-                  className="flex items-center justify-between border-b border-white/10 py-5 font-serif-optical text-3xl text-[#fffaf0]"
+                  className="flex items-center justify-between border-b border-white/10 py-5 text-3xl text-[#fffaf0]"
+                  style={{ fontFamily: 'var(--font-playfair), Georgia, serif' }}
                 >
                   {link.label}
                   <span className="font-sans text-xs tracking-[0.2em] text-[#d6a75e]">0{index + 1}</span>
