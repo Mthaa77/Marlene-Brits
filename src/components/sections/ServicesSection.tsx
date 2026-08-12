@@ -50,7 +50,7 @@ export default function ServicesSection() {
           </div>
         </div>
       </div>
-      <ServiceDetailModal area={selectedService} open={!!selectedService} onClose={() => setSelectedService(null)} />
+      <ServiceDetailModal area={selectedService} open={!!selectedService} onClose={() => setSelectedService(null)} onSelectArea={setSelectedService} />
     </section>
   );
 }

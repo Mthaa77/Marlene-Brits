@@ -29,7 +29,9 @@ export default function FloatingCTA() {
   useEffect(() => {
     const handleScroll = () => {
       const threshold = window.innerHeight * 0.55
-      setVisible(window.scrollY > threshold)
+      const contact = document.getElementById('contact')
+      const beforeContact = !contact || contact.getBoundingClientRect().top > window.innerHeight * 0.35
+      setVisible(window.scrollY > threshold && beforeContact)
     }
 
     handleScroll()

@@ -9,7 +9,9 @@ export default function BackToTop() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 500)
+      const contact = document.getElementById('contact')
+      const beforeContact = !contact || contact.getBoundingClientRect().top > window.innerHeight * 0.35
+      setVisible(window.scrollY > 500 && beforeContact)
     }
 
     handleScroll()

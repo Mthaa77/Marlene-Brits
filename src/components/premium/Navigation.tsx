@@ -2,27 +2,38 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowUpRight, Menu, Phone, X } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Compass, FileCheck2, Menu, Phone, X } from 'lucide-react';
 import { company } from '@/data/company';
 
 const links = [
-  { label: 'Find legal help', href: '#pathfinder' },
-  { label: 'About', href: '#about' },
+  { label: 'Legal help', href: '#pathfinder' },
   { label: 'Services', href: '#services' },
-  { label: 'Our approach', href: '#approach' },
+  { label: 'About', href: '#about' },
+  { label: 'Why us', href: '#why-choose-us' },
+  { label: 'Approach', href: '#approach' },
+  { label: 'Team', href: '#team' },
+  { label: 'FAQ', href: '#faq' },
+] as const;
+
+const clientTools = [
+  { label: 'Find the right legal service', copy: 'Two quick questions', href: '#pathfinder', icon: Compass },
+  { label: 'Prepare for a consultation', copy: 'Build a useful checklist', href: '#consultation-builder', icon: FileCheck2 },
 ] as const;
 
 function scrollToHash(href: string) {
   const target = document.getElementById(href.slice(1));
   if (!target) return;
-  const top = target.getBoundingClientRect().top + window.scrollY - 88;
+  const top = target.getBoundingClientRect().top + window.scrollY - 92;
   window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
 }
 
 function Wordmark() {
   return (
     <span className="flex min-w-0 items-center gap-3">
-      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#d9af6b]/45 bg-[#d9af6b]/10 font-serif text-sm italic text-[#edcd94]">MB</span>
+      <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[#d9af6b]/45 bg-[#d9af6b]/10 font-serif text-sm italic text-[#edcd94] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+        MB
+        <span className="absolute inset-1 rounded-full border border-white/[0.06]" />
+      </span>
       <span className="min-w-0">
         <span className="block truncate font-serif text-[0.98rem] font-semibold leading-none tracking-[0.14em] text-[#fffaf1] sm:text-[1.05rem]">MARLENE BRITS</span>
         <span className="mt-1 block text-[7px] font-semibold uppercase tracking-[0.42em] text-[#d9af6b]">Attorneys</span>
@@ -34,6 +45,7 @@ function Wordmark() {
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -44,12 +56,27 @@ export default function Navigation() {
   }, []);
 
   useEffect(() => {
+    const sectionIds = ['home', ...links.map((link) => link.href.slice(1)), 'consultation-builder', 'contact'];
+    const sections = sectionIds.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-18% 0px -62% 0px', threshold: [0, 0.15, 0.35] },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     event.preventDefault();
+    setActiveSection(href.slice(1));
     scrollToHash(href);
     setMobileOpen(false);
   }, []);
@@ -64,32 +91,64 @@ export default function Navigation() {
         transition={{ duration: 0.5 }}
         className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4"
       >
-        <div className={`mx-auto flex h-[66px] max-w-[88rem] items-center justify-between gap-4 rounded-[1.3rem] border px-3.5 transition-all duration-300 sm:px-5 ${isScrolled || mobileOpen ? 'border-[#d9af6b]/35 bg-[#07111f]/96 shadow-[0_18px_56px_rgba(1,7,15,0.32)] backdrop-blur-xl' : 'border-white/15 bg-[#07111f]/88 shadow-[0_12px_36px_rgba(1,7,15,0.2)] backdrop-blur-md'}`}>
-          <a href="#home" onClick={(event) => handleClick(event, '#home')} aria-label="Marlene Brits Attorneys home" className="min-w-0"><Wordmark /></a>
+        <div className={`mx-auto flex h-[68px] max-w-[88rem] items-center justify-between gap-3 rounded-[1.45rem] border px-3.5 transition-all duration-300 sm:px-5 ${isScrolled || mobileOpen ? 'border-[#d9af6b]/38 bg-[#07111f]/96 shadow-[0_22px_68px_rgba(1,7,15,0.38)] backdrop-blur-2xl' : 'border-white/15 bg-[#07111f]/88 shadow-[0_12px_36px_rgba(1,7,15,0.2)] backdrop-blur-md'}`}>
+          <a href="#home" onClick={(event) => handleClick(event, '#home')} aria-label="Marlene Brits Attorneys home" className="min-w-0 shrink-0"><Wordmark /></a>
 
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
-            {links.map((link) => (
-              <a key={link.href} href={link.href} onClick={(event) => handleClick(event, link.href)} className="text-[0.78rem] font-medium text-white/68 transition-colors hover:text-[#edcd94] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#d9af6b]">{link.label}</a>
-            ))}
+          <nav className="hidden items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.035] p-1 xl:flex" aria-label="Primary navigation">
+            {links.map((link) => {
+              const isActive = activeSection === link.href.slice(1);
+              return (
+                <a key={link.href} href={link.href} onClick={(event) => handleClick(event, link.href)} aria-current={isActive ? 'location' : undefined} className={`relative rounded-full px-3 py-2 text-[0.72rem] font-medium transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d9af6b] ${isActive ? 'bg-[#d9af6b]/14 text-[#f2d49d]' : 'text-white/58 hover:bg-white/[0.055] hover:text-white'}`}>
+                  {link.label}
+                  {isActive && <motion.span layoutId="nav-active" className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#d9af6b]" />}
+                </a>
+              );
+            })}
           </nav>
 
-          <div className="flex items-center gap-2">
-            <a href={`tel:${phone}`} aria-label={`Call ${company.name}`} className="hidden h-10 w-10 items-center justify-center rounded-xl border border-white/12 text-[#d9af6b] transition hover:border-[#d9af6b]/50 hover:bg-[#d9af6b]/10 sm:flex"><Phone className="h-4 w-4" /></a>
-            <a href="#contact" onClick={(event) => handleClick(event, '#contact')} className="hidden min-h-10 items-center gap-2 rounded-xl bg-[#d9af6b] px-4 text-[0.78rem] font-semibold text-[#07111f] shadow-[0_12px_28px_rgba(217,175,107,0.2)] transition hover:bg-[#edcd94] md:inline-flex">Consultation <ArrowUpRight className="h-3.5 w-3.5" /></a>
-            <button type="button" onClick={() => setMobileOpen((open) => !open)} className="grid h-10 w-10 place-items-center rounded-xl border border-[#d9af6b]/30 text-white transition hover:bg-white/5 lg:hidden" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen}>{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
+          <div className="flex shrink-0 items-center gap-2">
+            <a href={`tel:${phone}`} aria-label={`Call ${company.name}`} className="hidden h-10 w-10 items-center justify-center rounded-xl border border-white/12 text-[#d9af6b] transition hover:-translate-y-0.5 hover:border-[#d9af6b]/50 hover:bg-[#d9af6b]/10 sm:flex"><Phone className="h-4 w-4" /></a>
+            <a href="#contact" onClick={(event) => handleClick(event, '#contact')} className="hidden min-h-10 items-center gap-2 rounded-xl bg-[#d9af6b] px-4 text-[0.76rem] font-semibold text-[#07111f] shadow-[0_12px_28px_rgba(217,175,107,0.2)] transition hover:-translate-y-0.5 hover:bg-[#edcd94] md:inline-flex">Consultation <ArrowUpRight className="h-3.5 w-3.5" /></a>
+            <button type="button" onClick={() => setMobileOpen((open) => !open)} className="grid h-10 w-10 place-items-center rounded-xl border border-[#d9af6b]/30 text-white transition hover:bg-white/5 xl:hidden" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen}>{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
           </div>
         </div>
       </motion.header>
 
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 overflow-y-auto bg-[#07111f]/98 px-4 pb-8 pt-24 text-white backdrop-blur-xl lg:hidden">
-            <motion.nav initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="mx-auto max-w-lg border-t border-[#d9af6b]/25" aria-label="Mobile navigation">
-              {links.map((link, index) => (
-                <a key={link.href} href={link.href} onClick={(event) => handleClick(event, link.href)} className="flex items-center justify-between border-b border-white/10 py-5 font-serif text-2xl text-[#fffaf1]">{link.label}<span className="font-sans text-[10px] tracking-[0.2em] text-[#d9af6b]">0{index + 1}</span></a>
-              ))}
-              <a href="#contact" onClick={(event) => handleClick(event, '#contact')} className="mt-7 flex min-h-14 items-center justify-center rounded-xl bg-[#d9af6b] px-6 text-sm font-semibold text-[#07111f]">Book a consultation</a>
-              <a href={`tel:${phone}`} className="mt-6 block text-center text-sm text-white/58">Call {company.contact.phone}</a>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-40 overflow-y-auto bg-[#07111f]/98 px-4 pb-8 pt-24 text-white backdrop-blur-2xl xl:hidden">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_8%,rgba(217,175,107,0.15),transparent_20rem)]" />
+            <motion.nav initial={reduceMotion ? false : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="relative mx-auto max-w-2xl" aria-label="Mobile navigation">
+              <div className="grid border-t border-[#d9af6b]/25 sm:grid-cols-2">
+                {links.map((link, index) => {
+                  const isActive = activeSection === link.href.slice(1);
+                  return (
+                    <a key={link.href} href={link.href} onClick={(event) => handleClick(event, link.href)} className={`group flex items-center justify-between border-b border-white/10 py-4 font-serif text-[1.45rem] transition sm:px-4 ${isActive ? 'text-[#edcd94]' : 'text-[#fffaf1] hover:text-[#edcd94]'}`}>
+                      {link.label}
+                      <span className="flex items-center gap-2 font-sans text-[9px] tracking-[0.18em] text-[#d9af6b]"><span className={`h-1.5 w-1.5 rounded-full ${isActive ? 'bg-[#d9af6b]' : 'border border-[#d9af6b]/50'}`} />0{index + 1}</span>
+                    </a>
+                  );
+                })}
+              </div>
+
+              <p className="mt-7 text-[9px] font-semibold uppercase tracking-[0.22em] text-[#d9af6b]">Useful client tools</p>
+              <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                {clientTools.map((tool) => {
+                  const Icon = tool.icon;
+                  return (
+                    <a key={tool.href} href={tool.href} onClick={(event) => handleClick(event, tool.href)} className="group flex items-center gap-4 rounded-[1.25rem_2.75rem_2.75rem_1.25rem] border border-white/10 bg-white/[0.045] p-4 transition hover:border-[#d9af6b]/32 hover:bg-white/[0.07]">
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#d9af6b] text-[#07111f]"><Icon className="h-[1.125rem] w-[1.125rem]" /></span>
+                      <span className="min-w-0"><span className="block text-sm font-semibold text-white">{tool.label}</span><span className="mt-1 block text-xs text-white/42">{tool.copy}</span></span>
+                      <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#d9af6b] transition group-hover:translate-x-1" />
+                    </a>
+                  );
+                })}
+              </div>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
+                <a href="#contact" onClick={(event) => handleClick(event, '#contact')} className="flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#d9af6b] px-6 text-sm font-semibold text-[#07111f]">Book a consultation <ArrowUpRight className="h-4 w-4" /></a>
+                <a href={`tel:${phone}`} className="flex min-h-14 items-center justify-center gap-2 rounded-xl border border-white/12 px-6 text-sm text-white/68"><Phone className="h-4 w-4 text-[#d9af6b]" />{company.contact.phone}</a>
+              </div>
             </motion.nav>
           </motion.div>
         )}
