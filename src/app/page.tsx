@@ -2,10 +2,12 @@ import Navigation from '@/components/premium/Navigation';
 import FloatingCTA from '@/components/premium/FloatingCTA';
 import BackToTop from '@/components/premium/BackToTop';
 import HeroSection from '@/components/sections/HeroSection';
+import LegalPathfinderSection from '@/components/sections/LegalPathfinderSection';
 import ServicesSection from '@/components/sections/ServicesSection';
 import AboutSection from '@/components/sections/AboutSection';
 import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
 import ProcessSection from '@/components/sections/ProcessSection';
+import ConsultationBuilderSection from '@/components/sections/ConsultationBuilderSection';
 import TeamSection from '@/components/sections/TeamSection';
 import FAQSection from '@/components/sections/FAQSection';
 import ContactSection from '@/components/sections/ContactSection';
@@ -18,10 +20,12 @@ export default function Home() {
 
       <main className="min-h-screen">
         <HeroSection />
+        <LegalPathfinderSection />
         <ServicesSection />
         <AboutSection />
         <WhyChooseUsSection />
         <ProcessSection />
+        <ConsultationBuilderSection />
         <TeamSection />
         <FAQSection />
         <ContactSection />

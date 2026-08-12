@@ -34,7 +34,7 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div initial={reduceMotion ? false : { opacity: 0, scale: 0.985 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.75, delay: 0.06, ease: [0.22, 1, 0.36, 1] }} className="relative min-h-[430px] overflow-hidden sm:min-h-[540px] lg:min-h-[650px]">
-            <Image src="/uploads/ChatGPT Image Jul 8, 2026, 09_36_03 PM.png" alt="Marlene Brits Attorneys legal team" fill priority unoptimized sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover object-[62%_20%] sm:object-[64%_20%]" />
+            <Image src="/uploads/ChatGPT Image Jul 8, 2026, 09_36_03 PM.png" alt="Marlene Brits Attorneys legal team" fill priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover object-[62%_20%] sm:object-[64%_20%]" />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_52%,rgba(7,17,31,0.75)_100%)] lg:bg-[linear-gradient(90deg,rgba(7,17,31,0.22),transparent_28%,transparent_100%)]" />
             <div className="absolute bottom-5 left-5 right-5 flex items-center gap-3 rounded-2xl border border-white/16 bg-[#07111f]/86 p-4 shadow-[0_18px_50px_rgba(0,0,0,0.32)] backdrop-blur-xl sm:bottom-7 sm:left-7 sm:right-auto sm:max-w-sm">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#d9af6b] text-[#07111f]"><MapPin className="h-4 w-4" /></span>

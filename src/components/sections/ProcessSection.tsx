@@ -1,17 +1,27 @@
-import { ArrowRight, FileCheck2, MessagesSquare, Route } from 'lucide-react';
+'use client';
+
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowDown, FileCheck2, MessagesSquare, Route } from 'lucide-react';
 
 const steps = [
-  { icon: MessagesSquare, title: 'Start with a conversation', copy: 'Share the context of your matter and the outcome you need. The firm identifies the right legal route.' },
-  { icon: Route, title: 'Receive a clear way forward', copy: 'Understand the process, the information required and the important next steps before work begins.' },
-  { icon: FileCheck2, title: 'Move forward with confidence', copy: 'Your matter is handled carefully, with practical updates and attention to every legal detail.' },
+  { icon: MessagesSquare, number: '01', title: 'Start with a conversation', copy: 'Share the context of your matter and the outcome you need. The firm identifies the right legal route.' },
+  { icon: Route, number: '02', title: 'Receive a clear way forward', copy: 'Understand the process, information required and important next steps before work begins.' },
+  { icon: FileCheck2, number: '03', title: 'Move forward with confidence', copy: 'Your matter is handled carefully, with practical updates and attention to every legal detail.' },
 ];
 
 export default function ProcessSection() {
+  const reduceMotion = useReducedMotion();
   return (
-    <section id="approach" className="scroll-mt-24 bg-[#f7f3eb] py-20 sm:py-24 lg:py-28">
-      <div className="mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-7 lg:grid-cols-[0.8fr_1.2fr] lg:items-end"><div><span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9b6d30]">What to expect</span><h2 className="mt-4 font-serif text-[clamp(2.8rem,6vw,5rem)] font-medium leading-[0.94] tracking-[-0.05em] text-[#07111f]">A clearer path through your legal matter.</h2></div><p className="max-w-xl text-base leading-8 text-[#526071] lg:justify-self-end">Good legal support should reduce uncertainty. The process begins with understanding, then moves with clear communication and careful execution.</p></div>
-        <div className="mt-12 grid gap-4 lg:grid-cols-3">{steps.map((step, index) => { const Icon = step.icon; return <article key={step.title} className="relative overflow-hidden rounded-[1.5rem] border border-[#07111f]/9 bg-white p-7 shadow-[0_18px_55px_rgba(7,17,31,0.07)] sm:p-8"><span className="absolute right-5 top-3 font-serif text-7xl text-[#07111f]/[0.035]">{index + 1}</span><span className="grid h-11 w-11 place-items-center rounded-xl bg-[#07111f] text-[#edcd94]"><Icon className="h-5 w-5" /></span><h3 className="mt-8 font-serif text-2xl text-[#07111f]">{step.title}</h3><p className="mt-4 text-sm leading-7 text-[#617083]">{step.copy}</p>{index < steps.length - 1 && <ArrowRight className="absolute -right-3 top-1/2 z-10 hidden h-6 w-6 rounded-full bg-[#d9af6b] p-1 text-[#07111f] lg:block" />}</article>; })}</div>
+    <section id="approach" className="relative scroll-mt-24 overflow-hidden bg-white py-20 sm:py-24 lg:py-28">
+      <div className="mx-auto grid max-w-[88rem] gap-12 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16 lg:px-8">
+        <div className="lg:sticky lg:top-28 lg:self-start"><span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9b6d30]">What to expect</span><h2 className="mt-4 font-serif text-[clamp(2.8rem,6vw,5rem)] font-medium leading-[0.94] tracking-[-0.05em] text-[#07111f]">A clearer path through your legal matter.</h2><p className="mt-6 max-w-lg text-base leading-8 text-[#526071]">Good legal support should reduce uncertainty. Every stage is designed to keep you informed, prepared and able to make the next decision.</p><a href="#consultation-builder" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-full bg-[#07111f] px-6 text-sm font-semibold text-white transition hover:bg-[#0c2136]">Prepare for a consultation <ArrowDown className="h-4 w-4 text-[#edcd94]" /></a></div>
+        <div className="relative">
+          <div className="absolute bottom-12 left-[2.2rem] top-12 w-px bg-gradient-to-b from-[#d9af6b]/70 via-[#d9af6b]/28 to-transparent sm:left-1/2" />
+          <div className="space-y-8 sm:space-y-12">{steps.map((step, index) => { const Icon = step.icon; const align = index % 2 === 0 ? 'sm:mr-auto' : 'sm:ml-auto'; return <motion.article key={step.title} initial={reduceMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ delay: index * 0.08 }} className={`relative z-10 flex max-w-xl items-start gap-5 ${align} sm:w-[calc(50%+2.25rem)] ${index % 2 === 0 ? 'sm:flex-row-reverse sm:text-right' : ''}`}>
+            <span className="grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center rounded-full border-[7px] border-white bg-[#07111f] text-[#edcd94] shadow-[0_16px_45px_rgba(7,17,31,0.18)]"><Icon className="h-5 w-5" /></span>
+            <div className={`min-w-0 flex-1 rounded-[1.2rem_3.5rem_3.5rem_1.2rem] border border-[#07111f]/9 bg-[#f8f5ee] p-6 shadow-[0_18px_55px_rgba(7,17,31,0.06)] ${index % 2 === 0 ? 'sm:rounded-[3.5rem_1.2rem_1.2rem_3.5rem]' : ''}`}><span className="text-[10px] font-semibold tracking-[0.2em] text-[#9b6d30]">{step.number}</span><h3 className="mt-3 font-serif text-2xl text-[#07111f]">{step.title}</h3><p className="mt-4 text-sm leading-7 text-[#617083]">{step.copy}</p></div>
+          </motion.article>; })}</div>
+        </div>
       </div>
     </section>
   );

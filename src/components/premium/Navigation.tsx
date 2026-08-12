@@ -6,10 +6,10 @@ import { ArrowUpRight, Menu, Phone, X } from 'lucide-react';
 import { company } from '@/data/company';
 
 const links = [
+  { label: 'Find legal help', href: '#pathfinder' },
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Our approach', href: '#approach' },
-  { label: 'Team', href: '#team' },
 ] as const;
 
 function scrollToHash(href: string) {

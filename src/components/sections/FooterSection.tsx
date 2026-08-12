@@ -2,11 +2,13 @@ import { Mail, MapPin, Phone } from 'lucide-react';
 import { company } from '@/data/company';
 
 const links = [
+  { label: 'Legal Pathfinder', href: '#pathfinder' },
   { label: 'About', href: '#about' },
   { label: 'Services', href: '#services' },
   { label: 'Our approach', href: '#approach' },
   { label: 'Team', href: '#team' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Prepare', href: '#consultation-builder' },
 ];
 
 export default function FooterSection() {
