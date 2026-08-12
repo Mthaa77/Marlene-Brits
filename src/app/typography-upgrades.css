@@ -17,7 +17,7 @@ h3,
 h4,
 .font-serif,
 .font-serif-optical {
-  font-family: var(--type-display) !important;
+  font-family: var(--font-playfair), Georgia, 'Times New Roman', serif !important;
   font-feature-settings: 'kern' 1, 'liga' 1, 'dlig' 1;
   letter-spacing: -0.045em;
 }
@@ -49,7 +49,7 @@ select {
 blockquote,
 section span.tracking-luxury,
 section span.tracking-ultra {
-  font-family: var(--type-editorial) !important;
+  font-family: var(--font-cormorant), Georgia, 'Times New Roman', serif !important;
 }
 
 section p {
