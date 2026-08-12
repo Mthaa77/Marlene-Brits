@@ -1009,3 +1009,11 @@
 .progress-bar-glow {
   animation: progress-glow 2s ease-in-out infinite;
 }
+
+/* Blend the architectural hero image into the navy canvas without tinting it. */
+@media (min-width: 1024px) {
+  .hero-architectural-image {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 100%);
+    mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 100%);
+  }
+}
