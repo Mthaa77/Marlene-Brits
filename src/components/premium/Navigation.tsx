@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowRight,
@@ -15,35 +15,23 @@ import {
 } from 'lucide-react'
 import { company } from '@/data/company'
 
-const NAV_LINKS = [
+const PRIMARY_NAV_LINKS = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
-  { label: 'Process', href: '#process' },
-  { label: 'Team', href: '#team' },
   { label: 'Services', href: '#services' },
+  { label: 'Team', href: '#team' },
   { label: 'Reviews', href: '#testimonials' },
-  { label: 'FAQ', href: '#faq' },
   { label: 'Contact', href: '#contact' },
 ] as const
 
+const MOBILE_NAV_LINKS = [
+  ...PRIMARY_NAV_LINKS,
+  { label: 'Process', href: '#process' },
+  { label: 'Results', href: '#case-results' },
+  { label: 'FAQ', href: '#faq' },
+] as const
+
 const NAV_OFFSET = 92
-
-const overlayVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } },
-  exit: { opacity: 0, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } },
-}
-
-const mobileLinkVariants = {
-  hidden: { opacity: 0, y: 26, filter: 'blur(8px)' },
-  visible: (index: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: 'blur(0px)',
-    transition: { delay: 0.05 * index + 0.12, duration: 0.48, ease: [0.22, 1, 0.36, 1] },
-  }),
-  exit: { opacity: 0, y: -12, filter: 'blur(6px)', transition: { duration: 0.2 } },
-}
 
 function scrollToHash(href: string) {
   const target = document.getElementById(href.replace('#', ''))
@@ -56,20 +44,22 @@ function scrollToHash(href: string) {
 function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
     <div className="group flex min-w-0 items-center gap-3">
-      <div className="relative hidden h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gold/28 bg-[linear-gradient(145deg,rgba(214,165,96,0.2),rgba(255,255,255,0.045))] shadow-[0_16px_48px_rgba(214,165,96,0.14)] sm:flex">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_20%,rgba(255,255,255,0.2),transparent_35%)]" />
+      <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gold/30 bg-[linear-gradient(145deg,rgba(244,215,155,0.22),rgba(255,255,255,0.045))] shadow-[0_16px_48px_rgba(214,165,96,0.16)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_20%,rgba(255,255,255,0.24),transparent_36%)]" />
         <Scale className="relative h-5 w-5 text-gold" />
       </div>
 
       <div className="flex min-w-0 flex-col">
         <span
           className={`font-serif-optical font-semibold leading-none text-white transition-colors duration-300 group-hover:text-gold-light ${
-            compact ? 'text-[1rem] tracking-[0.14em]' : 'text-[1.08rem] tracking-[0.16em] sm:text-[1.22rem] sm:tracking-[0.2em]'
+            compact
+              ? 'text-[1rem] tracking-[0.12em]'
+              : 'text-[0.98rem] tracking-[0.14em] sm:text-[1.16rem] sm:tracking-[0.19em]'
           }`}
         >
           MARLENE BRITS
         </span>
-        <span className="mt-1.5 flex items-center gap-2 text-[7px] font-semibold uppercase tracking-[0.3em] text-gold/78 sm:text-[8px] sm:tracking-[0.38em]">
+        <span className="mt-1.5 flex items-center gap-2 text-[7px] font-semibold uppercase tracking-[0.28em] text-gold/78 sm:text-[8px] sm:tracking-[0.36em]">
           <span className="h-px w-7 bg-gradient-to-r from-gold to-transparent" />
           Attorneys
         </span>
@@ -83,6 +73,8 @@ export default function Navigation() {
   const [activeSection, setActiveSection] = useState('home')
   const [mobileOpen, setMobileOpen] = useState(false)
 
+  const cleanPhone = useMemo(() => company.contact.phone.replace(/\s/g, ''), [])
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24)
     onScroll()
@@ -91,14 +83,14 @@ export default function Navigation() {
   }, [])
 
   useEffect(() => {
-    const sectionIds = NAV_LINKS.map((link) => link.href.slice(1))
+    const sectionIds = Array.from(new Set(MOBILE_NAV_LINKS.map((link) => link.href.slice(1))))
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) setActiveSection(entry.target.id)
         })
       },
-      { rootMargin: '-38% 0px -58% 0px', threshold: 0 }
+      { rootMargin: '-34% 0px -60% 0px', threshold: 0 }
     )
 
     sectionIds.forEach((id) => {
@@ -116,16 +108,22 @@ export default function Navigation() {
     }
   }, [mobileOpen])
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileOpen(false)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
+
   const handleNavClick = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
       event.preventDefault()
       scrollToHash(href)
       if (mobileOpen) setMobileOpen(false)
     },
     [mobileOpen]
   )
-
-  const cleanPhone = company.contact.phone.replace(/\s/g, '')
 
   return (
     <>
@@ -134,27 +132,28 @@ export default function Navigation() {
         className={`fixed left-0 right-0 top-0 px-3 pt-3 sm:px-4 ${mobileOpen ? 'z-[90]' : 'z-50'}`}
         initial={{ y: -96, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
       >
         <div
-          className={`mx-auto max-w-7xl overflow-hidden rounded-[1.35rem] border transition-all duration-500 ${
+          className={`mx-auto max-w-7xl rounded-[1.45rem] border transition-all duration-500 ${
             mobileOpen
-              ? 'border-gold/34 bg-[linear-gradient(135deg,rgba(5,8,20,0.96),rgba(13,20,37,0.92))] shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl'
+              ? 'border-gold/36 bg-[#050814]/94 shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl'
               : isScrolled
-                ? 'border-gold/24 bg-[linear-gradient(135deg,rgba(5,8,20,0.90),rgba(13,20,37,0.78))] shadow-[0_22px_80px_rgba(0,0,0,0.35)] backdrop-blur-2xl'
-                : 'border-white/12 bg-[linear-gradient(135deg,rgba(5,8,20,0.72),rgba(13,20,37,0.56))] shadow-[0_14px_50px_rgba(0,0,0,0.18)] backdrop-blur-xl'
+                ? 'border-gold/24 bg-[#050814]/86 shadow-[0_22px_80px_rgba(0,0,0,0.32)] backdrop-blur-2xl'
+                : 'border-white/12 bg-[#050814]/58 shadow-[0_14px_50px_rgba(0,0,0,0.16)] backdrop-blur-xl'
           }`}
         >
-          <div className="relative flex h-[72px] items-center justify-between gap-4 px-4 sm:px-5 lg:px-6">
+          <div className="relative flex h-[72px] items-center justify-between gap-4 overflow-hidden rounded-[1.45rem] px-4 sm:px-5 lg:px-6">
             <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/70 to-transparent" />
             <div className="absolute -left-16 top-0 h-28 w-28 rounded-full bg-gold/10 blur-3xl" />
+            <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/[0.035] blur-2xl" />
 
             <a href="#home" onClick={(event) => handleNavClick(event, '#home')} className="relative z-10 min-w-0">
               <BrandMark />
             </a>
 
             <nav className="hidden items-center rounded-full border border-white/10 bg-white/[0.045] p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl lg:flex">
-              {NAV_LINKS.map((link) => {
+              {PRIMARY_NAV_LINKS.map((link) => {
                 const id = link.href.slice(1)
                 const isActive = activeSection === id
                 return (
@@ -162,7 +161,7 @@ export default function Navigation() {
                     key={link.href}
                     href={link.href}
                     onClick={(event) => handleNavClick(event, link.href)}
-                    className={`relative rounded-full px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 xl:px-4 ${
+                    className={`relative rounded-full px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 xl:px-5 ${
                       isActive ? 'text-[#071020]' : 'text-white/66 hover:text-gold'
                     }`}
                   >
@@ -170,7 +169,7 @@ export default function Navigation() {
                       <motion.span
                         layoutId="desktop-nav-pill"
                         className="absolute inset-0 rounded-full bg-[linear-gradient(135deg,#f4d79b,#c58a44)] shadow-[0_12px_35px_rgba(214,165,96,0.24)]"
-                        transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                       />
                     )}
                     <span className="relative z-10">{link.label}</span>
@@ -182,7 +181,7 @@ export default function Navigation() {
             <div className="hidden items-center gap-2 lg:flex">
               <a
                 href={`tel:${cleanPhone}`}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/22 bg-gold/10 text-gold transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold hover:text-[#071020] hover:shadow-[0_18px_48px_rgba(214,165,96,0.26)]"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/24 bg-gold/10 text-gold transition-all duration-300 hover:-translate-y-0.5 hover:bg-gold hover:text-[#071020] hover:shadow-[0_18px_48px_rgba(214,165,96,0.26)]"
                 aria-label="Call Marlene Brits Attorneys"
               >
                 <Phone className="h-4 w-4" />
@@ -202,7 +201,7 @@ export default function Navigation() {
             <button
               type="button"
               onClick={() => setMobileOpen((open) => !open)}
-              className="relative z-[100] flex h-11 w-11 items-center justify-center rounded-2xl border border-gold/26 bg-[#071020]/82 text-white shadow-[0_14px_35px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all duration-300 hover:border-gold/50 hover:text-gold lg:hidden"
+              className="relative z-[100] flex h-11 w-11 items-center justify-center rounded-2xl border border-gold/28 bg-[#071020]/84 text-white shadow-[0_14px_35px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-xl transition-all duration-300 hover:border-gold/50 hover:text-gold lg:hidden"
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
             >
@@ -210,20 +209,20 @@ export default function Navigation() {
                 {mobileOpen ? (
                   <motion.span
                     key="close"
-                    initial={{ rotate: -45, opacity: 0, scale: 0.8 }}
+                    initial={{ rotate: -45, opacity: 0, scale: 0.85 }}
                     animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                    exit={{ rotate: 45, opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.22 }}
+                    exit={{ rotate: 45, opacity: 0, scale: 0.85 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <X className="h-5 w-5" />
                   </motion.span>
                 ) : (
                   <motion.span
                     key="menu"
-                    initial={{ rotate: 45, opacity: 0, scale: 0.8 }}
+                    initial={{ rotate: 45, opacity: 0, scale: 0.85 }}
                     animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                    exit={{ rotate: -45, opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.22 }}
+                    exit={{ rotate: -45, opacity: 0, scale: 0.85 }}
+                    transition={{ duration: 0.2 }}
                   >
                     <Menu className="h-5 w-5" />
                   </motion.span>
@@ -237,10 +236,10 @@ export default function Navigation() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            variants={overlayVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[70] overflow-y-auto bg-[#050814] px-5 pb-8 pt-28 text-white"
           >
             <button
@@ -253,29 +252,29 @@ export default function Navigation() {
             </button>
 
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_16%,rgba(214,165,96,0.2),transparent_24rem),radial-gradient(circle_at_80%_70%,rgba(255,255,255,0.08),transparent_22rem),linear-gradient(135deg,#050814,#0d1425_55%,#050814)]" />
-            <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:52px_52px]" />
+            <div className="absolute inset-0 opacity-[0.11] [background-image:linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:52px_52px]" />
 
             <div className="relative z-10 mx-auto flex min-h-full max-w-lg flex-col">
               <div className="rounded-[1.75rem] border border-gold/20 bg-white/[0.055] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.34)] backdrop-blur-2xl">
                 <BrandMark compact />
                 <div className="mt-5 flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.045] p-4">
                   <ShieldCheck className="h-5 w-5 shrink-0 text-gold" />
-                  <p className="text-sm leading-6 text-white/66">Personalised legal representation in Pretoria East.</p>
+                  <p className="text-sm leading-6 text-white/66">Attorney, conveyancer and notary in Pretoria East.</p>
                 </div>
               </div>
 
               <nav className="mt-6 grid gap-3">
-                {NAV_LINKS.map((link, index) => {
+                {MOBILE_NAV_LINKS.map((link, index) => {
                   const isActive = activeSection === link.href.slice(1)
                   return (
                     <motion.a
                       key={link.href}
                       href={link.href}
                       custom={index}
-                      variants={mobileLinkVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
+                      initial={{ opacity: 0, y: 22, filter: 'blur(8px)' }}
+                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}
+                      transition={{ delay: 0.04 * index + 0.08, duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
                       onClick={(event) => handleNavClick(event, link.href)}
                       className={`group flex items-center justify-between rounded-[1.25rem] border px-5 py-4 transition-all duration-300 ${
                         isActive
