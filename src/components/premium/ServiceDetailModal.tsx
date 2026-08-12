@@ -136,7 +136,7 @@ export default function ServiceDetailModal({ area, open, onClose }: ServiceDetai
                 </FadeIn>
 
                 <FadeIn delay={0.12}>
-                  <DialogTitle className="mt-7 max-w-lg font-serif-optical text-[clamp(2.35rem,6vw,4.55rem)] font-semibold leading-[0.92] tracking-[-0.058em] text-white">
+                  <DialogTitle className="mt-7 max-w-lg font-serif text-[clamp(2.35rem,6vw,4.55rem)] font-semibold leading-[0.92] tracking-[-0.058em] text-white">
                     {area.shortTitle}
                   </DialogTitle>
                 </FadeIn>
@@ -277,7 +277,7 @@ export default function ServiceDetailModal({ area, open, onClose }: ServiceDetai
                                 {String(index + 1).padStart(2, '0')}
                               </span>
                               <div className="pb-2 pt-0.5">
-                                <h4 className="font-serif-optical text-2xl font-semibold leading-tight text-white">
+                                <h4 className="font-serif text-2xl font-semibold leading-tight text-white">
                                   {step.step}
                                 </h4>
                                 <p className="mt-2 text-sm leading-7 text-white/58">{step.description}</p>
@@ -298,7 +298,7 @@ export default function ServiceDetailModal({ area, open, onClose }: ServiceDetai
                             value={`service-faq-${index}`}
                             className="overflow-hidden rounded-[1.25rem] border border-white/10 bg-white/[0.055] px-5 transition-all duration-300 data-[state=open]:border-gold/34 data-[state=open]:bg-gold/10"
                           >
-                            <AccordionTrigger className="py-5 text-left font-serif-optical text-lg font-semibold leading-snug text-white hover:text-gold hover:no-underline [&>svg]:text-gold/70">
+                            <AccordionTrigger className="py-5 text-left font-serif text-lg font-semibold leading-snug text-white hover:text-gold hover:no-underline [&>svg]:text-gold/70">
                               {faq.question}
                             </AccordionTrigger>
                             <AccordionContent className="pb-5 text-sm leading-7 text-white/62">

@@ -1,11 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import "./mobile-fixes.css";
-import "./premium-upgrades.css";
-import "./typography-upgrades.css";
-import "./image-placement-upgrades.css";
-import "./performance-upgrades.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
@@ -77,6 +72,14 @@ export const metadata: Metadata = {
     },
   },
   alternates: { canonical: "https://mbritslaw.co.za" },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#07111f",
 };
 
 const legalServiceSchema = {
