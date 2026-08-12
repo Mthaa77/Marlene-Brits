@@ -24,14 +24,14 @@ export default function HeroSection() {
       <div className="pointer-events-none absolute inset-0 -z-20 bg-[linear-gradient(135deg,#07101d_0%,#091728_58%,#07101d_100%)]" />
       <div className="pointer-events-none absolute left-0 top-1/4 -z-10 h-px w-1/3 bg-gradient-to-r from-[#c99a52]/55 to-transparent" />
 
-      <div className="mx-auto grid min-h-[calc(100svh-9rem)] w-full max-w-[90rem] items-center gap-12 pb-12 lg:grid-cols-[0.82fr_1.18fr] lg:gap-10 lg:pb-14">
+      <div className="mx-auto grid w-full max-w-[90rem] items-center gap-12 pb-12 lg:min-h-[calc(100svh-15rem)] lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 lg:pb-12">
         <motion.div
           initial={reduceMotion ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 mx-auto max-w-2xl text-center lg:mx-0 lg:text-left"
         >
-          <h1 className="font-serif-optical text-[clamp(3.35rem,10vw,6.9rem)] font-medium leading-[0.91] tracking-[-0.065em] text-[#fffaf0]">
+          <h1 className="font-serif-optical text-[clamp(3.35rem,6.5vw,5.25rem)] font-medium leading-[0.94] tracking-[-0.055em] text-[#fffaf0]">
             Legal guidance,
             <span className="mt-2 block text-[#d6a75e]">personally delivered.</span>
           </h1>
