@@ -22,9 +22,9 @@ export default function AboutSection() {
 
         <motion.div initial={reduceMotion ? false : { opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="pt-5 lg:pt-0">
           <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9b6d30]">About the firm</span>
-          <h2 className="mt-4 max-w-xl font-serif text-[clamp(2.9rem,6vw,5.3rem)] font-medium leading-[0.93] tracking-[-0.05em] text-[#07111f]">Built on trust. Defined by care.</h2>
-          <p className="mt-6 text-base leading-8 text-[#526071] sm:text-lg">Based at Pegasus Building 1 in Menlyn Maine, Marlene Brits Attorneys brings together legal precision and genuinely personal service across conveyancing, deceased estates, estate planning, family matters, notarial work and civil disputes.</p>
-          <p className="mt-4 text-base leading-8 text-[#526071]">The firm&apos;s standard is practical: listen before advising, explain before proceeding and stay attentive to the detail that protects the client&apos;s interests.</p>
+          <h2 className="mt-4 max-w-xl font-serif text-[clamp(2.9rem,6vw,5.3rem)] font-medium leading-[0.93] tracking-[-0.05em] text-[#07111f]">Built on trust. Measured by the clarity clients receive.</h2>
+          <p className="mt-6 text-base leading-8 text-[#526071] sm:text-lg">Based at Pegasus Building 1 in Menlyn Maine, Marlene Brits Attorneys combines legal precision with genuinely personal service across conveyancing, deceased estates, estate planning, family matters, notarial work and civil disputes.</p>
+          <p className="mt-4 text-base leading-8 text-[#526071]">The standard is simple but demanding: understand the person before the paperwork, explain the implications before proceeding and remain attentive to every detail capable of affecting the client&apos;s interests.</p>
           <div className="mt-7 space-y-3">{standards.map((item) => <div key={item} className="flex items-center gap-3 rounded-xl border border-[#07111f]/8 bg-[#f8f5ee] px-4 py-3 text-sm font-medium text-[#263548]"><CheckCircle2 className="h-4 w-4 shrink-0 text-[#b7823e]" />{item}</div>)}</div>
           <a href="#team" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-[#8d612a] transition hover:gap-3">Meet the team <ArrowRight className="h-4 w-4" /></a>
         </motion.div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
   ArrowRight,
@@ -48,8 +49,8 @@ export default function ServicesSection() {
             <h2 className="section-title mt-5 max-w-[11ch] text-[#07111f]">One firm. Several ways <span className="italic text-[#a87535]">forward.</span></h2>
           </div>
           <div className="lg:justify-self-end">
-            <p className="max-w-2xl text-[1rem] leading-8 text-[#526071] sm:text-[1.08rem]">Legal matters rarely arrive with a clear label. Explore the firm&apos;s services in plain language, understand what support may involve, and take a more confident first step.</p>
-            <p className="mt-3 text-xs leading-6 text-[#788392]">Not sure where to begin? The service guide explains common situations, the process and what may be useful to prepare.</p>
+            <p className="max-w-2xl text-[1rem] leading-8 text-[#526071] sm:text-[1.08rem]">Legal matters rarely arrive with a clear label. Begin with what is happening in your life or business, then explore the legal support, likely process and practical next step in language that makes sense.</p>
+            <p className="mt-3 text-xs leading-6 text-[#788392]">Each detailed service guide helps you recognise when to act, what the firm can manage and what may be useful to prepare—before you commit to a consultation.</p>
           </div>
         </div>
 
@@ -135,12 +136,13 @@ export default function ServicesSection() {
                   <div className="rounded-[1.3rem_3.4rem_3.4rem_1.3rem] bg-[#07111f] p-5 text-white shadow-[0_20px_60px_rgba(7,17,31,0.15)] sm:p-6">
                     <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#d9af6b]">What you can expect</p>
                     <p className="mt-3 font-serif text-2xl leading-tight text-[#fffaf1]">Clear advice before the legal detail begins.</p>
-                    <p className="mt-3 text-xs leading-6 text-white/55">Understand the likely process, useful documents and next step before deciding how to proceed.</p>
+                    <p className="mt-3 text-xs leading-6 text-white/55">See the likely route, the documents that may matter and the decisions ahead—so your first conversation starts with purpose.</p>
                   </div>
                 </div>
 
                 <div className="mt-auto flex flex-col gap-3 border-t border-[#07111f]/10 pt-7 sm:flex-row sm:items-center">
-                  <button type="button" onClick={() => setSelectedService(active)} className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#d9af6b] px-7 text-sm font-bold text-[#07111f] shadow-[0_17px_45px_rgba(168,117,53,0.2)] transition hover:-translate-y-0.5 hover:bg-[#edcd94] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#07111f]">Open service guide <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></button>
+                  <Link href={`/services/${active.id}`} className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-full bg-[#d9af6b] px-7 text-sm font-bold text-[#07111f] shadow-[0_17px_45px_rgba(168,117,53,0.2)] transition hover:-translate-y-0.5 hover:bg-[#edcd94] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#07111f] lg:hidden">Explore the full service <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></Link>
+                  <button type="button" onClick={() => setSelectedService(active)} className="group hidden min-h-14 items-center justify-center gap-2 rounded-full bg-[#d9af6b] px-7 text-sm font-bold text-[#07111f] shadow-[0_17px_45px_rgba(168,117,53,0.2)] transition hover:-translate-y-0.5 hover:bg-[#edcd94] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#07111f] lg:inline-flex">Open service guide <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></button>
                   <a href="#consultation-builder" className="inline-flex min-h-14 items-center justify-center gap-2 rounded-full border border-[#07111f]/12 px-7 text-sm font-semibold text-[#435266] transition hover:border-[#a87535]/40 hover:bg-white">Prepare for a consultation <ArrowRight className="h-4 w-4 text-[#a87535]" /></a>
                 </div>
               </motion.article>

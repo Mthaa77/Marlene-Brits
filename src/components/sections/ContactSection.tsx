@@ -17,7 +17,7 @@ export default function ContactSection() {
             <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d9af6b]">Contact · Menlyn Maine</span>
             <h2 className="mt-4 max-w-4xl font-serif text-[clamp(3.2rem,7vw,6.5rem)] font-medium leading-[0.89] tracking-[-0.052em] text-[#fffaf1]">Your next step can begin with a <span className="italic text-[#e0b56f]">conversation.</span></h2>
           </div>
-          <p className="max-w-md text-sm leading-7 text-white/58 sm:text-base">You do not need to have every answer before making contact. Share the essentials and the firm will help you understand the most sensible next step.</p>
+          <p className="max-w-md text-sm leading-7 text-white/58 sm:text-base">You do not need the perfect legal description or every document before making contact. Share what happened, what concerns you and any important date—the firm will help you identify the most sensible next step.</p>
         </div>
 
         <div className="grid gap-8 xl:grid-cols-[0.78fr_1.22fr] xl:gap-10">
@@ -25,7 +25,7 @@ export default function ContactSection() {
             <BrandPlaque compact priority className="w-full" />
 
             <div className="mt-8">
-              <p className="max-w-xl text-base leading-8 text-white/62">Call, email or send a WhatsApp message with a brief description of the matter. The firm can then identify the appropriate service, flag anything urgent and explain what may be helpful to prepare.</p>
+              <p className="max-w-xl text-base leading-8 text-white/62">Call, email or send a WhatsApp message with a short description of the matter. The first response is designed to reduce uncertainty: identify the relevant service, flag anything time-sensitive and explain what may be useful to prepare.</p>
               <div className="mt-7 grid gap-3 sm:grid-cols-2">
                 <a href={`tel:${phone}`} className="group inline-flex min-h-14 items-center justify-between rounded-full bg-[#d9af6b] px-6 text-sm font-semibold text-[#07111f] shadow-[0_18px_52px_rgba(217,175,107,0.2)] hover:bg-[#edcd94]"><span className="inline-flex items-center gap-2"><Phone className="h-4 w-4" /> Call the firm</span><ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></a>
                 <a href="https://wa.me/27766116965?text=Hello%20Marlene%20Brits%20Attorneys%2C%20I%20would%20like%20to%20arrange%20a%20consultation." target="_blank" rel="noopener noreferrer" className="group inline-flex min-h-14 items-center justify-between rounded-full border border-white/14 px-6 text-sm font-semibold text-white hover:border-[#d9af6b]/45 hover:bg-white/5"><span className="inline-flex items-center gap-2"><MessageCircle className="h-4 w-4 text-[#edcd94]" /> WhatsApp</span><ArrowUpRight className="h-4 w-4 text-[#d9af6b] transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></a>

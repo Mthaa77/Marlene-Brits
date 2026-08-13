@@ -60,7 +60,7 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.p variants={reduceMotion ? undefined : entrance} className="mt-6 max-w-xl text-[0.98rem] leading-7 text-white/72 sm:text-[1.08rem] sm:leading-8">
-            Direct, considered legal guidance for property, estates, family matters, notarial work and civil disputes—explained clearly and handled with care.
+            When the decision matters, you deserve more than legal terminology. Receive direct, considered guidance for property, estates, family matters, notarial work and civil disputes—explained clearly and carried through with care.
           </motion.p>
 
           <motion.div variants={reduceMotion ? undefined : entrance} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">

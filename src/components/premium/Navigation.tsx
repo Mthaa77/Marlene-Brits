@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 import { ArrowRight, ArrowUpRight, Compass, FileCheck2, Menu, Phone, X } from 'lucide-react';
 import BrandPlaque from '@/components/premium/BrandPlaque';
 import { company } from '@/data/company';
@@ -49,6 +50,7 @@ function Wordmark() {
 }
 
 export default function Navigation() {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -106,11 +108,17 @@ export default function Navigation() {
   }, [mobileOpen]);
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (pathname !== '/') {
+      setMobileOpen(false);
+      return;
+    }
     event.preventDefault();
     setActiveSection(href.slice(1));
     scrollToHash(href);
     setMobileOpen(false);
-  }, []);
+  }, [pathname]);
+
+  const resolveHref = useCallback((href: string) => (pathname === '/' ? href : `/${href}`), [pathname]);
 
   const phone = company.contact.phone.replace(/\s/g, '');
 
@@ -123,15 +131,15 @@ export default function Navigation() {
         className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4"
       >
         <div className={`mx-auto flex h-[68px] max-w-[88rem] items-center justify-between gap-3 rounded-[1.45rem] border px-3.5 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 sm:px-5 ${isScrolled || mobileOpen ? 'border-[#d9af6b]/38 bg-[#07111f]/96 shadow-[0_18px_54px_rgba(1,7,15,0.34)] backdrop-blur-xl' : 'border-white/15 bg-[#07111f]/86 shadow-[0_10px_30px_rgba(1,7,15,0.18)] backdrop-blur-md'}`}>
-          <a href="#home" onClick={(event) => handleClick(event, '#home')} aria-label="Marlene Brits Attorneys home" className="min-w-0 shrink-0"><Wordmark /></a>
+          <a href={resolveHref('#home')} onClick={(event) => handleClick(event, '#home')} aria-label="Marlene Brits Attorneys home" className="min-w-0 shrink-0"><Wordmark /></a>
 
           <nav className="hidden items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.035] p-1 xl:flex" aria-label="Primary navigation">
             {links.map((link) => {
               const isActive = activeSection === link.href.slice(1);
               return (
-                <a key={link.href} href={link.href} onClick={(event) => handleClick(event, link.href)} aria-current={isActive ? 'location' : undefined} className={`relative rounded-full px-3 py-2 text-[0.72rem] font-medium transition-[background-color,color,transform] duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d9af6b] ${isActive ? 'bg-[#d9af6b]/14 text-[#f2d49d]' : 'text-white/58 hover:bg-white/[0.055] hover:text-white'}`}>
+                <a key={link.href} href={resolveHref(link.href)} onClick={(event) => handleClick(event, link.href)} aria-current={pathname === '/' && isActive ? 'location' : undefined} className={`relative rounded-full px-3 py-2 text-[0.72rem] font-medium transition-[background-color,color,transform] duration-250 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d9af6b] ${pathname === '/' && isActive ? 'bg-[#d9af6b]/14 text-[#f2d49d]' : 'text-white/58 hover:bg-white/[0.055] hover:text-white'}`}>
                   {link.label}
-                  {isActive && !reduceMotion && <motion.span layoutId="nav-active" className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#d9af6b]" transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }} />}
+                  {pathname === '/' && isActive && !reduceMotion && <motion.span layoutId="nav-active" className="absolute -bottom-0.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-[#d9af6b]" transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }} />}
                 </a>
               );
             })}
@@ -139,7 +147,7 @@ export default function Navigation() {
 
           <div className="flex shrink-0 items-center gap-2">
             <a href={`tel:${phone}`} aria-label={`Call ${company.name}`} className="hidden h-10 w-10 items-center justify-center rounded-xl border border-white/12 text-[#d9af6b] transition-[background-color,border-color,transform] duration-250 hover:-translate-y-0.5 hover:border-[#d9af6b]/50 hover:bg-[#d9af6b]/10 sm:flex"><Phone className="h-4 w-4" /></a>
-            <a href="#contact" onClick={(event) => handleClick(event, '#contact')} className="hidden min-h-10 items-center gap-2 rounded-xl bg-[#d9af6b] px-4 text-[0.76rem] font-semibold text-[#07111f] shadow-[0_12px_28px_rgba(217,175,107,0.18)] transition-[background-color,box-shadow,transform] duration-250 hover:-translate-y-0.5 hover:bg-[#edcd94] md:inline-flex">Consultation <ArrowUpRight className="h-3.5 w-3.5" /></a>
+            <a href={resolveHref('#contact')} onClick={(event) => handleClick(event, '#contact')} className="hidden min-h-10 items-center gap-2 rounded-xl bg-[#d9af6b] px-4 text-[0.76rem] font-semibold text-[#07111f] shadow-[0_12px_28px_rgba(217,175,107,0.18)] transition-[background-color,box-shadow,transform] duration-250 hover:-translate-y-0.5 hover:bg-[#edcd94] md:inline-flex">Consultation <ArrowUpRight className="h-3.5 w-3.5" /></a>
             <button type="button" onClick={() => setMobileOpen((open) => !open)} className="grid h-10 w-10 place-items-center rounded-xl border border-[#d9af6b]/30 text-white transition-[background-color,border-color,color] duration-250 hover:bg-white/5 xl:hidden" aria-label={mobileOpen ? 'Close menu' : 'Open menu'} aria-expanded={mobileOpen}>{mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
           </div>
         </div>
@@ -155,9 +163,9 @@ export default function Navigation() {
                 {links.map((link, index) => {
                   const isActive = activeSection === link.href.slice(1);
                   return (
-                    <a key={link.href} href={link.href} onClick={(event) => handleClick(event, link.href)} className={`group flex items-center justify-between border-b border-white/10 py-4 font-serif text-[1.45rem] transition-[color,background-color] duration-250 sm:px-4 ${isActive ? 'text-[#edcd94]' : 'text-[#fffaf1] hover:text-[#edcd94]'}`}>
+                    <a key={link.href} href={resolveHref(link.href)} onClick={(event) => handleClick(event, link.href)} className={`group flex items-center justify-between border-b border-white/10 py-4 font-serif text-[1.45rem] transition-[color,background-color] duration-250 sm:px-4 ${pathname === '/' && isActive ? 'text-[#edcd94]' : 'text-[#fffaf1] hover:text-[#edcd94]'}`}>
                       {link.label}
-                      <span className="flex items-center gap-2 font-sans text-[9px] tracking-[0.18em] text-[#d9af6b]"><span className={`h-1.5 w-1.5 rounded-full ${isActive ? 'bg-[#d9af6b]' : 'border border-[#d9af6b]/50'}`} />0{index + 1}</span>
+                      <span className="flex items-center gap-2 font-sans text-[9px] tracking-[0.18em] text-[#d9af6b]"><span className={`h-1.5 w-1.5 rounded-full ${pathname === '/' && isActive ? 'bg-[#d9af6b]' : 'border border-[#d9af6b]/50'}`} />0{index + 1}</span>
                     </a>
                   );
                 })}
@@ -168,7 +176,7 @@ export default function Navigation() {
                 {clientTools.map((tool) => {
                   const Icon = tool.icon;
                   return (
-                    <a key={tool.href} href={tool.href} onClick={(event) => handleClick(event, tool.href)} className="group flex items-center gap-4 rounded-[1.25rem_2.75rem_2.75rem_1.25rem] border border-white/10 bg-white/[0.045] p-4 transition-[background-color,border-color,transform] duration-250 hover:border-[#d9af6b]/32 hover:bg-white/[0.07]">
+                    <a key={tool.href} href={resolveHref(tool.href)} onClick={(event) => handleClick(event, tool.href)} className="group flex items-center gap-4 rounded-[1.25rem_2.75rem_2.75rem_1.25rem] border border-white/10 bg-white/[0.045] p-4 transition-[background-color,border-color,transform] duration-250 hover:border-[#d9af6b]/32 hover:bg-white/[0.07]">
                       <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#d9af6b] text-[#07111f]"><Icon className="h-[1.125rem] w-[1.125rem]" /></span>
                       <span className="min-w-0"><span className="block text-sm font-semibold text-white">{tool.label}</span><span className="mt-1 block text-xs text-white/42">{tool.copy}</span></span>
                       <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#d9af6b] transition-transform duration-250 group-hover:translate-x-1" />
@@ -178,7 +186,7 @@ export default function Navigation() {
               </div>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto]">
-                <a href="#contact" onClick={(event) => handleClick(event, '#contact')} className="flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#d9af6b] px-6 text-sm font-semibold text-[#07111f]">Book a consultation <ArrowUpRight className="h-4 w-4" /></a>
+                <a href={resolveHref('#contact')} onClick={(event) => handleClick(event, '#contact')} className="flex min-h-14 items-center justify-center gap-2 rounded-xl bg-[#d9af6b] px-6 text-sm font-semibold text-[#07111f]">Book a consultation <ArrowUpRight className="h-4 w-4" /></a>
                 <a href={`tel:${phone}`} className="flex min-h-14 items-center justify-center gap-2 rounded-xl border border-white/12 px-6 text-sm text-white/68"><Phone className="h-4 w-4 text-[#d9af6b]" />{company.contact.phone}</a>
               </div>
             </motion.nav>

@@ -2,13 +2,22 @@ import { ArrowRight, ArrowUpRight, Clock3, Compass, FileCheck2, Mail, MapPin, Me
 import BrandPlaque from '@/components/premium/BrandPlaque';
 import { company } from '@/data/company';
 
-const practiceLinks = ['Conveyancing', 'Deceased Estates', 'Estate Planning', 'Family Law', 'Antenuptial Contracts', 'Notarial Services', 'Civil Litigation', 'Debt Collection'];
+const practiceLinks = [
+  { label: 'Conveyancing', id: 'conveyancing' },
+  { label: 'Deceased Estates', id: 'deceased-estates' },
+  { label: 'Estate Planning', id: 'estate-planning' },
+  { label: 'Family Law', id: 'family-law' },
+  { label: 'Antenuptial Contracts', id: 'antenuptial-contracts' },
+  { label: 'Notarial Services', id: 'notarial-services' },
+  { label: 'Civil Litigation', id: 'civil-litigation' },
+  { label: 'Debt Collection', id: 'debt-collection' },
+];
 
 const clientLinks = [
-  { label: 'Legal Needs Pathfinder', href: '#pathfinder', icon: Compass },
-  { label: 'Consultation Preparation', href: '#consultation-builder', icon: FileCheck2 },
-  { label: 'Meet the team', href: '#team' },
-  { label: 'Frequently asked questions', href: '#faq' },
+  { label: 'Legal Needs Pathfinder', href: '/#pathfinder', icon: Compass },
+  { label: 'Consultation Preparation', href: '/#consultation-builder', icon: FileCheck2 },
+  { label: 'Meet the team', href: '/#team' },
+  { label: 'Frequently asked questions', href: '/#faq' },
 ];
 
 export default function FooterSection() {
@@ -20,9 +29,9 @@ export default function FooterSection() {
           <div className="pointer-events-none absolute -right-12 -top-16 h-60 w-60 rounded-full border border-[#d9af6b]/12" />
           <div className="pointer-events-none absolute -right-2 -top-8 h-40 w-40 rounded-full border border-white/[0.06]" />
           <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
-            <div><span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#d9af6b]">A considered next step</span><h2 className="mt-4 max-w-4xl font-serif text-[clamp(2.5rem,5vw,5rem)] font-medium leading-[0.94] tracking-[-0.045em] text-[#fffaf1]">Bring the matter. Leave the first conversation with greater clarity.</h2><p className="mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">Speak directly with a Pretoria East legal team committed to personal attention, understandable guidance and careful legal execution.</p></div>
+            <div><span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-[#d9af6b]">A considered next step</span><h2 className="mt-4 max-w-4xl font-serif text-[clamp(2.5rem,5vw,5rem)] font-medium leading-[0.94] tracking-[-0.045em] text-[#fffaf1]">Bring the matter as it is. Leave the first conversation clearer about what comes next.</h2><p className="mt-5 max-w-2xl text-sm leading-7 text-white/58 sm:text-base">Speak directly with a Pretoria East legal team committed to personal attention, understandable guidance and careful execution when the detail matters.</p></div>
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-              <a href="#contact" className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[#d9af6b] px-7 text-sm font-semibold text-[#07111f] shadow-[0_18px_50px_rgba(217,175,107,0.22)] transition hover:-translate-y-0.5 hover:bg-[#edcd94]">Book a consultation <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></a>
+              <a href="/#contact" className="group inline-flex min-h-14 items-center justify-center gap-3 rounded-full bg-[#d9af6b] px-7 text-sm font-semibold text-[#07111f] shadow-[0_18px_50px_rgba(217,175,107,0.22)] transition hover:-translate-y-0.5 hover:bg-[#edcd94]">Book a consultation <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></a>
               <a href="https://wa.me/27766116965?text=Hello%20Marlene%20Brits%20Attorneys%2C%20I%20would%20like%20guidance%20on%20a%20legal%20matter." target="_blank" rel="noopener noreferrer" className="inline-flex min-h-14 items-center justify-center gap-3 rounded-full border border-white/12 bg-white/[0.035] px-7 text-sm font-semibold text-white/72 transition hover:border-[#d9af6b]/38 hover:bg-white/[0.06] hover:text-white"><MessageCircle className="h-4 w-4 text-[#d9af6b]" /> WhatsApp the firm</a>
             </div>
           </div>
@@ -31,14 +40,14 @@ export default function FooterSection() {
         <div className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.2fr_0.95fr_0.8fr_1.15fr] lg:gap-12 lg:py-16">
           <div>
             <BrandPlaque compact className="max-w-sm" />
-            <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">Personalised legal support across property, estates, family matters, notarial services and civil disputes.</p>
+            <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">Personal legal guidance for property, estates, family matters, notarial work and civil disputes—explained with clarity and managed with care.</p>
             <p className="mt-6 max-w-sm font-serif text-xl italic leading-snug text-[#edcd94]/74">“You are never just another client.”</p>
             <div className="mt-7 flex flex-wrap gap-2">{company.credentials.map((credential) => <span key={credential} className="rounded-full border border-white/9 bg-white/[0.035] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/44">{credential}</span>)}</div>
           </div>
 
           <div>
             <p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#d9af6b]">Practice areas</p>
-            <nav className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3">{practiceLinks.map((label) => <a key={label} href="#services" className="group inline-flex items-center gap-2 text-xs leading-5 text-white/44 transition hover:text-[#edcd94]"><span className="h-1 w-1 rounded-full bg-[#d9af6b]/55 transition group-hover:scale-150" />{label}</a>)}</nav>
+            <nav className="mt-5 grid grid-cols-2 gap-x-5 gap-y-3">{practiceLinks.map((link) => <a key={link.id} href={`/services/${link.id}`} className="group inline-flex items-center gap-2 text-xs leading-5 text-white/44 transition hover:text-[#edcd94]"><span className="h-1 w-1 rounded-full bg-[#d9af6b]/55 transition group-hover:scale-150" />{link.label}</a>)}</nav>
           </div>
 
           <div>
