@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, Compass, FileCheck2, Menu, Phone, X } from 'lucide-react';
+import BrandPlaque from '@/components/premium/BrandPlaque';
 import { company } from '@/data/company';
 
 const links = [
@@ -14,6 +15,7 @@ const links = [
   { label: 'Approach', href: '#approach' },
   { label: 'Team', href: '#team' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Contact', href: '#contact' },
 ] as const;
 
 const clientTools = [
@@ -148,6 +150,7 @@ export default function Navigation() {
           <motion.div initial={reduceMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-0 z-40 overflow-y-auto bg-[#07111f]/98 px-4 pb-8 pt-24 text-white backdrop-blur-xl xl:hidden">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_8%,rgba(217,175,107,0.15),transparent_20rem)]" />
             <motion.nav initial={reduceMotion ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }} className="relative mx-auto max-w-2xl" aria-label="Mobile navigation">
+              <BrandPlaque compact className="mb-5 max-h-44 w-full" />
               <div className="grid border-t border-[#d9af6b]/25 sm:grid-cols-2">
                 {links.map((link, index) => {
                   const isActive = activeSection === link.href.slice(1);

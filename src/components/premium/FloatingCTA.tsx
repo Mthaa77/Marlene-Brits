@@ -34,7 +34,11 @@ export default function FloatingCTA() {
       const threshold = window.innerHeight * 0.55
       const contact = document.getElementById('contact')
       const beforeContact = !contact || contact.getBoundingClientRect().top > window.innerHeight * 0.35
-      const nextVisible = window.scrollY > threshold && beforeContact
+      const interactiveZoneVisible = Array.from(document.querySelectorAll<HTMLElement>('[data-interactive-zone]')).some((section) => {
+        const rect = section.getBoundingClientRect()
+        return rect.top < window.innerHeight * 0.82 && rect.bottom > window.innerHeight * 0.18
+      })
+      const nextVisible = window.scrollY > threshold && beforeContact && !interactiveZoneVisible
 
       if (visibleRef.current !== nextVisible) {
         visibleRef.current = nextVisible

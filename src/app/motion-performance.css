@@ -33,8 +33,15 @@ main > section:not(#home) {
 
 #home,
 #contact,
-#faq {
+#faq,
+#pathfinder,
+#consultation-builder {
   content-visibility: visible;
+}
+
+#pathfinder,
+#consultation-builder {
+  contain: none;
 }
 
 a,
@@ -59,7 +66,7 @@ svg {
 /* Smooth section reveals without extra JavaScript. Browsers without view timelines simply ignore this. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    main > section:not(#home):not(#contact):not(#faq) {
+    main > section:not(#home):not(#contact):not(#faq):not(#pathfinder):not(#consultation-builder) {
       animation: section-lift both var(--ease-soft);
       animation-timeline: view();
       animation-range: entry 0% cover 22%;

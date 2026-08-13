@@ -1,4 +1,5 @@
 import { ArrowRight, ArrowUpRight, Clock3, Compass, FileCheck2, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import BrandPlaque from '@/components/premium/BrandPlaque';
 import { company } from '@/data/company';
 
 const practiceLinks = ['Conveyancing', 'Deceased Estates', 'Estate Planning', 'Family Law', 'Antenuptial Contracts', 'Notarial Services', 'Civil Litigation', 'Debt Collection'];
@@ -29,7 +30,7 @@ export default function FooterSection() {
 
         <div className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.2fr_0.95fr_0.8fr_1.15fr] lg:gap-12 lg:py-16">
           <div>
-            <div className="flex items-center gap-3"><span className="relative grid h-12 w-12 place-items-center rounded-full border border-[#d9af6b]/42 bg-[#d9af6b]/10 font-serif text-base italic text-[#edcd94]">MB<span className="absolute inset-1 rounded-full border border-white/[0.06]" /></span><div><p className="font-serif text-xl tracking-[0.12em] text-[#fffaf1]">MARLENE BRITS</p><p className="mt-1 text-[7px] font-semibold uppercase tracking-[0.44em] text-[#d9af6b]">Attorneys</p></div></div>
+            <BrandPlaque compact className="max-w-sm" />
             <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">Personalised legal support across property, estates, family matters, notarial services and civil disputes.</p>
             <p className="mt-6 max-w-sm font-serif text-xl italic leading-snug text-[#edcd94]/74">“You are never just another client.”</p>
             <div className="mt-7 flex flex-wrap gap-2">{company.credentials.map((credential) => <span key={credential} className="rounded-full border border-white/9 bg-white/[0.035] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/44">{credential}</span>)}</div>
