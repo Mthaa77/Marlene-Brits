@@ -25,7 +25,7 @@ export default function DirectorWelcomeSection() {
 
         <motion.div initial={reduceMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}>
           <p className="font-signature text-[2.45rem] leading-none text-[#a87535] sm:text-[3.1rem]">A personal welcome</p>
-          <h2 className="mt-3 max-w-3xl font-serif text-[var(--text-h1)] font-medium leading-[0.9] tracking-[-0.052em] text-[#07111f]">A practice built around the <span className="italic text-[#a87535]">person</span> behind the matter.</h2>
+          <h2 className="mt-3 max-w-3xl font-serif text-[length:var(--text-h1)] font-medium leading-[0.9] tracking-[-0.052em] text-[#07111f]">A practice built around the <span className="italic text-[#a87535]">person</span> behind the matter.</h2>
 
           <div className="mt-8 grid gap-6 border-t border-[#07111f]/12 pt-7 sm:grid-cols-[auto_1fr]">
             <span className="grid h-12 w-12 place-items-center rounded-full bg-[#07111f] text-[#edcd94]"><Quote className="h-5 w-5" /></span>
