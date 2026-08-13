@@ -31,16 +31,16 @@ main > section:not(#home) {
   contain-intrinsic-size: auto 860px;
 }
 
-#home,
-#contact,
-#faq,
-#pathfinder,
-#consultation-builder {
+main > section#home,
+main > section#contact,
+main > section#faq,
+main > section#pathfinder,
+main > section#consultation-builder {
   content-visibility: visible;
 }
 
-#pathfinder,
-#consultation-builder {
+main > section#pathfinder,
+main > section#consultation-builder {
   contain: none;
 }
 
