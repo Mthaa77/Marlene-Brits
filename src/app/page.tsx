@@ -4,8 +4,10 @@ import BackToTop from '@/components/premium/BackToTop';
 import HeroSection from '@/components/sections/HeroSection';
 import LiveTickerSection from '@/components/sections/LiveTickerSection';
 import DirectorWelcomeSection from '@/components/sections/DirectorWelcomeSection';
+import SouthAfricanTrustSection from '@/components/sections/SouthAfricanTrustSection';
 import LegalPathfinderSection from '@/components/sections/LegalPathfinderSection';
 import ServicesSection from '@/components/sections/ServicesSection';
+import MatterUrgencySection from '@/components/sections/MatterUrgencySection';
 import AboutSection from '@/components/sections/AboutSection';
 import WhyChooseUsSection from '@/components/sections/WhyChooseUsSection';
 import ProcessSection from '@/components/sections/ProcessSection';
@@ -24,8 +26,10 @@ export default function Home() {
         <HeroSection />
         <LiveTickerSection />
         <DirectorWelcomeSection />
+        <SouthAfricanTrustSection />
         <LegalPathfinderSection />
         <ServicesSection />
+        <MatterUrgencySection />
         <AboutSection />
         <WhyChooseUsSection />
         <ProcessSection />

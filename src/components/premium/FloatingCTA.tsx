@@ -1,121 +1,70 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Calendar, MessageCircle, Phone, Sparkles } from 'lucide-react'
+import { motion, useReducedMotion } from 'framer-motion'
+import { MessageCircle, Phone } from 'lucide-react'
 import { company } from '@/data/company'
 
-function scrollToContact() {
-  const el = document.getElementById('contact')
-  if (!el) return
+const cleanPhone = company.contact.phone.replace(/\s/g, '')
+const phoneDigits = cleanPhone.replace(/\D/g, '')
+const internationalPhone = phoneDigits.startsWith('0') ? `27${phoneDigits.slice(1)}` : phoneDigits
+const whatsappMessage = encodeURIComponent(
+  'Hello Marlene Brits Attorneys, I would like to arrange a confidential conversation about a legal matter.'
+)
 
-  const top = el.getBoundingClientRect().top + window.scrollY - 92
-  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
-}
+const actions = [
+  {
+    label: 'WhatsApp the firm',
+    href: `https://wa.me/${internationalPhone}?text=${whatsappMessage}`,
+    icon: MessageCircle,
+    external: true,
+    buttonClass:
+      'border-emerald-200/45 bg-[linear-gradient(145deg,#2bd47d,#087f58)] text-white shadow-[0_12px_30px_rgba(15,160,98,0.28)]',
+  },
+  {
+    label: `Call ${company.contact.phone}`,
+    href: `tel:+${internationalPhone}`,
+    icon: Phone,
+    external: false,
+    buttonClass:
+      'border-[#f2cf91]/55 bg-[linear-gradient(145deg,#e8bd73,#b57936)] text-[#07111f] shadow-[0_12px_30px_rgba(183,122,54,0.25)]',
+  },
+]
 
 export default function FloatingCTA() {
-  const [visible, setVisible] = useState(false)
-  const frameRef = useRef<number | null>(null)
-  const visibleRef = useRef(false)
-
-  const cleanPhone = useMemo(() => company.contact.phone.replace(/\s/g, ''), [])
-  const internationalPhone = useMemo(() => {
-    const digits = cleanPhone.replace(/\D/g, '')
-    return digits.startsWith('0') ? `27${digits.slice(1)}` : digits
-  }, [cleanPhone])
-
-  const whatsappMessage = encodeURIComponent(
-    'Hello Marlene Brits Attorneys, I would like to enquire about a legal consultation.'
-  )
-
-  useEffect(() => {
-    const updateVisibility = () => {
-      frameRef.current = null
-      const threshold = window.innerHeight * 0.55
-      const contact = document.getElementById('contact')
-      const beforeContact = !contact || contact.getBoundingClientRect().top > window.innerHeight * 0.35
-      const interactiveZoneVisible = Array.from(document.querySelectorAll<HTMLElement>('[data-interactive-zone]')).some((section) => {
-        const rect = section.getBoundingClientRect()
-        return rect.top < window.innerHeight * 0.82 && rect.bottom > window.innerHeight * 0.18
-      })
-      const nextVisible = window.scrollY > threshold && beforeContact && !interactiveZoneVisible
-
-      if (visibleRef.current !== nextVisible) {
-        visibleRef.current = nextVisible
-        setVisible(nextVisible)
-      }
-    }
-
-    const handleScroll = () => {
-      if (frameRef.current !== null) return
-      frameRef.current = window.requestAnimationFrame(updateVisibility)
-    }
-
-    updateVisibility()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleScroll, { passive: true })
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleScroll)
-      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current)
-    }
-  }, [])
+  const reduceMotion = useReducedMotion()
 
   return (
-    <AnimatePresence initial={false}>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: 22, scale: 0.94 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 18, scale: 0.94 }}
-          transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-          className="fixed bottom-5 right-4 z-40 flex flex-col items-end gap-3 sm:bottom-6 sm:right-6"
-          style={{ perspective: '700px' }}
+    <motion.nav
+      aria-label="Quick contact options"
+      initial={reduceMotion ? false : { opacity: 0, x: 18 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.45, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed right-3 z-[60] flex flex-col items-end gap-2.5 sm:right-5"
+      style={{ bottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+    >
+      {actions.map(({ label, href, icon: Icon, external, buttonClass }) => (
+        <motion.a
+          key={label}
+          href={href}
+          target={external ? '_blank' : undefined}
+          rel={external ? 'noopener noreferrer' : undefined}
+          aria-label={label}
+          title={label}
+          whileHover={reduceMotion ? undefined : { y: -2 }}
+          whileTap={reduceMotion ? undefined : { scale: 0.94 }}
+          className="group relative flex min-h-12 items-center justify-end rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d9af6b] focus-visible:ring-offset-2 focus-visible:ring-offset-[#07111f]"
         >
-          <div className="relative rounded-[1.75rem] border border-gold/24 bg-[#050814]/82 p-2 shadow-[0_20px_62px_rgba(0,0,0,0.3)] ring-1 ring-white/10 backdrop-blur-xl">
-            <div className="pointer-events-none absolute -inset-3 rounded-[2rem] bg-gold/10 blur-2xl" />
-            <div className="relative flex flex-col gap-2">
-              <motion.a
-                href={`https://wa.me/${internationalPhone}?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative flex h-[3.25rem] w-[3.25rem] items-center justify-center overflow-hidden rounded-2xl border border-emerald-300/24 bg-[linear-gradient(145deg,rgba(16,185,129,0.95),rgba(6,95,70,0.92))] text-white shadow-[0_16px_42px_rgba(16,185,129,0.22)] sm:h-14 sm:w-14"
-                whileHover={{ y: -3, scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="WhatsApp Marlene Brits Attorneys"
-              >
-                <MessageCircle className="relative z-10 h-5 w-5 sm:h-6 sm:w-6" />
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/28 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              </motion.a>
-
-              <motion.a
-                href={`tel:+${internationalPhone}`}
-                className="group relative flex h-[3.25rem] w-[3.25rem] items-center justify-center overflow-hidden rounded-2xl border border-gold/28 bg-[linear-gradient(145deg,rgba(214,165,96,0.98),rgba(143,94,45,0.96))] text-[#071020] shadow-[0_16px_42px_rgba(214,165,96,0.23)] sm:h-14 sm:w-14"
-                whileHover={{ y: -3, scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label="Call Marlene Brits Attorneys"
-              >
-                <Phone className="relative z-10 h-5 w-5 sm:h-6 sm:w-6" />
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/32 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-              </motion.a>
-            </div>
-          </div>
-
-          <motion.button
-            type="button"
-            onClick={scrollToContact}
-            className="group relative hidden items-center gap-2 overflow-hidden rounded-full border border-gold/26 bg-[#050814]/82 px-5 py-3 text-[10px] font-semibold uppercase tracking-[0.16em] text-gold shadow-[0_18px_52px_rgba(0,0,0,0.26)] ring-1 ring-white/10 backdrop-blur-xl transition-colors hover:bg-gold hover:text-[#071020] sm:inline-flex"
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.97 }}
+          <span className="pointer-events-none absolute right-[3.55rem] hidden whitespace-nowrap rounded-full border border-white/12 bg-[#07111f]/94 px-3.5 py-2 text-[10px] font-semibold uppercase tracking-[0.13em] text-[#fffaf1] opacity-0 shadow-[0_12px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl transition duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 sm:block">
+            {label}
+          </span>
+          <span
+            className={`relative grid h-12 w-12 place-items-center overflow-hidden rounded-full border ring-4 ring-[#07111f]/12 transition duration-200 group-hover:scale-[1.04] sm:h-[3.15rem] sm:w-[3.15rem] ${buttonClass}`}
           >
-            <Calendar className="h-3.5 w-3.5" />
-            Consultation
-            <Sparkles className="h-3.5 w-3.5 opacity-70" />
-            <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/22 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
-          </motion.button>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            <span className="absolute inset-[1px] rounded-full border border-white/18" />
+            <Icon className="relative h-5 w-5" strokeWidth={1.9} />
+          </span>
+        </motion.a>
+      ))}
+    </motion.nav>
   )
 }
