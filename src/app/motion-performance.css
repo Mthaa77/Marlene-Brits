@@ -1,0 +1,170 @@
+/* Premium motion + performance layer: smooth, light, and mobile-friendly. */
+:root {
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --nav-offset: 94px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-offset);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  overflow-x: hidden;
+}
+
+main {
+  overflow: clip;
+}
+
+main > section {
+  position: relative;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+main > section:not(#home) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 860px;
+}
+
+#home,
+#contact,
+#faq {
+  content-visibility: visible;
+}
+
+a,
+button,
+[role='button'],
+article,
+.rounded-lg,
+.rounded-xl,
+.rounded-2xl,
+[class*='rounded-['] {
+  transition-duration: 280ms;
+  transition-timing-function: var(--ease-premium);
+}
+
+img,
+video,
+canvas,
+svg {
+  backface-visibility: hidden;
+}
+
+/* Smooth section reveals without extra JavaScript. Browsers without view timelines simply ignore this. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    main > section:not(#home):not(#contact):not(#faq) {
+      animation: section-lift both var(--ease-soft);
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@keyframes section-lift {
+  from {
+    opacity: 0.001;
+    transform: translate3d(0, 22px, 0) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Keep premium hover energy on devices that can actually hover. */
+@media (hover: hover) and (pointer: fine) {
+  main a:hover,
+  main button:hover,
+  main article:hover {
+    will-change: transform;
+  }
+
+  main a:not(:hover),
+  main button:not(:hover),
+  main article:not(:hover) {
+    will-change: auto;
+  }
+}
+
+/* Navbar and floating actions stay crisp while scrolling. */
+header,
+.fixed {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Softer scrollbars, cheaper than extra decorative layers. */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050d18;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 2px solid #050d18;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #edcd94, #a97935);
+}
+
+/* Mobile performance: reduce expensive blur and giant shadows, keep the luxury look. */
+@media (max-width: 767px) {
+  :root {
+    --nav-offset: 86px;
+  }
+
+  main > section:not(#home) {
+    contain-intrinsic-size: auto 720px;
+  }
+
+  [class*='blur-3xl'] {
+    filter: blur(22px) !important;
+  }
+
+  [class*='blur-2xl'] {
+    filter: blur(18px) !important;
+  }
+
+  [class*='backdrop-blur-2xl'] {
+    backdrop-filter: blur(10px) saturate(125%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(125%) !important;
+  }
+
+  [class*='backdrop-blur-xl'] {
+    backdrop-filter: blur(8px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(8px) saturate(120%) !important;
+  }
+
+  main a:hover,
+  main button:hover,
+  main article:hover {
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  main > section:not(#home) {
+    content-visibility: visible;
+  }
+}
