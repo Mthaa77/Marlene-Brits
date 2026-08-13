@@ -66,12 +66,133 @@ svg {
 /* Smooth section reveals without extra JavaScript. Browsers without view timelines simply ignore this. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    main > section:not(#home):not(#contact):not(#faq):not(#pathfinder):not(#consultation-builder) {
+    html:not([data-motion-orchestrated='true']) main > section:not(#home):not(#contact):not(#faq):not(#pathfinder):not(#consultation-builder) {
       animation: section-lift both var(--ease-soft);
       animation-timeline: view();
       animation-range: entry 0% cover 22%;
     }
   }
+}
+
+/* Editorial section dividers create continuity between light and dark chapters. */
+main > section:not(:last-child)::after {
+  position: absolute;
+  right: clamp(1rem, 5vw, 5rem);
+  bottom: 0;
+  left: clamp(1rem, 5vw, 5rem);
+  z-index: 5;
+  height: 1px;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(217, 175, 107, 0.18) 18%,
+    rgba(217, 175, 107, 0.62) 50%,
+    rgba(217, 175, 107, 0.18) 82%,
+    transparent
+  );
+  box-shadow: 0 0 20px rgba(217, 175, 107, 0.16);
+}
+
+/* Headlines gain depth without sacrificing editorial restraint. */
+main h1,
+main h2,
+footer h2 {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08),
+    0 14px 38px rgba(7, 17, 31, 0.14);
+}
+
+/* Layered surface shadows: diffuse elevation, contact shadow and top bevel. */
+main article[class*='border'],
+main [data-premium-surface] {
+  box-shadow:
+    0 32px 78px rgba(7, 17, 31, 0.1),
+    0 8px 22px rgba(7, 17, 31, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    box-shadow 480ms var(--ease-premium),
+    border-color 320ms var(--ease-premium),
+    background-color 320ms var(--ease-premium),
+    transform 480ms var(--ease-premium);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  main article[class*='border']:hover,
+  main [data-premium-surface]:hover {
+    box-shadow:
+      0 42px 96px rgba(7, 17, 31, 0.15),
+      0 12px 28px rgba(7, 17, 31, 0.09),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+}
+
+/* Premium 3D controls: a top highlight, lower bevel and soft cast shadow. */
+:is(header, main, footer)
+  :is(a, button):not([role='tab'])[class*='min-h-'][class*='rounded-'] {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transform: translate3d(0, -1px, 0);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -3px 0 rgba(3, 10, 19, 0.18),
+    0 4px 0 rgba(3, 10, 19, 0.1),
+    0 16px 34px rgba(7, 17, 31, 0.14),
+    0 4px 12px rgba(7, 17, 31, 0.08);
+  transition:
+    transform 260ms var(--ease-premium),
+    box-shadow 260ms var(--ease-premium),
+    border-color 260ms var(--ease-premium),
+    background-color 260ms var(--ease-premium),
+    color 260ms var(--ease-premium);
+}
+
+:is(header, main, footer)
+  :is(a, button):not([role='tab'])[class*='min-h-'][class*='rounded-']::after {
+  position: absolute;
+  inset: 1px 10% auto;
+  z-index: -1;
+  height: 42%;
+  border-radius: 999px;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), transparent);
+  opacity: 0.34;
+}
+
+:is(header, main, footer)
+  :is(a, button):not([role='tab'])[class*='min-h-'][class*='rounded-'][class*='bg-[#d9af6b]'] {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 230, 0.72),
+    inset 0 -4px 0 rgba(111, 69, 24, 0.3),
+    0 4px 0 rgba(104, 65, 24, 0.2),
+    0 19px 42px rgba(181, 118, 45, 0.25),
+    0 5px 14px rgba(7, 17, 31, 0.12);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(header, main, footer)
+    :is(a, button):not([role='tab'])[class*='min-h-'][class*='rounded-']:hover {
+    transform: translate3d(0, -4px, 0) scale(1.015);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -3px 0 rgba(3, 10, 19, 0.15),
+      0 6px 0 rgba(3, 10, 19, 0.08),
+      0 24px 48px rgba(7, 17, 31, 0.2),
+      0 7px 16px rgba(7, 17, 31, 0.1);
+  }
+}
+
+:is(header, main, footer)
+  :is(a, button):not([role='tab'])[class*='min-h-'][class*='rounded-']:active {
+  transform: translate3d(0, 2px, 0) scale(0.985);
+  box-shadow:
+    inset 0 2px 4px rgba(3, 10, 19, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    0 2px 5px rgba(7, 17, 31, 0.14);
+  transition-duration: 90ms;
 }
 
 @keyframes section-lift {
@@ -154,6 +275,23 @@ header,
   main button:hover,
   main article:hover {
     will-change: auto;
+  }
+
+  main article[class*='border'],
+  main [data-premium-surface] {
+    box-shadow:
+      0 20px 48px rgba(7, 17, 31, 0.1),
+      0 5px 14px rgba(7, 17, 31, 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  :is(header, main, footer)
+    :is(a, button):not([role='tab'])[class*='min-h-'][class*='rounded-'] {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -3px 0 rgba(3, 10, 19, 0.17),
+      0 3px 0 rgba(3, 10, 19, 0.08),
+      0 11px 24px rgba(7, 17, 31, 0.14);
   }
 }
 

@@ -4,6 +4,8 @@ import "./globals.css";
 import "./motion-performance.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
+import SmoothScroll from "@/components/premium/SmoothScroll";
+import ScrollMotionSystem from "@/components/premium/ScrollMotionSystem";
 
 const display = Cormorant_Garamond({
   variable: "--font-display",
@@ -144,7 +146,8 @@ export default function RootLayout({
       <body
         className={`${display.variable} ${body.variable} ${signature.variable} antialiased bg-background text-foreground font-sans`}
       >
-        {children}
+        <SmoothScroll>{children}</SmoothScroll>
+        <ScrollMotionSystem />
         <Toaster />
         <SonnerToaster />
       </body>
