@@ -79,14 +79,15 @@ export default function ServiceDetailModal({ area, open, onClose, onSelectArea }
 
   return (
     <Dialog open={open} onOpenChange={(value) => !value && onClose()}>
-      <DialogContent showCloseButton={false} className="z-[110] max-h-[94svh] w-full max-w-6xl overflow-hidden rounded-[1.6rem_1.6rem_4rem_1.6rem] border border-[#d9af6b]/28 bg-[#050b15]/97 p-0 text-white shadow-[0_52px_180px_rgba(0,0,0,0.62)] backdrop-blur-2xl sm:max-w-6xl">
-        <button type="button" onClick={onClose} className="absolute right-3 top-3 z-40 grid h-11 w-11 place-items-center rounded-full border border-white/12 bg-[#07111f]/92 text-white/68 shadow-[0_16px_44px_rgba(0,0,0,0.32)] backdrop-blur-xl transition hover:rotate-3 hover:border-[#d9af6b]/50 hover:bg-[#d9af6b] hover:text-[#07111f] sm:right-4 sm:top-4" aria-label="Close service details"><X className="h-5 w-5" /></button>
+      <DialogContent showCloseButton={false} aria-describedby={undefined} className="service-detail-dialog z-[110] h-[calc(100svh-0.75rem)] max-h-[calc(100svh-0.75rem)] w-full max-w-6xl overflow-hidden rounded-t-[2rem] rounded-b-none border border-[#d9af6b]/28 bg-[#050b15]/98 p-0 text-white shadow-[0_52px_180px_rgba(0,0,0,0.62)] backdrop-blur-2xl sm:h-[94svh] sm:max-h-[94svh] sm:rounded-[1.6rem_1.6rem_4rem_1.6rem] sm:max-w-6xl">
+        <div className="absolute left-1/2 top-2 z-40 h-1 w-12 -translate-x-1/2 rounded-full bg-white/22 sm:hidden" aria-hidden="true" />
+        <button type="button" onClick={onClose} className="absolute right-3 top-4 z-40 grid h-12 w-12 place-items-center rounded-full border border-white/12 bg-[#07111f]/96 text-white/72 shadow-[0_16px_44px_rgba(0,0,0,0.32)] backdrop-blur-xl transition hover:rotate-3 hover:border-[#d9af6b]/50 hover:bg-[#d9af6b] hover:text-[#07111f] sm:right-4 sm:top-4 sm:h-11 sm:w-11" aria-label="Close service details"><X className="h-5 w-5" /></button>
 
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_10%_12%,rgba(217,175,107,0.18),transparent_26rem),radial-gradient(circle_at_92%_82%,rgba(255,255,255,0.055),transparent_24rem)]" />
         <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#edcd94] to-transparent" />
 
-        <div className="relative z-10 flex min-w-0 max-h-[94svh] flex-col">
-          <div className="min-w-0 shrink-0 border-b border-white/8 px-4 py-3 pr-16 sm:px-6 sm:py-4 sm:pr-20">
+        <div className="relative z-10 flex h-full min-w-0 flex-col sm:max-h-[94svh]">
+          <div className="min-w-0 shrink-0 border-b border-white/8 px-4 pb-3 pt-7 pr-17 sm:px-6 sm:py-4 sm:pr-20">
             <div className="service-modal-scroll flex max-w-full items-center gap-2 overflow-x-auto pb-1" aria-label="Switch practice area">
               {practiceAreas.map((practice, index) => {
                 const PracticeIcon = iconMap[practice.icon] || FileText;
@@ -103,7 +104,7 @@ export default function ServiceDetailModal({ area, open, onClose, onSelectArea }
           </div>
 
           <div data-service-modal-scroll="main" className="service-modal-scroll min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain lg:grid lg:grid-cols-[0.78fr_1.22fr] lg:overflow-hidden">
-            <aside className="relative min-w-0 overflow-hidden border-b border-white/9 px-6 py-6 sm:px-8 sm:py-8 lg:border-b-0 lg:border-r lg:px-10 lg:py-10">
+            <aside className="relative min-w-0 overflow-hidden border-b border-white/9 px-5 py-6 sm:px-8 sm:py-8 lg:border-b-0 lg:border-r lg:px-10 lg:py-10">
               <div className="absolute -left-28 top-20 h-72 w-72 rounded-full bg-[#d9af6b]/12 blur-3xl" />
               <div className="relative flex flex-col lg:h-full">
                 <FadeIn reduced={!!reduceMotion}>
@@ -114,9 +115,9 @@ export default function ServiceDetailModal({ area, open, onClose, onSelectArea }
                 </FadeIn>
 
                 <FadeIn delay={0.05} reduced={!!reduceMotion}>
-                  <span className="mt-5 grid h-14 w-14 place-items-center rounded-full border border-[#d9af6b]/34 bg-[#d9af6b]/12 text-[#edcd94] shadow-[0_20px_60px_rgba(217,175,107,0.14)] sm:mt-6 sm:h-16 sm:w-16"><IconComponent className="h-6 w-6 sm:h-7 sm:w-7" strokeWidth={1.5} /></span>
-                  <DialogTitle className="mt-5 max-w-lg font-serif text-[clamp(2.25rem,5vw,4.6rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#fffaf1] sm:mt-6">{area.shortTitle}</DialogTitle>
-                  <DialogDescription asChild><p className="mt-4 max-w-md font-serif text-xl italic leading-snug text-[#edcd94]/88 sm:text-2xl">{area.tagline}</p></DialogDescription>
+                  <span className="mt-4 grid h-12 w-12 place-items-center rounded-full border border-[#d9af6b]/34 bg-[#d9af6b]/12 text-[#edcd94] shadow-[0_20px_60px_rgba(217,175,107,0.14)] sm:mt-6 sm:h-16 sm:w-16"><IconComponent className="h-5 w-5 sm:h-7 sm:w-7" strokeWidth={1.5} /></span>
+                  <DialogTitle className="mt-4 max-w-lg font-serif text-[clamp(2.35rem,11vw,4.6rem)] font-medium leading-[0.92] tracking-[-0.05em] text-[#fffaf1] sm:mt-6">{area.shortTitle}</DialogTitle>
+                  <DialogDescription asChild><p className="mt-3 max-w-md font-serif text-[1.28rem] italic leading-snug text-[#edcd94]/88 sm:mt-4 sm:text-2xl">{area.tagline}</p></DialogDescription>
                 </FadeIn>
 
                 <FadeIn delay={0.1} reduced={!!reduceMotion}>
@@ -130,7 +131,7 @@ export default function ServiceDetailModal({ area, open, onClose, onSelectArea }
                 </FadeIn>
 
                 <FadeIn delay={0.14} reduced={!!reduceMotion}>
-                  <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:mt-auto lg:grid-cols-1 lg:pt-8">
+                  <div className="mt-6 hidden gap-3 sm:grid sm:grid-cols-2 lg:mt-auto lg:grid-cols-1 lg:pt-8">
                     <a href={`https://wa.me/27766116965?text=${whatsappText}`} target="_blank" rel="noopener noreferrer" className="group inline-flex min-h-13 items-center justify-center gap-2 rounded-full bg-[#d9af6b] px-5 text-sm font-semibold text-[#07111f] transition hover:-translate-y-0.5 hover:bg-[#edcd94]"><MessageCircle className="h-4 w-4" /> Ask about this service <ArrowUpRight className="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" /></a>
                     <a href="#consultation-builder" onClick={onClose} className="hidden min-h-13 items-center justify-center gap-2 rounded-full border border-white/12 px-5 text-sm font-semibold text-white/68 transition hover:border-[#d9af6b]/38 hover:text-white sm:inline-flex"><ClipboardCheck className="h-4 w-4 text-[#d9af6b]" /> Prepare first</a>
                   </div>
@@ -141,13 +142,13 @@ export default function ServiceDetailModal({ area, open, onClose, onSelectArea }
 
             <div data-service-modal-panel className="flex min-h-0 min-w-0 flex-col lg:max-h-[calc(94svh-4.8rem)]">
               <Tabs key={area.id} defaultValue="overview" className="flex min-h-0 flex-1 flex-col">
-                <div className="shrink-0 border-b border-white/8 px-4 py-4 sm:px-7">
+                <div className="shrink-0 border-b border-white/8 px-4 py-3 sm:px-7 sm:py-4">
                   <TabsList className="service-modal-scroll flex h-auto w-full justify-start gap-1 overflow-x-auto rounded-full border border-white/9 bg-white/[0.035] p-1.5">
                     {tabItems.map((tab) => <TabsTrigger key={tab.value} value={tab.value} className="shrink-0 rounded-full px-4 py-2.5 text-[9px] font-semibold uppercase tracking-[0.13em] text-white/42 transition data-[state=active]:bg-[#d9af6b] data-[state=active]:text-[#07111f] data-[state=active]:shadow-[0_12px_30px_rgba(217,175,107,0.2)]">{tab.label}</TabsTrigger>)}
                   </TabsList>
                 </div>
 
-                <div data-service-modal-scroll="content" className="service-modal-scroll min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain px-5 py-7 sm:px-8 sm:py-8">
+                <div data-service-modal-scroll="content" className="service-modal-scroll min-h-0 px-5 py-7 sm:px-8 sm:py-8 lg:flex-1 lg:overflow-x-hidden lg:overflow-y-auto lg:overscroll-contain">
                   <TabsContent value="overview" className="mt-0">
                     <FadeIn reduced={!!reduceMotion}>
                       <p className="max-w-3xl text-base leading-8 text-white/66 sm:text-[1.03rem]">{area.description}</p>
@@ -190,11 +191,12 @@ export default function ServiceDetailModal({ area, open, onClose, onSelectArea }
                   {relatedAreas.length > 0 && <div className="mt-10 border-t border-white/9 pt-6"><p className="text-[9px] font-semibold uppercase tracking-[0.22em] text-[#d9af6b]">Related practice areas</p><div className="mt-4 flex flex-wrap gap-2">{relatedAreas.map((related) => { const RelatedIcon = iconMap[related.icon] || FileText; return <button key={related.id} type="button" onClick={() => onSelectArea(related)} className="group inline-flex items-center gap-2 rounded-full border border-white/9 bg-white/[0.035] px-4 py-2.5 text-xs text-white/58 transition hover:border-[#d9af6b]/32 hover:text-white"><RelatedIcon className="h-3.5 w-3.5 text-[#d9af6b]" />{related.shortTitle}<ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" /></button>; })}</div></div>}
                 </div>
 
-                <div className="shrink-0 border-t border-white/9 bg-[#07111f]/88 px-5 py-4 backdrop-blur-xl sm:px-8">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#d9af6b]">Need guidance?</p><p className="mt-1 text-xs text-white/42">Start with a confidential conversation.</p></div><div className="flex gap-2"><a href={`mailto:${company.contact.email}?subject=${encodeURIComponent(`Enquiry: ${area.title}`)}`} className="inline-flex min-h-11 flex-1 items-center justify-center rounded-full border border-white/10 px-4 text-xs font-semibold text-white/62 transition hover:border-[#d9af6b]/35 hover:text-white">Email firm</a><a href="#contact" onClick={onClose} className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-full bg-[#d9af6b] px-5 text-xs font-semibold text-[#07111f] transition hover:bg-[#edcd94]">Consultation <ArrowRight className="h-3.5 w-3.5" /></a></div></div>
-                </div>
               </Tabs>
             </div>
+          </div>
+
+          <div className="relative z-30 shrink-0 border-t border-[#d9af6b]/22 bg-[#07111f]/96 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3 shadow-[0_-20px_55px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:px-8 sm:py-4 sm:shadow-none">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div className="hidden sm:block"><p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[#d9af6b]">Need guidance?</p><p className="mt-1 text-xs text-white/42">Start with a confidential conversation.</p></div><div className="flex w-full gap-2 sm:w-auto"><a href={`mailto:${company.contact.email}?subject=${encodeURIComponent(`Enquiry: ${area.title}`)}`} className="inline-flex min-h-12 flex-1 items-center justify-center rounded-full border border-white/12 px-4 text-xs font-semibold text-white/72 transition hover:border-[#d9af6b]/35 hover:text-white sm:min-h-11">Email firm</a><a href={`https://wa.me/27766116965?text=${whatsappText}`} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 flex-[1.5] items-center justify-center gap-2 rounded-full bg-[#d9af6b] px-5 text-xs font-bold text-[#07111f] transition hover:bg-[#edcd94] sm:min-h-11 sm:flex-1">Start a conversation <ArrowRight className="h-3.5 w-3.5" /></a></div></div>
           </div>
         </div>
       </DialogContent>

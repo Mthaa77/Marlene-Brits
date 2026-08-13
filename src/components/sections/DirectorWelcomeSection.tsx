@@ -30,8 +30,8 @@ export default function DirectorWelcomeSection() {
           <div className="mt-8 grid gap-6 border-t border-[#07111f]/12 pt-7 sm:grid-cols-[auto_1fr]">
             <span className="grid h-12 w-12 place-items-center rounded-full bg-[#07111f] text-[#edcd94]"><Quote className="h-5 w-5" /></span>
             <div>
-              <p className="max-w-2xl font-serif text-[1.45rem] leading-[1.35] text-[#263548] sm:text-[1.75rem]">Welcome to Marlene Brits Attorneys. Legal matters often arrive when life already feels complex. Our role is to bring calm, explain each step clearly, and handle your matter with the precision and personal attention it deserves.</p>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-[#617083] sm:text-base sm:leading-8">From your first conversation, you can expect honest guidance, responsive communication and a legal team that remains personally involved throughout the process.</p>
+              <p className="max-w-2xl font-serif text-[1.45rem] leading-[1.35] text-[#263548] sm:text-[1.75rem]">Welcome to Marlene Brits Attorneys. Behind every instruction is a person making an important decision, protecting a family, transferring a home or navigating an uncertain chapter. That person remains at the centre of our work.</p>
+              <p className="mt-5 max-w-2xl text-sm leading-7 text-[#617083] sm:text-base sm:leading-8">Our role is to listen carefully, translate legal complexity into understandable choices and manage the detail with diligence. From the first conversation onward, you should know where you stand and what comes next.</p>
               <div className="mt-7"><p className="font-signature text-[2.35rem] leading-none text-[#9b6d30]">Marlene Brits</p><p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#617083]">Attorney · Conveyancer · Notary</p></div>
             </div>
           </div>

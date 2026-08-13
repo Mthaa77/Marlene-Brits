@@ -52,23 +52,23 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.p variants={reduceMotion ? undefined : entrance} className="font-signature mb-2 text-[2.05rem] leading-none text-[#edcd94] sm:text-[2.7rem]">
-            Guidance you can trust
+            Personal counsel. Clear direction.
           </motion.p>
 
           <motion.h1 variants={reduceMotion ? undefined : entrance} className="max-w-[9.8ch] font-serif text-[length:var(--text-hero)] font-medium leading-[var(--leading-display)] tracking-[var(--tracking-display)] text-[#fffaf1] [text-shadow:0_18px_70px_rgba(0,0,0,0.54)]">
-            Legal clarity for life&apos;s <span className="italic text-[#edcd94]">defining moments.</span>
+            Move through legal matters with <span className="italic text-[#edcd94]">clarity.</span>
           </motion.h1>
 
           <motion.p variants={reduceMotion ? undefined : entrance} className="mt-6 max-w-xl text-[0.98rem] leading-7 text-white/72 sm:text-[1.08rem] sm:leading-8">
-            Personal legal support for property transfers, deceased estates, notarial matters and the decisions that shape what comes next.
+            Direct, considered legal guidance for property, estates, family matters, notarial work and civil disputes—explained clearly and handled with care.
           </motion.p>
 
           <motion.div variants={reduceMotion ? undefined : entrance} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <a href="#contact" onClick={(event) => { event.preventDefault(); scrollTo('contact'); }} className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-[#d9af6b] px-7 text-sm font-bold text-[#07111f] shadow-[0_18px_48px_rgba(217,175,107,0.28)] transition hover:-translate-y-0.5 hover:bg-[#edcd94] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#edcd94]">
-              Book a consultation <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+              Start a confidential conversation <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
             </a>
             <a href="#services" onClick={(event) => { event.preventDefault(); scrollTo('services'); }} className="inline-flex min-h-14 items-center justify-center gap-2 rounded-2xl border border-white/18 bg-[#07111f]/48 px-6 text-sm font-semibold text-white/84 backdrop-blur-xl transition hover:border-[#d9af6b]/54 hover:bg-[#07111f]/68 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#edcd94]">
-              Explore legal services
+              Find the right legal service
             </a>
           </motion.div>
 

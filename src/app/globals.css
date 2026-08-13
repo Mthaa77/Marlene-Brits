@@ -52,15 +52,15 @@
 
 :root {
   --radius: 0.625rem;
-  --text-hero: clamp(3.65rem, 8vw, 7.8rem);
-  --text-h1: clamp(2.9rem, 6vw, 5.8rem);
-  --text-h2: clamp(2.35rem, 4.6vw, 4.6rem);
-  --text-h3: clamp(1.55rem, 2.4vw, 2.35rem);
-  --text-body-lg: clamp(1.02rem, 1.25vw, 1.18rem);
-  --leading-display: 0.88;
+  --text-hero: clamp(3.25rem, 7.7vw, 7.4rem);
+  --text-h1: clamp(2.75rem, 5.7vw, 5.55rem);
+  --text-h2: clamp(2.3rem, 4.4vw, 4.35rem);
+  --text-h3: clamp(1.5rem, 2.3vw, 2.25rem);
+  --text-body-lg: clamp(1.01rem, 1.2vw, 1.17rem);
+  --leading-display: 0.91;
   --leading-body: 1.72;
-  --tracking-display: -0.052em;
-  --measure-body: 65ch;
+  --tracking-display: -0.046em;
+  --measure-body: 67ch;
   --background: oklch(0.98 0.002 90);
   --foreground: oklch(0.16 0.02 260);
   --card: oklch(1 0 0);
@@ -230,6 +230,43 @@
 
 .font-signature {
   font-family: var(--font-signature), "Segoe Script", cursive;
+}
+
+/* Role-based editorial type system: Cormorant carries authority, Manrope
+   carries every functional interaction, and Allura is reserved for brief,
+   human accents only. */
+.section-title {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: var(--text-h1);
+  font-weight: 500;
+  line-height: 0.93;
+  letter-spacing: -0.048em;
+  text-wrap: balance;
+}
+
+.editorial-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #9b6d30;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.21em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.editorial-label::before {
+  width: 1.6rem;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  opacity: 0.6;
+}
+
+.editorial-label--dark {
+  color: #d9af6b;
 }
 
 /* Cinematic headline with dramatic letter-spacing */
@@ -1074,6 +1111,54 @@ nav {
 .legal-ticker-shell:hover .legal-ticker-track,
 .legal-ticker-shell:focus-within .legal-ticker-track {
   animation-play-state: paused;
+}
+
+/* Service gallery and service-guide scrolling. */
+.service-offering-rail,
+.service-modal-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.service-offering-rail::-webkit-scrollbar,
+.service-modal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .section-title {
+    font-size: clamp(2.8rem, 13vw, 4rem);
+    line-height: 0.95;
+    letter-spacing: -0.041em;
+  }
+
+  .service-detail-dialog {
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0.375rem !important;
+    right: 0.375rem !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: none;
+  }
+
+  .service-detail-dialog[data-state='open'] {
+    animation: service-sheet-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  }
+
+  .service-detail-dialog[data-state='closed'] {
+    animation: service-sheet-out 220ms ease-in both !important;
+  }
+}
+
+@keyframes service-sheet-in {
+  from { opacity: 0; transform: translate3d(0, 2.25rem, 0) scale(0.985); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+@keyframes service-sheet-out {
+  from { opacity: 1; transform: translate3d(0, 0, 0); }
+  to { opacity: 0; transform: translate3d(0, 1.5rem, 0); }
 }
 
 @media (prefers-reduced-motion: reduce) {

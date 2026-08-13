@@ -18,9 +18,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "conveyancing",
     title: "Conveyancing & Property Transfers",
     shortTitle: "Conveyancing",
-    tagline: "Expert handling of your most valuable asset",
+    tagline: "Move property forward with informed confidence",
     description:
-      "Property transactions represent some of the most significant financial decisions you will ever make. Our conveyancing team, led by an admitted conveyancer and Pretoria Deeds Registry lodging agent, provides expert, efficient handling of all property transfers — ensuring your transaction is completed correctly, on time, and with the care it deserves. From the moment you instruct us to the final registration at the Deeds Office, we manage every detail with precision and transparency.",
+      "Buying, selling or transferring property is both a major financial decision and a detailed legal process. The firm coordinates the documents, parties and registration requirements from instruction through to transfer, while keeping you informed of progress, outstanding items and the next milestone.",
     icon: "Building2",
     features: [
       "Property transfers (residential & commercial)",
@@ -62,9 +62,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "deceased-estates",
     title: "Deceased Estate Administration",
     shortTitle: "Deceased Estates",
-    tagline: "Compassionate guidance through difficult times",
+    tagline: "Steady guidance when a family has enough to carry",
     description:
-      "The administration of a deceased estate is one of the most emotionally challenging legal processes a family can face. At Marlene Brits Attorneys, we provide sensitive, professional estate administration services that ease the burden during this difficult time. Our experienced team handles every aspect of the estate administration process — from reporting the estate to the Master of the High Court to the final distribution of assets — ensuring that your loved one's wishes are honoured and that all legal requirements are met with precision and care.",
+      "Administering a deceased estate can feel overwhelming while a family is already grieving. The firm provides a calm, structured route through reporting, executorship, accounts, compliance and distribution—explaining the process clearly and attending carefully to each formal requirement.",
     icon: "Shield",
     features: [
       "Estate reporting & liquidation",
@@ -106,9 +106,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "estate-planning",
     title: "Wills & Estate Planning",
     shortTitle: "Estate Planning",
-    tagline: "Protecting your legacy and your loved ones",
+    tagline: "Turn your wishes into a plan your family can rely on",
     description:
-      "A well-crafted will and comprehensive estate plan are among the most important gifts you can leave your family. At Marlene Brits Attorneys, we help you plan for the future with confidence — ensuring your assets are distributed according to your wishes, your loved ones are provided for, and unnecessary tax liabilities and administrative burdens are minimised. Our team has participated in the Law Society of South Africa's National Wills Week for multiple consecutive years, reflecting our commitment to making estate planning accessible and affordable.",
+      "A clear will and considered estate plan give the people you care about direction when they may need it most. The firm helps you record your wishes, consider family and asset implications, appoint the right people and keep the plan aligned with important life changes.",
     icon: "FileText",
     features: [
       "Last will and testament drafting",
@@ -150,9 +150,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "family-law",
     title: "Family Law",
     shortTitle: "Family Law",
-    tagline: "Sensitive legal support for life's most personal matters",
+    tagline: "Measured counsel for deeply personal decisions",
     description:
-      "Family law matters are deeply personal and often emotionally charged. At Marlene Brits Attorneys, we approach every family law matter with the sensitivity, discretion, and professional expertise it deserves. Whether you are going through a divorce, seeking custody arrangements, or need to formalise a cohabitation agreement, our team provides clear, compassionate guidance and robust legal representation to protect your interests and those of your family.",
+      "Family matters affect far more than legal rights; they touch daily life, children, finances and future relationships. The firm approaches these instructions with discretion and perspective, helping you understand your options, protect important interests and work toward a practical resolution.",
     icon: "Heart",
     features: [
       "Divorce proceedings (contested & uncontested)",
@@ -194,9 +194,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "antenuptial-contracts",
     title: "Antenuptial Contracts",
     shortTitle: "ANC",
-    tagline: "Protecting your financial future before you say 'I do'",
+    tagline: "Make the financial terms of marriage clear before it begins",
     description:
-      "An antenuptial contract (ANC) is one of the most important legal documents a couple can sign before marriage. It determines the matrimonial property regime that will govern your marriage and can have far-reaching financial implications for both spouses. At Marlene Brits Attorneys, we provide expert guidance on antenuptial contracts — ensuring you understand your options, make informed decisions, and have a properly executed contract that protects your interests. As notaries, we are qualified to draft, attest, and register antenuptial contracts with the Deeds Office.",
+      "An antenuptial contract determines how marriage will affect each partner's estate and financial position. The firm explains the available matrimonial-property regimes in understandable terms, prepares the chosen agreement and manages its notarial execution and registration.",
     icon: "FileSignature",
     features: [
       "Antenuptial contract drafting",
@@ -237,9 +237,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "notarial-services",
     title: "Notarial Services",
     shortTitle: "Notarial",
-    tagline: "Official attestation you can trust",
+    tagline: "Specialist authority for documents that must carry legal weight",
     description:
-      "As admitted notaries, Marlene Brits Attorneys provides a comprehensive range of notarial services that require the specialised authority of a notary public. From antenuptial contracts to notarial bonds and certified copies, our notarial practice ensures that your documents are properly executed, attested, and registered in accordance with South African law. Notarial acts carry a presumption of authenticity and are recognised internationally, making them essential for a wide range of legal and commercial transactions.",
+      "Certain documents require more than a signature: they require formal notarial execution, authentication or registration. The firm helps identify what the receiving authority needs, verifies the relevant information and completes the appropriate notarial process with care.",
     icon: "Stamp",
     features: [
       "Notarial attestation",
@@ -279,9 +279,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "civil-litigation",
     title: "Civil Litigation",
     shortTitle: "Litigation",
-    tagline: "Resolute representation when it matters most",
+    tagline: "A strategic response when a dispute cannot be ignored",
     description:
-      "When disputes cannot be resolved through negotiation or mediation, you need a legal team that will vigorously protect your interests in court. Marlene Brits Attorneys provides strategic, results-driven civil litigation services across a range of disputes. Our approach prioritises efficient resolution — whether through skilled negotiation, mediation, or assertive courtroom advocacy — always with a clear focus on achieving the best possible outcome for our clients.",
+      "A dispute needs an early, realistic assessment—not automatic escalation. The firm considers the facts, available evidence, urgency, cost and commercial or personal impact before advising on negotiation, formal demand, motion proceedings or litigation.",
     icon: "Scale",
     features: [
       "Contractual disputes",
@@ -322,9 +322,9 @@ export const practiceAreas: PracticeArea[] = [
     id: "debt-collection",
     title: "Debt Collection & Recovery",
     shortTitle: "Debt Collection",
-    tagline: "Recovering what is rightfully yours",
+    tagline: "Turn an outstanding account into a structured recovery plan",
     description:
-      "Outstanding debts can significantly impact your business cash flow and personal finances. Marlene Brits Attorneys provides professional, legally compliant debt collection services that recover what is owed to you efficiently and effectively. Our attorney-led debt collection process ensures that all actions comply with the National Credit Act and other applicable legislation, protecting your interests while maintaining professional standards throughout the recovery process.",
+      "Unpaid accounts place pressure on cash flow and consume valuable time. The firm assesses the documents and debtor position, then recommends a proportionate recovery route—from a formal demand or payment arrangement to court process and enforcement where appropriate.",
     icon: "Banknote",
     features: [
       "Letter of demand & pre-litigation recovery",
