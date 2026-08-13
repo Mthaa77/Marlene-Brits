@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Allura, Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
+import "./motion-performance.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
@@ -134,6 +135,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="preload" as="image" href="/uploads/main-1612194838.jpg" fetchPriority="high" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(legalServiceSchema) }}
