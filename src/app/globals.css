@@ -244,6 +244,51 @@
   text-wrap: balance;
 }
 
+/* A shared editorial rhythm for section heads. The utility keeps the
+   individual responsive sizes in the components while giving every chapter
+   the same optical treatment and more reliable wrapping on small screens. */
+.premium-heading {
+  font-family: var(--font-display), Georgia, serif;
+  font-kerning: normal;
+  font-synthesis: none;
+  text-wrap: balance;
+  text-rendering: optimizeLegibility;
+}
+
+.premium-lede {
+  max-width: 42rem;
+  font-size: var(--text-body-lg);
+  line-height: 1.78;
+  text-wrap: pretty;
+}
+
+.premium-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-family: var(--font-body), Arial, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.premium-kicker::before {
+  width: 1.8rem;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  opacity: 0.62;
+}
+
+@media (max-width: 639px) {
+  .premium-lede {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+}
+
 .editorial-label {
   display: inline-flex;
   align-items: center;

@@ -52,15 +52,15 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.p variants={reduceMotion ? undefined : entrance} className="font-signature mb-2 text-[2.05rem] leading-none text-[#edcd94] sm:text-[2.7rem]">
-            Personal counsel. Clear direction.
+            Guidance for what matters most.
           </motion.p>
 
           <motion.h1 variants={reduceMotion ? undefined : entrance} className="max-w-[9.8ch] font-serif text-[length:var(--text-hero)] font-medium leading-[var(--leading-display)] tracking-[var(--tracking-display)] text-[#fffaf1] [text-shadow:0_18px_70px_rgba(0,0,0,0.54)]">
             Move through legal matters with <span className="italic text-[#edcd94]">clarity.</span>
           </motion.h1>
 
-          <motion.p variants={reduceMotion ? undefined : entrance} className="mt-6 max-w-xl text-[0.98rem] leading-7 text-white/72 sm:text-[1.08rem] sm:leading-8">
-            When the decision matters, you deserve more than legal terminology. Receive direct, considered guidance for property, estates, family matters, notarial work and civil disputes—explained clearly and carried through with care.
+          <motion.p variants={reduceMotion ? undefined : entrance} className="premium-lede mt-6 max-w-xl text-white/72 sm:text-[1.08rem] sm:leading-8">
+            When the decision matters, legal language should make the next step clearer—not make the moment feel heavier. Receive direct, considered guidance for property, estates, family matters, notarial work and civil disputes, carried through with care.
           </motion.p>
 
           <motion.div variants={reduceMotion ? undefined : entrance} className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">

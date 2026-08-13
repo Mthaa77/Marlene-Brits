@@ -15,9 +15,9 @@ export default function ContactSection() {
         <div className="mb-10 flex flex-col gap-5 border-b border-white/10 pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <span className="text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d9af6b]">Contact · Menlyn Maine</span>
-            <h2 className="mt-4 max-w-4xl font-serif text-[clamp(3.2rem,7vw,6.5rem)] font-medium leading-[0.89] tracking-[-0.052em] text-[#fffaf1]">Your next step can begin with a <span className="italic text-[#e0b56f]">conversation.</span></h2>
+            <h2 className="premium-heading mt-4 max-w-4xl font-serif text-[clamp(3.2rem,7vw,6.5rem)] font-medium leading-[0.89] tracking-[-0.052em] text-[#fffaf1]">Your next step can begin with a <span className="italic text-[#e0b56f]">conversation.</span></h2>
           </div>
-          <p className="max-w-md text-sm leading-7 text-white/58 sm:text-base">You do not need the perfect legal description or every document before making contact. Share what happened, what concerns you and any important date—the firm will help you identify the most sensible next step.</p>
+          <p className="premium-lede max-w-md text-white/58 sm:text-base">You do not need the perfect legal description or every document before making contact. Share what happened, what concerns you and any important date—the firm will help you identify the most sensible next step.</p>
         </div>
 
         <div className="grid gap-8 xl:grid-cols-[0.78fr_1.22fr] xl:gap-10">

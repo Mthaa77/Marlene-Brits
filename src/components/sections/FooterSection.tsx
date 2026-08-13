@@ -40,7 +40,7 @@ export default function FooterSection() {
         <div className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-[1.2fr_0.95fr_0.8fr_1.15fr] lg:gap-12 lg:py-16">
           <div>
             <BrandPlaque compact className="max-w-sm" />
-            <p className="mt-6 max-w-sm text-sm leading-7 text-white/45">Personal legal guidance for property, estates, family matters, notarial work and civil disputes—explained with clarity and managed with care.</p>
+            <p className="premium-lede mt-6 max-w-sm text-white/45">Personal legal guidance for property, estates, family matters, notarial work and civil disputes—explained with clarity and managed with care.</p>
             <p className="mt-6 max-w-sm font-serif text-xl italic leading-snug text-[#edcd94]/74">“You are never just another client.”</p>
             <div className="mt-7 flex flex-wrap gap-2">{company.credentials.map((credential) => <span key={credential} className="rounded-full border border-white/9 bg-white/[0.035] px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/44">{credential}</span>)}</div>
           </div>

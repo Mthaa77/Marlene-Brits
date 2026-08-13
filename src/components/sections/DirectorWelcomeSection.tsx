@@ -25,13 +25,13 @@ export default function DirectorWelcomeSection() {
 
         <motion.div initial={reduceMotion ? false : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}>
           <p className="font-signature text-[2.45rem] leading-none text-[#a87535] sm:text-[3.1rem]">A personal welcome</p>
-          <h2 className="mt-3 max-w-3xl font-serif text-[length:var(--text-h1)] font-medium leading-[0.9] tracking-[-0.052em] text-[#07111f]">A practice built around the <span className="italic text-[#a87535]">person</span> behind the matter.</h2>
+          <h2 className="premium-heading mt-3 max-w-3xl font-serif text-[length:var(--text-h1)] font-medium leading-[0.9] tracking-[-0.052em] text-[#07111f]">A practice built around the <span className="italic text-[#a87535]">person</span> behind the matter.</h2>
 
           <div className="mt-8 grid gap-6 border-t border-[#07111f]/12 pt-7 sm:grid-cols-[auto_1fr]">
             <span className="grid h-12 w-12 place-items-center rounded-full bg-[#07111f] text-[#edcd94]"><Quote className="h-5 w-5" /></span>
             <div>
               <p className="max-w-2xl font-serif text-[1.45rem] leading-[1.35] text-[#263548] sm:text-[1.75rem]">Welcome to Marlene Brits Attorneys. Behind every instruction is a person making an important decision—protecting a family, transferring a home, planning a legacy or navigating an uncertain chapter. That person remains at the centre of our work.</p>
-              <p className="mt-5 max-w-2xl text-sm leading-7 text-[#617083] sm:text-base sm:leading-8">Our role is to listen before advising, translate legal complexity into choices you can understand and manage the detail with diligence. You should leave each conversation clearer about your position, your options and the next sensible step.</p>
+              <p className="premium-lede mt-5 max-w-2xl text-[#617083] sm:text-base sm:leading-8">We listen before advising, translate legal complexity into choices you can understand and manage the detail with diligence. You should leave each conversation clearer about your position, your options and the next sensible step.</p>
               <div className="mt-7"><p className="font-signature text-[2.35rem] leading-none text-[#9b6d30]">Marlene Brits</p><p className="mt-2 text-[9px] font-semibold uppercase tracking-[0.2em] text-[#617083]">Attorney · Conveyancer · Notary</p></div>
             </div>
           </div>

@@ -37,11 +37,11 @@ export default function SouthAfricanTrustSection() {
               <span className="grid h-10 w-10 place-items-center rounded-full border border-[#d9af6b]/30 bg-[#d9af6b]/10 font-serif text-sm">ZA</span>
               <span className="text-[10px] font-semibold uppercase tracking-[0.24em]">South African legal practice</span>
             </div>
-            <h2 id="trust-heading" className="mt-6 max-w-xl font-serif text-[clamp(3rem,6vw,5.7rem)] font-medium leading-[0.88] tracking-[-0.055em] text-[#fffaf1]">
+            <h2 id="trust-heading" className="premium-heading mt-6 max-w-xl font-serif text-[clamp(3rem,6vw,5.7rem)] font-medium leading-[0.88] tracking-[-0.055em] text-[#fffaf1]">
               Local context. <span className="italic text-[#d9af6b]">Professional depth.</span>
             </h2>
-            <p className="mt-7 max-w-lg text-sm leading-7 text-white/57 sm:text-base sm:leading-8">
-              Important legal work calls for more than a polished promise. It calls for recognisable professional capacity, a clear local footprint and communication you can act on.
+            <p className="premium-lede mt-7 max-w-lg text-white/57 sm:text-base sm:leading-8">
+              Important legal work calls for more than a polished promise. It calls for professional capacity you can recognise, a clear local footprint and communication you can act on.
             </p>
 
             <div className="mt-8 flex items-center gap-3 border-l border-[#d9af6b]/35 pl-4">

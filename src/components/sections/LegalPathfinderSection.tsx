@@ -47,8 +47,8 @@ export default function LegalPathfinderSection() {
       <div className="relative mx-auto grid max-w-[88rem] gap-10 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-14 lg:px-8">
         <div className="lg:pr-5">
           <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d9af6b]"><Sparkles className="h-3.5 w-3.5" /> Guided legal pathfinder</span>
-          <h2 className="mt-5 max-w-xl font-serif text-[clamp(3rem,6vw,5.4rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#fffaf1]">Find the right door. <span className="italic text-[#e0b56f]">Before you knock.</span></h2>
-          <p className="mt-6 max-w-lg text-base leading-8 text-white/58">Two focused questions turn uncertainty into a useful starting point—without sharing personal details.</p>
+          <h2 className="premium-heading mt-5 max-w-xl font-serif text-[clamp(3rem,6vw,5.4rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#fffaf1]">Find the right door. <span className="italic text-[#e0b56f]">Before you knock.</span></h2>
+          <p className="premium-lede mt-6 max-w-lg text-white/58">Two focused questions turn uncertainty into a useful starting point—without sharing personal details or committing to a route too soon.</p>
           <div className="mt-9 grid grid-cols-3 border-y border-white/10 py-5">
             {['Your matter', 'Your timing', 'Clear direction'].map((label, index) => (
               <div key={label} className={`relative ${index ? 'border-l border-white/10 pl-4' : ''}`}><span className={`font-serif text-xl ${index <= step ? 'text-[#edcd94]' : 'text-white/20'}`}>0{index + 1}</span><span className="mt-1 block text-[9px] uppercase tracking-[0.14em] text-white/38">{label}</span></div>

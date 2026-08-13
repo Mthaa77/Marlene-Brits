@@ -62,11 +62,11 @@ export default function MatterUrgencySection() {
             <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9b6d30]">
               <Clock3 className="h-4 w-4" strokeWidth={1.7} /> The legal timing desk
             </p>
-            <h2 id="urgency-heading" className="mt-5 max-w-xl font-serif text-[clamp(3.1rem,6vw,5.8rem)] font-medium leading-[0.88] tracking-[-0.055em] text-[#07111f]">
-              Know when to <span className="italic text-[#a87535]">act sooner.</span>
+            <h2 id="urgency-heading" className="premium-heading mt-5 max-w-xl font-serif text-[clamp(3.1rem,6vw,5.8rem)] font-medium leading-[0.88] tracking-[-0.055em] text-[#07111f]">
+              Know when it is time to <span className="italic text-[#a87535]">act sooner.</span>
             </h2>
-            <p className="mt-7 max-w-lg text-sm leading-7 text-[#5f6c7b] sm:text-base sm:leading-8">
-              Choose the closest type of matter. This quick guide helps you identify what to mention first and what may be useful to have nearby when you contact the firm.
+            <p className="premium-lede mt-7 max-w-lg text-[#5f6c7b] sm:text-base sm:leading-8">
+              Choose the closest type of matter. This quick guide helps you identify what to mention first, what may be time-sensitive and what may be useful to have nearby when you contact the firm.
             </p>
 
             <div className="mt-8 flex items-start gap-3 border-l-2 border-[#a87535]/30 pl-4">

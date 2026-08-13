@@ -46,11 +46,11 @@ export default function ServicesSection() {
         <div className="grid gap-8 border-b border-[#07111f]/10 pb-9 lg:grid-cols-[1.08fr_0.92fr] lg:items-end lg:pb-11">
           <div>
             <span className="editorial-label">Practice areas · Pretoria East</span>
-            <h2 className="section-title mt-5 max-w-[11ch] text-[#07111f]">One firm. Several ways <span className="italic text-[#a87535]">forward.</span></h2>
+            <h2 className="section-title premium-heading mt-5 max-w-[11ch] text-[#07111f]">The right legal route starts with <span className="italic text-[#a87535]">context.</span></h2>
           </div>
           <div className="lg:justify-self-end">
-            <p className="max-w-2xl text-[1rem] leading-8 text-[#526071] sm:text-[1.08rem]">Legal matters rarely arrive with a clear label. Begin with what is happening in your life or business, then explore the legal support, likely process and practical next step in language that makes sense.</p>
-            <p className="mt-3 text-xs leading-6 text-[#788392]">Each detailed service guide helps you recognise when to act, what the firm can manage and what may be useful to prepare—before you commit to a consultation.</p>
+            <p className="premium-lede max-w-2xl text-[#526071] sm:text-[1.08rem]">Legal matters rarely arrive with a clear label. Begin with what is happening in your life or business, then explore the support, likely process and practical next step in language that makes sense.</p>
+            <p className="mt-3 max-w-xl text-xs leading-6 text-[#788392]">Each service guide helps you recognise when to act, what the firm can manage and what may be useful to prepare—before you commit to a consultation.</p>
           </div>
         </div>
 
@@ -117,7 +117,7 @@ export default function ServicesSection() {
                 <div className="flex items-start justify-between gap-5">
                   <div>
                     <span className="editorial-label">{active.tagline}</span>
-                    <h3 className="mt-4 max-w-[10ch] font-serif text-[clamp(2.9rem,7vw,5.9rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#07111f]">{active.shortTitle}</h3>
+                    <h3 className="premium-heading mt-4 max-w-[10ch] font-serif text-[clamp(2.9rem,7vw,5.9rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#07111f]">{active.shortTitle}</h3>
                   </div>
                   <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full border border-[#a87535]/24 bg-[#07111f] text-[#edcd94] shadow-[0_18px_52px_rgba(7,17,31,0.16)] sm:h-16 sm:w-16"><ActiveIcon className="h-6 w-6" strokeWidth={1.45} /></span>
                 </div>

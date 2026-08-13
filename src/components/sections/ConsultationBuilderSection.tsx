@@ -58,8 +58,8 @@ export default function ConsultationBuilderSection() {
         <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:items-center lg:gap-14">
           <div>
             <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#9b6d30]"><ClipboardCheck className="h-3.5 w-3.5" /> Consultation readiness</span>
-            <h2 className="mt-5 max-w-xl font-serif text-[clamp(3rem,6vw,5.4rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#07111f]">Turn your first meeting into <span className="italic text-[#a87332]">forward motion.</span></h2>
-            <p className="mt-6 max-w-lg text-base leading-8 text-[#526071]">Build a tailored preparation brief in under a minute, then copy it or continue directly to WhatsApp.</p>
+            <h2 className="premium-heading mt-5 max-w-xl font-serif text-[clamp(3rem,6vw,5.4rem)] font-medium leading-[0.9] tracking-[-0.055em] text-[#07111f]">Turn your first meeting into <span className="italic text-[#a87332]">forward motion.</span></h2>
+            <p className="premium-lede mt-6 max-w-lg text-[#526071]">Build a tailored preparation brief in under a minute, then copy it or continue directly to WhatsApp.</p>
             <div className="mt-8 flex items-center gap-3 border-t border-[#07111f]/10 pt-5 text-xs text-[#617083]"><ShieldCheck className="h-4 w-4 text-[#a87535]" /> Nothing is stored or submitted.</div>
           </div>
 
