@@ -2,6 +2,8 @@ import Navigation from '@/components/premium/Navigation';
 import FloatingCTA from '@/components/premium/FloatingCTA';
 import BackToTop from '@/components/premium/BackToTop';
 import HeroSection from '@/components/sections/HeroSection';
+import LiveTickerSection from '@/components/sections/LiveTickerSection';
+import DirectorWelcomeSection from '@/components/sections/DirectorWelcomeSection';
 import LegalPathfinderSection from '@/components/sections/LegalPathfinderSection';
 import ServicesSection from '@/components/sections/ServicesSection';
 import AboutSection from '@/components/sections/AboutSection';
@@ -20,6 +22,8 @@ export default function Home() {
 
       <main className="min-h-screen">
         <HeroSection />
+        <LiveTickerSection />
+        <DirectorWelcomeSection />
         <LegalPathfinderSection />
         <ServicesSection />
         <AboutSection />

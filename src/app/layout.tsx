@@ -1,32 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
+import { Allura, Cormorant_Garamond, Manrope } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const display = Cormorant_Garamond({
+  variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
 });
 
-const inter = Inter({
-  variable: "--font-geist-sans",
+const body = Manrope({
+  variable: "--font-body",
   subsets: ["latin"],
   display: "swap",
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const signature = Allura({
+  variable: "--font-signature",
+  subsets: ["latin"],
+  display: "swap",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mbritslaw.co.za"),
   title: "Marlene Brits Attorneys | Attorney, Conveyancer & Notary | Pretoria East",
   description:
     "Marlene Brits Attorneys is a distinguished Pretoria East legal practice providing personalised services in conveyancing, deceased estate administration, antenuptial contracts, wills & estate planning, family law, and notarial services. You are never just another client.",
@@ -50,6 +51,14 @@ export const metadata: Metadata = {
     title: "Marlene Brits Attorneys | Attorney, Conveyancer & Notary",
     description:
       "A distinguished Pretoria East legal practice founded on dedication, trust, and strong relationships. You are never just another client.",
+    images: [
+      {
+        url: "/uploads/main-1612194838.jpg",
+        width: 1200,
+        height: 800,
+        alt: "Pegasus Building 1 at Menlyn Maine, home of Marlene Brits Attorneys",
+      },
+    ],
     url: "https://mbritslaw.co.za",
     siteName: "Marlene Brits Attorneys",
     locale: "en_ZA",
@@ -131,7 +140,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${playfair.variable} ${cormorant.variable} ${inter.variable} antialiased bg-background text-foreground font-sans`}
+        className={`${display.variable} ${body.variable} ${signature.variable} antialiased bg-background text-foreground font-sans`}
       >
         {children}
         <Toaster />

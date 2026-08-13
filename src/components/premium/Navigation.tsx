@@ -6,6 +6,7 @@ import { ArrowRight, ArrowUpRight, Compass, FileCheck2, Menu, Phone, X } from 'l
 import { company } from '@/data/company';
 
 const links = [
+  { label: 'Welcome', href: '#director-welcome' },
   { label: 'Legal help', href: '#pathfinder' },
   { label: 'Services', href: '#services' },
   { label: 'About', href: '#about' },

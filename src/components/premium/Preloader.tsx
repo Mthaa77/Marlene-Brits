@@ -242,7 +242,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             {/* MB Letters */}
             <motion.span
               className="relative z-10 font-serif-optical text-4xl md:text-5xl lg:text-6xl font-medium tracking-[0.2em]"
-              style={{ fontFamily: 'var(--font-playfair)', color: 'var(--gold)' }}
+              style={{ fontFamily: 'var(--font-display)', color: 'var(--gold)' }}
               initial={{ opacity: 0, y: 15, letterSpacing: '0.5em', rotateX: 30 }}
               animate={{ opacity: 1, y: 0, letterSpacing: '0.2em', rotateX: 0 }}
               transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
