@@ -16,6 +16,7 @@ import TeamSection from '@/components/sections/TeamSection';
 import FAQSection from '@/components/sections/FAQSection';
 import ContactSection from '@/components/sections/ContactSection';
 import FooterSection from '@/components/sections/FooterSection';
+import SectionDivider from '@/components/premium/SectionDivider';
 
 export default function Home() {
   return (
@@ -25,17 +26,22 @@ export default function Home() {
       <main className="min-h-screen">
         <HeroSection />
         <LiveTickerSection />
+        <SectionDivider variant="ribbon" tone="dark" label="A clear beginning" />
         <DirectorWelcomeSection />
+        <SectionDivider variant="seal" tone="light" label="The standard" />
         <SouthAfricanTrustSection />
         <LegalPathfinderSection />
+        <SectionDivider variant="arch" tone="dark" label="A considered route" />
         <ServicesSection />
         <MatterUrgencySection />
         <AboutSection />
         <WhyChooseUsSection />
+        <SectionDivider variant="ribbon" tone="dark" label="How we work" />
         <ProcessSection />
         <ConsultationBuilderSection />
         <TeamSection />
         <FAQSection />
+        <SectionDivider variant="arch" tone="light" label="Your next step" />
         <ContactSection />
       </main>
 

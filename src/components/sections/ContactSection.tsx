@@ -10,7 +10,7 @@ const mapEmbedUrl = `https://www.google.com/maps?q=${mapQuery}&output=embed`;
 export default function ContactSection() {
   return (
     <section id="contact" data-interactive-zone className="relative scroll-mt-24 overflow-hidden bg-[#050d18] py-20 text-white sm:py-24 lg:py-28">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(217,175,107,0.17),transparent_28rem),radial-gradient(circle_at_92%_82%,rgba(255,255,255,0.055),transparent_24rem)]" />
+      <div data-scroll-ambient="16" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_12%,rgba(217,175,107,0.17),transparent_28rem),radial-gradient(circle_at_92%_82%,rgba(255,255,255,0.055),transparent_24rem)]" />
       <div className="relative mx-auto max-w-[88rem] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 flex flex-col gap-5 border-b border-white/10 pb-8 lg:flex-row lg:items-end lg:justify-between">
           <div>

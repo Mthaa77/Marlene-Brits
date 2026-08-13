@@ -11,8 +11,8 @@ export default function DirectorWelcomeSection() {
     <section id="director-welcome" className="scroll-mt-24 overflow-hidden bg-[#f6f1e7] py-20 sm:py-24 lg:py-32">
       <div className="mx-auto grid max-w-[88rem] gap-10 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-20 lg:px-8">
         <motion.div initial={reduceMotion ? false : { opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }} className="relative mx-auto w-full max-w-lg lg:mx-0">
-          <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full border border-[#d9af6b]/18" />
-          <div className="absolute -bottom-10 -right-8 h-48 w-48 rounded-full bg-[#d9af6b]/10 blur-3xl" />
+          <div data-scroll-ambient="14" className="absolute -left-10 -top-10 h-40 w-40 rounded-full border border-[#d9af6b]/18" />
+          <div data-scroll-ambient="18" className="absolute -bottom-10 -right-8 h-48 w-48 rounded-full bg-[#d9af6b]/10 blur-3xl" />
           <div className="relative aspect-[4/5] overflow-hidden rounded-[11rem_2rem_8rem_2rem] border border-[#07111f]/10 bg-white shadow-[0_36px_100px_rgba(7,17,31,0.17)] sm:rounded-[13rem_2.25rem_9rem_2.25rem]">
             <Image src="/uploads/OIP (1).webp" alt="Marlene Brits, founder and managing director of Marlene Brits Attorneys" fill sizes="(max-width: 1024px) 100vw, 40vw" className="scale-[1.08] object-cover object-[12%_top]" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#07111f]/62 via-transparent to-transparent" />

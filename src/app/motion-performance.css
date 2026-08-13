@@ -26,6 +26,97 @@ main > section {
   transform: translateZ(0);
 }
 
+/* Small ambient layers receive a scroll-linked vertical drift from the motion
+   orchestrator. The independent translate property preserves any existing
+   Tailwind transform (centering, rotation, etc.). */
+[data-scroll-ambient] {
+  --motion-y: 0px;
+  translate: 0 var(--motion-y);
+  will-change: translate;
+}
+
+/* Creative chapter separators: light enough to let the content breathe, with
+   a gold thread that echoes the firm's seal and architectural setting. */
+.section-divider {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  min-height: 5.5rem;
+  place-items: center;
+  overflow: hidden;
+  padding: 0 1.5rem;
+  isolation: isolate;
+}
+
+.section-divider--dark {
+  background: #07111f;
+}
+
+.section-divider--light {
+  background: #f8f5ee;
+}
+
+.section-divider__art {
+  display: block;
+  width: min(100%, 88rem);
+  height: 5.5rem;
+  overflow: visible;
+}
+
+.section-divider__line,
+.section-divider__ribbon,
+.section-divider__seal,
+.section-divider__arch {
+  vector-effect: non-scaling-stroke;
+  stroke: #d9af6b;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.section-divider__line {
+  stroke-width: 1;
+  opacity: 0.28;
+}
+
+.section-divider__ribbon {
+  stroke-width: 1.4;
+  opacity: 0.78;
+}
+
+.section-divider__seal {
+  stroke-width: 1.15;
+  opacity: 0.76;
+}
+
+.section-divider__arch {
+  stroke-width: 1.25;
+  opacity: 0.76;
+}
+
+.section-divider__arch--inner {
+  opacity: 0.32;
+}
+
+.section-divider__dot {
+  fill: #edcd94;
+  filter: drop-shadow(0 0 8px rgba(217, 175, 107, 0.48));
+}
+
+.section-divider--light .section-divider__line {
+  opacity: 0.38;
+}
+
+.section-divider__label {
+  position: absolute;
+  bottom: 0.6rem;
+  color: rgba(217, 175, 107, 0.52);
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 main > section:not(#home) {
   content-visibility: auto;
   contain-intrinsic-size: auto 860px;
@@ -253,6 +344,21 @@ header,
     contain-intrinsic-size: auto 720px;
   }
 
+  .section-divider {
+    min-height: 4.5rem;
+    padding-inline: 0.5rem;
+  }
+
+  .section-divider__art {
+    height: 4.5rem;
+  }
+
+  .section-divider__label {
+    bottom: 0.45rem;
+    font-size: 0.44rem;
+    letter-spacing: 0.2em;
+  }
+
   [class*='blur-3xl'] {
     filter: blur(22px) !important;
   }
@@ -311,5 +417,10 @@ header,
 
   main > section:not(#home) {
     content-visibility: visible;
+  }
+
+  [data-scroll-ambient] {
+    translate: none;
+    will-change: auto;
   }
 }

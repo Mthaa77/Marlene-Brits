@@ -43,7 +43,7 @@ export default function LegalPathfinderSection() {
 
   return (
     <section id="pathfinder" data-interactive-zone className="relative overflow-hidden bg-[#06101d] py-20 text-white sm:py-24 lg:py-28">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_9%_30%,rgba(217,175,107,0.16),transparent_26rem),radial-gradient(circle_at_94%_10%,rgba(255,255,255,0.06),transparent_25rem)]" />
+      <div data-scroll-ambient="18" className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_9%_30%,rgba(217,175,107,0.16),transparent_26rem),radial-gradient(circle_at_94%_10%,rgba(255,255,255,0.06),transparent_25rem)]" />
       <div className="relative mx-auto grid max-w-[88rem] gap-10 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-14 lg:px-8">
         <div className="lg:pr-5">
           <span className="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.24em] text-[#d9af6b]"><Sparkles className="h-3.5 w-3.5" /> Guided legal pathfinder</span>

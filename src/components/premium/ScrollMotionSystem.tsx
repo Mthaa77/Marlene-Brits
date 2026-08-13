@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 
 const PREMIUM_EASE = 'cubic-bezier(0.22, 1, 0.36, 1)'
+const ambientTargets = '[data-scroll-ambient]'
 
 function hasMotionStyles(element: HTMLElement) {
   const style = element.getAttribute('style') ?? ''
@@ -25,6 +26,7 @@ export default function ScrollMotionSystem() {
     }
 
     const runningAnimations: Animation[] = []
+    let ticking = false
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('main > section:not(#home)')
     )
@@ -33,6 +35,31 @@ export default function ScrollMotionSystem() {
         'main h2, main article, main [data-scroll-detail]'
       )
     ).filter((element) => !hasMotionStyles(element))
+    const ambient = Array.from(document.querySelectorAll<HTMLElement>(ambientTargets))
+
+    const updateAmbient = () => {
+      ticking = false
+      const viewport = window.innerHeight || 1
+      ambient.forEach((element, index) => {
+        const rect = element.getBoundingClientRect()
+        if (rect.bottom < -120 || rect.top > viewport + 120) return
+        const centre = rect.top + rect.height / 2
+        const distance = Math.max(-1, Math.min(1, (centre - viewport / 2) / (viewport / 2)))
+        const amplitude = Number(element.dataset.scrollAmbient ?? 10)
+        const offset = distance * amplitude + (index % 2 ? amplitude * 0.16 : 0)
+        element.style.setProperty('--motion-y', `${offset.toFixed(2)}px`)
+      })
+    }
+
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      window.requestAnimationFrame(updateAmbient)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    updateAmbient()
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -115,6 +142,9 @@ export default function ScrollMotionSystem() {
       sectionObserver.disconnect()
       detailObserver.disconnect()
       runningAnimations.forEach((animation) => animation.cancel())
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      ambient.forEach((element) => element.style.removeProperty('--motion-y'))
       delete root.dataset.motionOrchestrated
       delete root.dataset.motionReduced
     }
